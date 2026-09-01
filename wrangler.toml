@@ -1,0 +1,24 @@
+# Cloudflare Pages project. The site is a directory of static files: there is
+# no Worker, no build step on Cloudflare's side, and nothing to run at the
+# edge. GitHub Actions builds `public/` and uploads it.
+name = "kevinallioli-com"
+pages_build_output_dir = "public"
+compatibility_date = "2026-09-01"
+
+# Custom domains (apex, plus the www hostname that the zone redirect rule
+# answers on) are attached in the Cloudflare dashboard, not from here.
+#
+# If this project is ever migrated to Workers Static Assets, which is the
+# path Cloudflare now recommends for new static sites, this file becomes:
+#
+#   name = "kevinallioli-com"
+#   compatibility_date = "2026-09-01"
+#   [assets]
+#   directory = "./public"
+#   not_found_handling = "404-page"
+#   [[routes]]
+#   pattern = "kevinallioli.com"
+#   custom_domain = true
+#
+# and the deploy command in .github/workflows/ci.yml becomes `deploy`.
+# `_headers` and `_redirects` are honoured identically by both products.

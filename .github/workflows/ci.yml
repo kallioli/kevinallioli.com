@@ -1,0 +1,107 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install pinned Hugo extended
+        run: |
+          set -euo pipefail
+          version="$(cat .hugo-version)"
+          tarball="hugo_extended_${version}_linux-amd64.tar.gz"
+          curl -fsSLO "https://github.com/gohugoio/hugo/releases/download/v${version}/${tarball}"
+          sha256sum --check .hugo-sha256
+          mkdir -p "${RUNNER_TEMP}/hugo"
+          tar -xzf "${tarball}" -C "${RUNNER_TEMP}/hugo" hugo
+          echo "${RUNNER_TEMP}/hugo" >> "${GITHUB_PATH}"
+
+      - name: Report Hugo version
+        run: hugo version
+
+      - name: Build
+        env:
+          HUGO_PARAMS_BUILDCOMMIT: ${{ github.sha }}
+        # A warning here is a build failure: deprecated APIs and missing
+        # layouts are the two things that rot a hand-written template set.
+        run: hugo --minify --gc --cleanDestinationDir --printPathWarnings --panicOnWarning
+
+      - name: Verify the CSP hash matches the served HTML
+        run: ./scripts/check-csp-hash.sh public
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: public/
+          retention-days: 7
+
+  secrets-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    env:
+      GITLEAKS_VERSION: "8.30.1"
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install gitleaks
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      - name: Scan repository history
+        run: gitleaks detect --no-banner --redact --verbose
+
+  deploy:
+    # Publishing is off until the repository variable DEPLOY_ENABLED is set to
+    # "true". Until then a push to main builds and verifies, and stops there.
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.DEPLOY_ENABLED == 'true'
+    needs: [build, secrets-scan]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: production
+      url: https://kevinallioli.com
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download build
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: public
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.127.1"
+          command: pages deploy public --project-name=kevinallioli-com --branch=main

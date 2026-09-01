@@ -1,0 +1,82 @@
+# OpenStack upstream contributions - Kevin Allioli
+# Gerrit account: kallioli (id 36082), kevin@stackops.ch
+# Source: review.opendev.org REST API, fetched 2026-09-01
+# Rendered by layouts/contributions/list.html. Update this file, not the layout.
+
+profile: https://review.opendev.org/q/owner:kallioli
+
+authored:
+  - project: openstack/horizon
+    number: 1002869
+    subject: Add Python 3.14 support
+    status: MERGED
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002869
+  - project: openstack/horizon
+    number: 1002871
+    subject: Add non-voting job to test Django 6.0
+    status: MERGED
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002871
+  - project: openstack/openstacksdk
+    number: 984963
+    subject: Add project_cleanup support for load_balancer and key_manager
+    status: MERGED
+    created: 2026-04-16
+    url: https://review.opendev.org/c/openstack/openstacksdk/+/984963
+  - project: openstack/horizon
+    number: 1002877
+    subject: Escape JSON embedded in inline script blocks
+    status: NEW
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002877
+  - project: openstack/horizon
+    number: 1002891
+    subject: Add WEBSSO_ALLOWED_REFERER_HOSTS
+    status: NEW
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002891
+  - project: openstack/horizon
+    number: 1002889
+    subject: "doc: warn about the WebSSO Referer setting"
+    status: NEW
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002889
+  - project: openstack/horizon
+    number: 1002951
+    subject: Build Content-Disposition with Django's helper
+    status: NEW
+    created: 2026-08-30
+    url: https://review.opendev.org/c/openstack/horizon/+/1002951
+  - project: openstack/horizon
+    number: 1002893
+    subject: Build flavor test data with openstacksdk
+    status: NEW
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002893
+  - project: openstack/horizon
+    number: 1002888
+    subject: "doc: warn about the Referer used to derive the WebSSO auth URL"
+    status: ABANDONED
+    created: 2026-08-29
+    url: https://review.opendev.org/c/openstack/horizon/+/1002888
+  - project: openstack/horizon
+    number: 931759
+    subject: Add backward compatibility for port forwarding
+    status: ABANDONED
+    created: 2024-10-08
+    url: https://review.opendev.org/c/openstack/horizon/+/931759
+
+reviewed:
+  - project: openstack/horizon
+    number: 992403
+    subject: Fix build_attrs signature for modern Django
+    url: https://review.opendev.org/c/openstack/horizon/+/992403
+  - project: openstack/horizon
+    number: 995333
+    subject: Silence a django 6.0 warning about https scheme
+    url: https://review.opendev.org/c/openstack/horizon/+/995333
+  - project: openstack/keystone
+    number: 985969
+    subject: "Fix: TOTP authentication lockout risk in Keystone"
+    url: https://review.opendev.org/c/openstack/keystone/+/985969

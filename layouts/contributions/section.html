@@ -1,0 +1,83 @@
+{{ define "main" }}
+{{- $d := hugo.Data.contributions }}
+<div class="wrap">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+    <p class="meta"><a href="{{ $d.profile }}">{{ i18n "gerritProfile" }}: review.opendev.org/q/owner:kallioli</a></p>
+  </header>
+
+  {{ with .Content }}<div class="prose prose--capped">{{ . }}</div>{{ end }}
+
+  {{- $groups := slice
+      (dict "key" "MERGED"    "label" (i18n "contributionsMerged")    "class" "merged")
+      (dict "key" "NEW"       "label" (i18n "contributionsOpen")      "class" "new")
+      (dict "key" "ABANDONED" "label" (i18n "contributionsAbandoned") "class" "abandoned") }}
+
+  {{- range $groups }}
+  {{- $rows := where $d.authored "status" .key }}
+  {{- if $rows }}
+  <section class="registry" aria-labelledby="reg-{{ .class }}">
+    <h2 id="reg-{{ .class }}">{{ .label }} ({{ len $rows }})</h2>
+    <div class="table-scroll">
+      <table>
+        <caption class="visually-hidden">{{ .label }}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ i18n "colProject" }}</th>
+            <th scope="col">{{ i18n "colChange" }}</th>
+            <th scope="col">{{ i18n "colSubject" }}</th>
+            <th scope="col">{{ i18n "colStatus" }}</th>
+            <th scope="col">{{ i18n "colDate" }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- $cls := .class }}{{ $label := .label }}
+          {{- range $rows }}
+          <tr>
+            <td class="col-project">{{ .project }}</td>
+            <td class="col-change"><a href="{{ .url }}">{{ .number }}</a></td>
+            <td class="col-subject">{{ .subject }}</td>
+            <td><span class="state state--{{ $cls }}">{{ $label }}</span></td>
+            <td class="col-date"><time datetime="{{ .created }}">{{ .created }}</time></td>
+          </tr>
+          {{- end }}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {{- end }}
+  {{- end }}
+
+  {{- with $d.reviewed }}
+  <section class="registry" aria-labelledby="reg-reviewed">
+    <h2 id="reg-reviewed">{{ i18n "contributionsReviewed" }} ({{ len . }})</h2>
+    <div class="table-scroll">
+      <table>
+        <caption class="visually-hidden">{{ i18n "contributionsReviewed" }}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ i18n "colProject" }}</th>
+            <th scope="col">{{ i18n "colChange" }}</th>
+            <th scope="col">{{ i18n "colSubject" }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- range . }}
+          <tr>
+            <td class="col-project">{{ .project }}</td>
+            <td class="col-change"><a href="{{ .url }}">{{ .number }}</a></td>
+            <td class="col-subject">{{ .subject }}</td>
+          </tr>
+          {{- end }}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {{- end }}
+
+  {{- with .Params.note }}
+  <p class="registry__note">{{ . }}</p>
+  {{- end }}
+</div>
+{{ end }}

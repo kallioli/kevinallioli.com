@@ -1,0 +1,27 @@
+{{- $p := .Site.Params -}}
+{{- $person := dict
+      "@type" "Person"
+      "@id" (printf "%s#person" .Site.Home.Permalink)
+      "name" "Kevin Allioli"
+      "url" .Site.Home.Permalink
+      "jobTitle" (cond (eq .Site.Language.Lang "fr") "Architecte cloud" "Cloud architect")
+      "address" (dict "@type" "PostalAddress" "addressLocality" "Genève" "addressCountry" "CH")
+      "knowsAbout" (slice "OpenStack" "Cloud infrastructure" "Reproducible builds" "System images" "Supply chain security")
+      "sameAs" (slice $p.githubOrg $p.github $p.gerrit $p.linkedin $p.oicSite)
+-}}
+{{- $graph := slice $person -}}
+{{- if and .IsPage (eq .Section "articles") -}}
+  {{- $article := dict
+        "@type" "BlogPosting"
+        "headline" .Title
+        "description" (.Description | default .Summary)
+        "inLanguage" .Site.Language.Lang
+        "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+        "author" (dict "@id" (printf "%s#person" .Site.Home.Permalink))
+        "publisher" (dict "@id" (printf "%s#person" .Site.Home.Permalink))
+  -}}
+  {{- with .Date }}{{ $article = merge $article (dict "datePublished" (.Format "2006-01-02")) }}{{ end -}}
+  {{- with .Lastmod }}{{ $article = merge $article (dict "dateModified" (.Format "2006-01-02")) }}{{ end -}}
+  {{- $graph = $graph | append $article -}}
+{{- end -}}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graph | jsonify | safeJS }}</script>

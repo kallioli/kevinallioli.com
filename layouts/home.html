@@ -1,0 +1,68 @@
+{{ define "main" }}
+<div class="wrap">
+
+  <div class="hero">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.role }}<p class="hero__role">{{ . }}</p>{{ end }}
+    {{ with .Params.lead }}<p class="hero__lead">{{ . }}</p>{{ end }}
+    {{ with .Params.thesis }}
+    <blockquote class="hero__thesis"><p>{{ . }}</p></blockquote>
+    {{ end }}
+    {{ with .Content }}<div class="hero__intro">{{ . }}</div>{{ end }}
+  </div>
+
+  {{- $articles := where (where .Site.RegularPages "Section" "articles") "Params.hidden" "!=" true }}
+  <section class="home-section" aria-labelledby="h-articles">
+    <div class="section-head">
+      <h2 id="h-articles">{{ i18n "latestArticles" }}</h2>
+      <a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "allArticles" }}</a>
+    </div>
+    {{- if $articles }}
+    <ul class="entry-list">
+      {{- range first 3 $articles }}
+      {{ partial "entry.html" (dict "page" . "level" 3) }}
+      {{- end }}
+    </ul>
+    {{- else }}
+    <p class="entry__summary">{{ i18n "noArticles" }}</p>
+    {{- end }}
+  </section>
+
+  {{- with .Site.GetPage "/projets" }}{{ $p := . }}{{ template "home-projects" $p }}{{ end }}
+  {{- with .Site.GetPage "/projects" }}{{ $p := . }}{{ template "home-projects" $p }}{{ end }}
+
+  {{- with .Site.GetPage "/contributions" }}
+  <section class="home-section" aria-labelledby="h-contrib">
+    <div class="section-head">
+      <h2 id="h-contrib">{{ .Title }}</h2>
+      <a href="{{ .RelPermalink }}">{{ i18n "allContributions" }}</a>
+    </div>
+    {{- $d := hugo.Data.contributions }}
+    {{- $merged := where $d.authored "status" "MERGED" }}
+    {{- $open := where $d.authored "status" "NEW" }}
+    <p class="entry__summary">{{ i18n "contribSummary" (dict "Merged" (len $merged) "Open" (len $open) "Reviewed" (len $d.reviewed)) }}</p>
+  </section>
+  {{- end }}
+
+</div>
+{{ end }}
+
+{{ define "home-projects" }}
+<section class="home-section" aria-labelledby="h-projects">
+  <div class="section-head">
+    <h2 id="h-projects">{{ .Title }}</h2>
+    <a href="{{ .RelPermalink }}">{{ i18n "allProjects" }}</a>
+  </div>
+  {{- with (.Pages.ByWeight | first 1) }}{{ with index . 0 }}
+  <article class="project-card">
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{- with .Params.links }}
+    <ul class="link-row">
+      {{- range . }}<li><a href="{{ .url }}">{{ .label }}</a></li>{{ end }}
+    </ul>
+    {{- end }}
+  </article>
+  {{- end }}{{ end }}
+</section>
+{{ end }}

@@ -1,0 +1,19 @@
+{{ define "main" }}
+<div class="prose-wrap">
+  <header class="page-header">
+    <h1>{{ i18n "pageNotFound" }}</h1>
+    <p class="lede">{{ i18n "pageNotFoundBody" }}</p>
+    <p class="meta">HTTP 404</p>
+  </header>
+  <nav aria-label="{{ i18n "mainNav" }}">
+    <ul class="entry-list">
+      {{- range .Site.Menus.main }}
+      <li class="entry"><h2 class="entry__title"><a href="{{ .URL }}">{{ .Name }}</a></h2></li>
+      {{- end }}
+      {{- range .Site.Menus.footer }}
+      <li class="entry"><h2 class="entry__title"><a href="{{ .URL }}">{{ .Name }}</a></h2></li>
+      {{- end }}
+    </ul>
+  </nav>
+</div>
+{{ end }}

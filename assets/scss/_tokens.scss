@@ -1,0 +1,60 @@
+// Design tokens. Every colour used anywhere in the site resolves to one of
+// these custom properties, so a theme is a token swap and nothing else.
+
+:root {
+  // Palette - light (default)
+  --c-bg:      #fbfaf7;
+  --c-surface: #f2f0ea;
+  --c-text:    #17181a;
+  --c-muted:   #5a5d63;
+  --c-border:  #dedad1;
+  --c-accent:  #14624a;
+
+  // Derived, still theme-dependent
+  --c-accent-bg: #{rgba(#14624a, 0.08)};
+  --c-selection: #{rgba(#14624a, 0.16)};
+
+  // Type
+  --f-sans:  "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --f-serif: "IBM Plex Serif", ui-serif, Georgia, serif;
+  --f-mono:  "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --fs-body:  1.125rem;   // 18px
+  --fs-small: 0.9375rem;  // 15px
+  --fs-meta:  0.8125rem;  // 13px
+  --lh-body:  1.65;
+  --lh-tight: 1.25;
+
+  // Measure and rhythm
+  --measure: 68ch;
+  --wide:    64rem;
+  --gutter:  1.5rem;
+  --step:    1.5rem;
+
+  --border: 1px solid var(--c-border);
+  --radius: 2px;
+
+  color-scheme: light;
+}
+
+@mixin dark-tokens {
+  --c-bg:      #101113;
+  --c-surface: #17191c;
+  --c-text:    #e8e6e1;
+  --c-muted:   #9a9da3;
+  --c-border:  #2a2d31;
+  --c-accent:  #4fbf92;
+
+  --c-accent-bg: #{rgba(#4fbf92, 0.10)};
+  --c-selection: #{rgba(#4fbf92, 0.22)};
+
+  color-scheme: dark;
+}
+
+// System preference, unless the reader has explicitly asked for light.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { @include dark-tokens; }
+}
+
+// Explicit choice always wins, in both directions.
+:root[data-theme="dark"] { @include dark-tokens; }

@@ -1,0 +1,9 @@
+{{- /*
+  Path-level redirects only. Cloudflare matches `source` against the path,
+  never the hostname, so the www -> apex redirect lives in a zone Single
+  Redirect rule instead. See README.md, section Deploy.
+*/ -}}
+# Feed aliases: /index.xml is the canonical location.
+/feed /index.xml 301
+/rss /index.xml 301
+/feed.xml /index.xml 301

@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="prose-wrap">
+  <header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  </header>
+
+  {{- with .Params.facts }}
+  <dl class="definition-grid">
+    {{- range . }}
+    <dt>{{ .key }}</dt>
+    <dd>{{ if .url }}<a href="{{ .url }}">{{ .value }}</a>{{ else }}{{ .value }}{{ end }}</dd>
+    {{- end }}
+  </dl>
+  {{- end }}
+
+  <div class="prose">
+    {{ .Content }}
+  </div>
+</div>
+{{ end }}

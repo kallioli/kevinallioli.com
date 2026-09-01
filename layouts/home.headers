@@ -1,0 +1,30 @@
+{{- /*
+  Generated, not hand-written. The CSP below allows exactly one inline
+  script: the theme switcher, identified by the SHA-256 of its built
+  content. Change the script and the hash follows on the next build.
+*/ -}}
+{{- $js := partialCached "theme-script.html" . -}}
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self' '{{ $js.Data.Integrity }}'; connect-src 'self'; manifest-src 'self'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), xr-spatial-tracking=()
+
+# Fingerprinted assets: the URL changes whenever the bytes do, so the
+# response can be cached for a year without a revalidation round trip.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: {{ strings.TrimSuffix "/" .Site.BaseURL }}
+
+/index.xml
+  Cache-Control: public, max-age=3600
+
+/en/index.xml
+  Cache-Control: public, max-age=3600

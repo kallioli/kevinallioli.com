@@ -1,0 +1,31 @@
+# Hugo build output and caches
+/public/
+/resources/_gen/
+/.hugo_build.lock
+hugo_stats.json
+
+# Local tooling
+/.direnv/
+/node_modules/
+/.wrangler/
+
+# Environment
+.env
+.env.local
+.env.*.local
+.envrc.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code configuration is never versioned here.
+.claude/
+CLAUDE.md
+settings*.local.json

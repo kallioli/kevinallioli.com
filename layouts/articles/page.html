@@ -1,0 +1,30 @@
+{{ define "main" }}
+<article class="prose-wrap" itemscope itemtype="https://schema.org/BlogPosting">
+  {{ partial "translation-note.html" . }}
+  <header class="article-header">
+    {{ if .Draft }}<p><span class="draft-badge">{{ i18n "draftBadge" }}</span></p>{{ end }}
+    <h1 itemprop="headline">{{ .Title }}</h1>
+    <p class="meta">
+      {{- with .Date }}<span>{{ i18n "publishedOn" }} <time datetime="{{ .Format "2006-01-02" }}" itemprop="datePublished">{{ .Format "2006-01-02" }}</time></span>{{ end }}
+      {{- with .Params.pillar }}<span>{{ . }}</span>{{ end }}
+      <span>{{ .ReadingTime }} {{ i18n "readingTime" }}</span>
+    </p>
+    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+  </header>
+
+  {{- if and (ge (len .Fragments.Identifiers) 4) (not .Params.hideToc) }}
+  <nav class="toc" aria-labelledby="toc-title">
+    <h2 id="toc-title">{{ i18n "tableOfContents" }}</h2>
+    {{ .Fragments.ToHTML 2 3 false }}
+  </nav>
+  {{- end }}
+
+  <div class="prose" itemprop="articleBody">
+    {{ .Content }}
+  </div>
+
+  <footer class="article-footer">
+    <p class="meta"><a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "backTo" }} {{ (.Site.GetPage "/articles").Title | lower }}</a></p>
+  </footer>
+</article>
+{{ end }}

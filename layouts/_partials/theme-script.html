@@ -1,0 +1,3 @@
+{{- /* Built and hashed once per build. The same resource is inlined in
+       <head> and hashed into the CSP, so the two can never drift. */ -}}
+{{- return (resources.Get "js/theme.js" | js.Build (dict "minify" true "target" "es2018") | fingerprint "sha256") -}}

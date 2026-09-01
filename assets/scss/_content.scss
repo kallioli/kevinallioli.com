@@ -1,0 +1,172 @@
+// Long-form reading. Serif body, mono for anything that is a fact rather
+// than a sentence: dates, versions, change numbers, digests.
+
+.prose {
+  > * + * { margin-top: var(--step); }
+
+  > h2 { margin-top: calc(var(--step) * 2.25); }
+  > h3 { margin-top: calc(var(--step) * 1.75); }
+  > h2 + *, > h3 + * { margin-top: 0.75rem; }
+
+  h2 {
+    padding-top: 0.6rem;
+    border-top: var(--border);
+  }
+
+  ul, ol { padding-inline-start: 1.35rem; }
+  li + li { margin-top: 0.4rem; }
+  li > ul, li > ol { margin-top: 0.4rem; }
+
+  strong { font-weight: 600; }
+
+  blockquote {
+    border-inline-start: 2px solid var(--c-accent);
+    padding-inline-start: 1.1rem;
+    color: var(--c-text);
+    font-style: italic;
+  }
+  blockquote > * + * { margin-top: 0.75rem; }
+
+  :not(pre) > code {
+    font-size: 0.875em;
+    background: var(--c-surface);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 0.1em 0.32em;
+    word-break: break-word;
+  }
+
+  // Code and tables are allowed to break the measure once there is room
+  // for it on either side. Below that width they simply scroll in place.
+  pre, .table-scroll, figure { max-width: none; }
+
+  @media (min-width: 64rem) {
+    > .highlight,
+    > .table-scroll,
+    > pre,
+    > figure { margin-inline: -3rem; }
+  }
+
+  a { overflow-wrap: break-word; }
+}
+
+pre.chroma, pre {
+  background: var(--c-surface);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  tab-size: 2;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+.highlight { margin: 0; }
+
+// ------------------------------------------------------------------- tables
+
+.table-scroll {
+  overflow-x: auto;
+  border: var(--border);
+  border-radius: var(--radius);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--f-sans);
+  font-size: var(--fs-small);
+  font-variant-numeric: tabular-nums;
+}
+
+thead th {
+  text-align: start;
+  font-family: var(--f-mono);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+th, td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: var(--border);
+  vertical-align: top;
+}
+thead th { border-bottom: 1px solid var(--c-text); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.prose .table-scroll table { margin: 0; }
+.prose > table { display: block; overflow-x: auto; }
+
+// ---------------------------------------------------------------- page head
+
+.page-header { margin-bottom: calc(var(--step) * 1.75); }
+.page-header p.lede {
+  margin-top: 0.75rem;
+  color: var(--c-muted);
+  font-size: 1.0625rem;
+}
+.page-header .meta { margin-top: 0.6rem; }
+
+.article-header {
+  padding-bottom: var(--step);
+  border-bottom: var(--border);
+  margin-bottom: calc(var(--step) * 1.5);
+}
+.article-header h1 { font-size: 2rem; }
+.article-header .meta { margin-top: 0.75rem; }
+.article-header .meta > * + *::before {
+  content: "/";
+  margin-inline: 0.5rem;
+  color: var(--c-border);
+}
+
+.draft-badge {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: var(--fs-meta);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--c-accent);
+  border: 1px solid var(--c-accent);
+  padding: 0.05rem 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose--capped { max-width: var(--measure); }
+
+.toc {
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--c-surface);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: calc(var(--step) * 1.5);
+  font-family: var(--f-sans);
+  font-size: var(--fs-small);
+}
+.toc h2 {
+  font-family: var(--f-mono);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-muted);
+  margin-bottom: 0.5rem;
+}
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc ul ul { padding-inline-start: 1rem; }
+.toc li { margin-top: 0.25rem; }
+.toc a { color: var(--c-text); text-decoration: none; }
+.toc a:hover { color: var(--c-accent); text-decoration: underline; }
+
+.article-footer {
+  margin-top: calc(var(--step) * 2.5);
+  padding-top: var(--step);
+  border-top: var(--border);
+}
+
+.definition-grid { margin-bottom: calc(var(--step) * 1.75); }

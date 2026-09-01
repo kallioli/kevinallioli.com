@@ -1,0 +1,5 @@
+{{- /* Rendered only when a page explicitly carries a note about its
+       language, e.g. a French page pointing at an English original. */ -}}
+{{- with .Params.translationNote }}
+<p class="translation-note">{{ . }}</p>
+{{- end }}

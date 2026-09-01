@@ -1,0 +1,184 @@
+# Site configuration. Pinned Hugo version lives in .hugo-version.
+
+baseURL                  = "https://kevinallioli.com/"
+title                    = "Kevin Allioli"
+locale                   = "fr"
+defaultContentLanguage   = "fr"
+defaultContentLanguageInSubdir = false
+enableRobotsTXT          = true
+# The generator meta tag is dropped: the Hugo version is stated deliberately
+# in the colophon instead of leaked from every page.
+disableHugoGeneratorInject = true
+enableEmoji              = false
+enableInlineShortcodes   = false
+capitalizeListTitles     = false
+timeZone                 = "Europe/Zurich"
+summaryLength            = 30
+
+# No taxonomy pages: a personal site with a handful of articles does not need
+# tag archives, and every generated page is a page to maintain.
+disableKinds             = ["taxonomy", "term"]
+
+# No third-party theme: every layout in this repo is hand-written.
+theme = []
+
+[pagination]
+  pagerSize = 20
+
+[params]
+  description  = "Architecte cloud à Genève. Images système, OpenStack à grande échelle, souveraineté vérifiable."
+  author       = "Kevin Allioli"
+  # Overridden at build time via HUGO_PARAMS_BUILDCOMMIT.
+  buildCommit  = "dev"
+  gerrit       = "https://review.opendev.org/q/owner:kallioli"
+  github       = "https://github.com/kallioli"
+  githubOrg    = "https://github.com/open-img-cloud"
+  linkedin     = "https://www.linkedin.com/in/kevinallioli"
+  oicSite      = "https://openimages.cloud"
+  email        = "kevin@stackops.ch"
+  repo         = "https://github.com/kallioli/kevinallioli.com"
+
+[markup]
+  [markup.goldmark.renderer]
+    # Raw HTML in Markdown stays off: content is data, layouts are code.
+    unsafe = false
+  [markup.goldmark.parser]
+    [markup.goldmark.parser.attribute]
+      block = true
+      title = true
+  [markup.goldmark.extensions]
+    linkify = false
+    [markup.goldmark.extensions.typographer]
+      # Straight quotes only: em/en dashes are not part of the house style.
+      leftDoubleQuote  = "&laquo;&nbsp;"
+      rightDoubleQuote = "&nbsp;&raquo;"
+  [markup.highlight]
+    noClasses      = false
+    lineNos        = false
+    tabWidth       = 2
+    guessSyntax    = false
+    wrapperClass   = "highlight"
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel   = 3
+    ordered    = false
+
+[outputs]
+  home    = ["html", "rss"]
+  section = ["html", "rss"]
+  page    = ["html"]
+
+# Cloudflare reads `_headers` and `_redirects` as bare filenames, so they need
+# a media type with no suffix. Both are generated from templates: the CSP in
+# `_headers` carries the hash of the one inline script, and a template is the
+# only way to keep the two from drifting apart.
+[mediaTypes."text/cloudflare"]
+  delimiter = ""
+  suffixes  = []
+
+[outputFormats.headers]
+  mediaType      = "text/cloudflare"
+  baseName       = "_headers"
+  isPlainText    = true
+  notAlternative = true
+  permalinkable  = false
+
+[outputFormats.redirects]
+  mediaType      = "text/cloudflare"
+  baseName       = "_redirects"
+  isPlainText    = true
+  notAlternative = true
+  permalinkable  = false
+
+[services.rss]
+  limit = 30
+
+
+[minify]
+  disableXML = true
+  # The inline theme script is hashed into the CSP. Letting the HTML minifier
+  # rewrite it would invalidate that hash, so JS minification stays off here;
+  # `js.Build` already minifies the script before it is inlined.
+  disableJS  = true
+  [minify.tdewolff.html]
+    keepQuotes = true
+
+[security.funcs]
+  getenv = ["^HUGO_", "^CI$", "^GITHUB_SHA$"]
+
+[imaging]
+  resampleFilter = "Lanczos"
+  [imaging.jpeg]
+    quality = 82
+  [imaging.webp]
+    quality = 82
+
+# ---------------------------------------------------------------- languages
+
+[languages]
+  [languages.fr]
+    contentDir   = "content/fr"
+    label  = "Français"
+    locale = "fr-CH"
+    weight       = 1
+    title        = "Kevin Allioli"
+    [languages.fr.params]
+      tagline = "Architecte cloud. Images système, OpenStack à grande échelle."
+    [[languages.fr.menus.main]]
+      name = "Articles"
+      pageRef = "/articles"
+      weight = 10
+    [[languages.fr.menus.main]]
+      name = "Projets"
+      pageRef = "/projets"
+      weight = 20
+    [[languages.fr.menus.main]]
+      name = "Contributions"
+      pageRef = "/contributions"
+      weight = 30
+    [[languages.fr.menus.main]]
+      name = "À propos"
+      pageRef = "/a-propos"
+      weight = 40
+    [[languages.fr.menus.footer]]
+      name = "Colophon"
+      pageRef = "/colophon"
+      weight = 10
+    [[languages.fr.menus.footer]]
+      name = "RSS"
+      url = "/index.xml"
+      weight = 20
+
+  [languages.en]
+    contentDir   = "content/en"
+    label  = "English"
+    locale = "en"
+    weight       = 2
+    title        = "Kevin Allioli"
+    [languages.en.params]
+      description = "Cloud architect. System images, OpenStack at scale, verifiable sovereignty."
+      tagline = "Cloud architect. System images, OpenStack at scale."
+    [[languages.en.menus.main]]
+      name = "Articles"
+      pageRef = "/articles"
+      weight = 10
+    [[languages.en.menus.main]]
+      name = "Projects"
+      pageRef = "/projects"
+      weight = 20
+    [[languages.en.menus.main]]
+      name = "Contributions"
+      pageRef = "/contributions"
+      weight = 30
+    [[languages.en.menus.main]]
+      name = "About"
+      pageRef = "/about"
+      weight = 40
+    [[languages.en.menus.footer]]
+      name = "Colophon"
+      pageRef = "/colophon"
+      weight = 10
+    [[languages.en.menus.footer]]
+      name = "RSS"
+      url = "/en/index.xml"
+      weight = 20

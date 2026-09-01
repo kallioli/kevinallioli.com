@@ -1,0 +1,60 @@
+{{- $title := cond .IsHome .Site.Title (printf "%s - %s" .Title .Site.Title) -}}
+{{- $desc := .Description | default .Site.Params.description -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $desc }}">
+<meta name="author" content="{{ .Site.Params.author }}">
+<meta name="color-scheme" content="light dark">
+{{- with .Params.robots }}
+<meta name="robots" content="{{ . }}">
+{{- end }}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* Styles. One stylesheet, fingerprinted, served from this origin. */ -}}
+{{- $css := resources.Get "scss/main.scss"
+      | resources.ExecuteAsTemplate "scss/main.gen.scss" .
+      | css.Sass (dict "outputStyle" "compressed" "targetPath" "assets/main.css" "includePaths" (slice "assets/scss"))
+      | fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+{{- /* Preload the faces that render above the fold on every page. */ -}}
+{{- range slice "fonts/ibm-plex-serif-400.woff2" "fonts/ibm-plex-sans-600.woff2" "fonts/ibm-plex-sans-400.woff2" "fonts/ibm-plex-mono-400.woff2" }}
+{{- with resources.Get . | fingerprint "sha256" }}
+<link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff2" crossorigin>
+{{- end }}
+{{- end }}
+
+{{- /* The site's only script. Inlined so it runs before first paint; its
+       hash is what `_headers` allows in the CSP. */ -}}
+{{- $js := partialCached "theme-script.html" . }}
+<script>{{ $js.Content | safeJS }}</script>
+
+{{- /* Feeds and alternates. */ -}}
+{{- with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
+{{- end }}
+{{- if .IsTranslated }}
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Site.Language.Lang }}" href="{{ .Permalink }}">
+{{- end }}
+{{- range .AllTranslations }}{{ if eq .Site.Language.Lang "fr" }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{- end }}{{ end }}
+{{- end }}
+
+{{- /* Social cards. Text only: no stock imagery anywhere on this site. */ -}}
+<meta property="og:type" content="{{ if and .IsPage (eq .Section "articles") }}article{{ else }}website{{ end }}">
+<meta property="og:title" content="{{ cond .IsHome .Site.Title .Title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ replace (.Site.Language.Locale | default .Site.Language.Lang) "-" "_" }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+{{- if and .IsPage (eq .Section "articles") }}
+{{- with .Date }}
+<meta property="article:published_time" content="{{ .Format "2006-01-02T15:04:05Z07:00" }}">
+{{- end }}
+{{- end }}
+<meta name="twitter:card" content="summary">
+
+{{ partial "json-ld.html" . }}

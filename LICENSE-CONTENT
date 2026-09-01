@@ -1,0 +1,17 @@
+Content licence
+===============
+
+Everything under `content/` and `data/` (the articles, the pages, and the
+contributions register) is licensed under the Creative Commons Attribution
+4.0 International licence.
+
+  https://creativecommons.org/licenses/by/4.0/
+
+Copyright (c) 2026 Kevin Allioli.
+
+The code in this repository (layouts, stylesheets, scripts, workflows) is
+licensed separately under the MIT licence: see LICENSE.
+
+The IBM Plex fonts under `assets/fonts/` are the property of IBM Corp. and
+are distributed under the SIL Open Font License 1.1: see
+`assets/fonts/LICENSE-OFL.txt`.

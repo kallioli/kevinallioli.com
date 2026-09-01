@@ -1,0 +1,28 @@
+{{- /* Markdown images go through Hugo: resized, converted to webp, and
+       emitted with explicit width and height so nothing shifts on load.
+       A remote or missing source falls back to a plain img rather than
+       failing the build. */ -}}
+{{- $src := .Destination -}}
+{{- $img := or (.PageInner.Resources.GetMatch $src) (resources.Get $src) -}}
+{{- if $img }}
+  {{- $wide := 1400 -}}
+  {{- $narrow := 700 -}}
+  {{- $base := cond (gt $img.Width $narrow) ($img.Resize (printf "%dx webp q82" $narrow)) $img -}}
+  {{- $set := slice (printf "%s %dw" $base.RelPermalink $base.Width) -}}
+  {{- if gt $img.Width $wide }}
+    {{- $x2 := $img.Resize (printf "%dx webp q82" $wide) -}}
+    {{- $set = $set | append (printf "%s %dw" $x2.RelPermalink $x2.Width) -}}
+  {{- end }}
+<figure>
+  <img src="{{ $base.RelPermalink }}"
+       srcset="{{ delimit $set ", " }}"
+       sizes="(min-width: 64rem) 700px, 100vw"
+       width="{{ $base.Width }}" height="{{ $base.Height }}"
+       alt="{{ .Text }}" loading="lazy" decoding="async">
+  {{- with .Title }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- else }}
+<img src="{{ $src | safeURL }}" alt="{{ .Text }}" loading="lazy" decoding="async">
+{{- end -}}

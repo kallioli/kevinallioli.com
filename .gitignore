@@ -25,7 +25,7 @@ hugo_stats.json
 .DS_Store
 Thumbs.db
 
-# Claude Code configuration is never versioned here.
+# Local agent and editor configuration stays out of the repository.
 .claude/
 CLAUDE.md
 settings*.local.json

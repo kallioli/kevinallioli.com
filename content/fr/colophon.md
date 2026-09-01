@@ -67,9 +67,18 @@ du navigateur, puisque le site n'en utilise aucune.
 ## Hébergement et déploiement
 
 Le dépôt est sur GitHub. Chaque poussée sur `main` déclenche une action
-qui installe la version épinglée de Hugo, construit le site, et le publie
-sur Cloudflare avec `wrangler`. Le jeton d'API vit dans les secrets du
-dépôt ; il n'apparaît nulle part dans le code.
+qui installe la version épinglée de Hugo, vérifie son empreinte, construit
+le site, contrôle que l'empreinte de la CSP correspond bien au script
+servi, puis publie avec `wrangler` sur Cloudflare Workers Static Assets. Le
+jeton d'API vit dans les secrets du dépôt ; il n'apparaît nulle part dans
+le code.
+
+Il n'y a aucun script Worker devant le site, et c'est délibéré : les
+en-têtes de `_headers` sont posés par le serveur d'assets, mais pas sur une
+réponse produite par du code Worker. Un Worker placé devant, même de trois
+lignes, retirerait silencieusement la politique de sécurité de toutes les
+pages. La redirection depuis `www` est donc une règle de zone, qui
+s'exécute de toute façon avant les Workers.
 
 Le hash du commit affiché plus haut est injecté au moment du build. Il
 désigne l'état exact du dépôt qui a produit la page que vous lisez.

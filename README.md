@@ -72,40 +72,45 @@ and both themes at 320 px width.
 
 ## Deploy
 
-The site is published to **Cloudflare Pages** by `.github/workflows/ci.yml`
-on every push to `main`, using `wrangler` and a scoped API token.
+The site is published to **Cloudflare Workers Static Assets** by
+`.github/workflows/ci.yml` on every push to `main`, with `wrangler deploy`
+and a scoped API token. There is no Worker script: `wrangler.toml` declares
+an assets directory and nothing else, so requests are served straight from
+the asset server.
+
+That is a deliberate constraint, not an omission. `_headers` is applied by
+the asset server but **not** to responses produced by Worker code, and
+`assets.run_worker_first` sends every request through the script. Putting a
+Worker in front to handle the `www` redirect would silently drop the whole
+security header set, generated CSP included. The `www` redirect is a zone
+rule instead, which runs before Workers regardless.
 
 Deployment is **gated**. The `deploy` job only runs when the repository
 variable `DEPLOY_ENABLED` is set to `true`. Until then, a push to `main`
 builds and verifies the site and stops there. Set it in
-*Settings → Secrets and variables → Actions → Variables* when the domain is
-ready.
+*Settings -> Secrets and variables -> Actions -> Variables* when the domain
+is ready.
 
 Required repository secrets:
 
-| Name                    | Scope                                          |
-| ----------------------- | ---------------------------------------------- |
-| `CLOUDFLARE_API_TOKEN`  | Account → Cloudflare Pages → Edit, this project |
-| `CLOUDFLARE_ACCOUNT_ID` | The account the Pages project lives in          |
+| Name                    | Scope                                             |
+| ----------------------- | ------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | Account -> Workers Scripts -> Edit; Zone -> DNS -> Edit and Zone -> Zone -> Read on `kevinallioli.com`, so wrangler can attach the custom domains |
+| `CLOUDFLARE_ACCOUNT_ID` | The account the Worker lives in                   |
 
 No token is ever stored in this repository. `.env.example` documents the
 non-secret variables only.
 
 ### DNS
 
-The `kevinallioli.com` zone exists and is empty. The records to create are
-listed in `docs/dns.md`, including the zone redirect rule that sends
-`www.kevinallioli.com` to the apex. Cloudflare matches `_redirects` on the
-path and never on the hostname, which is why the `www` redirect cannot live
-in this repository.
+The `kevinallioli.com` zone exists and is empty. Because the zone is on the
+same account, the first `wrangler deploy` creates the two custom-domain
+records and provisions their certificates. What stays manual is the
+`www` to apex redirect rule and the mail-hardening records.
+All of it is written out in `docs/dns.md`.
 
-### Hosting note
-
-Cloudflare now recommends **Workers Static Assets** over Pages for new
-static sites, and `openimages.cloud` already uses it. This repository targets
-Pages, as specified. `wrangler.toml` documents the exact three-line change
-that switches it over; `_headers` and `_redirects` behave identically on both
-products, so no site code changes.
+Cloudflare matches `_redirects` on the request path and never on the
+hostname, which is why the `www` redirect cannot live in this repository.
 
 ## Architecture
 

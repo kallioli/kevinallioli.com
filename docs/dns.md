@@ -1,66 +1,49 @@
 # DNS records for kevinallioli.com
 
 Nothing in this file has been created. The `kevinallioli.com` zone exists on
-Cloudflare and is empty; this is the exact set of records and rules to add
-once the Pages project is up.
+Cloudflare and is empty; this is what needs to exist once the site is
+deployed, and which parts happen on their own.
 
-Assumed Pages project name: `kevinallioli-com`, which gives the deployment
-hostname `kevinallioli-com.pages.dev`. If the project is named differently,
-substitute it everywhere below.
+The site is a Cloudflare **Workers Static Assets** deployment named
+`kevinallioli-com`, with no Worker script. Its custom domains are declared in
+`wrangler.toml`.
 
-## 1. Apex
+## 1. What wrangler creates by itself
 
-Add `kevinallioli.com` as a custom domain on the Pages project
-(*Workers & Pages → kevinallioli-com → Custom domains → Set up a domain*).
-Because the zone is on the same account, Cloudflare creates this record
-itself and issues the certificate:
+The zone is on the same Cloudflare account as the Worker, so the first
+`wrangler deploy` attaches both custom domains, creates their DNS records,
+and provisions the certificates. Nothing to do by hand:
 
-| Type  | Name               | Content                     | Proxy   | TTL  |
-| ----- | ------------------ | --------------------------- | ------- | ---- |
-| CNAME | `kevinallioli.com` | `kevinallioli-com.pages.dev` | Proxied | Auto |
+| Type  | Name               | Content                              | Proxy   | TTL  |
+| ----- | ------------------ | ------------------------------------ | ------- | ---- |
+| CNAME | `kevinallioli.com` | managed by the custom domain binding | Proxied | Auto |
+| CNAME | `www`              | managed by the custom domain binding | Proxied | Auto |
 
-CNAME at the apex works through CNAME flattening; that is a Cloudflare
-feature, not a DNS one, and it only works while the record is proxied.
+Cloudflare writes these itself and keeps them; do not edit them by hand, or
+the next deploy will disagree with the zone. A CNAME at the apex works
+through CNAME flattening, which is a Cloudflare feature rather than a DNS
+one, and only while the record is proxied.
 
-To create it by hand instead, add exactly the row above.
+The API token used by CI therefore needs, beyond *Workers Scripts: Edit*,
+*Zone: DNS: Edit* and *Zone: Zone: Read* scoped to `kevinallioli.com`.
+Without them the deploy succeeds but the custom domains are never attached.
 
-## 2. www
+## 2. Redirect rule: www to apex, manual
 
-`www` needs to reach Cloudflare's edge for a redirect rule to fire, which
-means a proxied record. Two ways, pick one.
+`www` resolves to the same Worker as the apex, so without this rule the site
+would answer on both hostnames. Every page already carries an absolute
+`<link rel="canonical">` pointing at the apex, so a missing rule is a
+cosmetic problem rather than an SEO one, but it should still exist.
 
-**Option A, recommended.** Add `www.kevinallioli.com` as a second custom
-domain on the same Pages project. Cloudflare creates:
+This cannot be done from the repository. Cloudflare matches the `source`
+field of a `_redirects` line against the request *path*, never against the
+hostname, so a cross-hostname redirect has to be a zone rule. Redirect rules
+run before Workers, so `www` never reaches the asset server.
 
-| Type  | Name  | Content                      | Proxy   | TTL  |
-| ----- | ----- | ---------------------------- | ------- | ---- |
-| CNAME | `www` | `kevinallioli-com.pages.dev` | Proxied | Auto |
-
-The redirect rule in section 3 then answers before Pages ever serves a byte,
-so `www` never returns content, only a 301.
-
-**Option B, no second custom domain.** A placeholder record that exists only
-to be proxied:
-
-| Type | Name  | Content | Proxy   | TTL  |
-| ---- | ----- | ------- | ------- | ---- |
-| AAAA | `www` | `100::` | Proxied | Auto |
-
-`100::` is the IPv6 discard prefix. Nothing is ever routed to it: the
-redirect rule answers at the edge. This avoids attaching a domain to the
-Pages project that is only ever redirected away from, at the cost of a
-record whose purpose is not obvious to a future reader.
-
-## 3. Redirect rule: www to apex
-
-`_redirects` cannot do this. Cloudflare matches the `source` field of a
-`_redirects` line against the request path and never against the hostname,
-so a cross-hostname redirect has to be a zone rule.
-
-*Rules → Redirect Rules → Create rule*, single redirect:
+*Rules -> Redirect Rules -> Create rule*, single redirect:
 
 - **Name**: `www to apex`
-- **Expression** (edit as custom filter expression):
+- **Expression** (custom filter expression):
 
   ```
   (http.host eq "www.kevinallioli.com")
@@ -75,6 +58,21 @@ so a cross-hostname redirect has to be a zone rule.
 
 - **Status code**: 301
 - **Preserve query string**: on
+
+## 3. Why there is no Worker script
+
+Worth writing down, because the obvious alternative is a three-line Worker
+that rewrites the hostname and forwards to the assets binding, and it would
+break the site quietly.
+
+`_headers` is applied by the static asset server, but not to responses
+generated by Worker code, and `assets.run_worker_first` routes every request
+through the script. A Worker placed in front to handle the `www` redirect
+would therefore serve every page without the Content-Security-Policy, HSTS
+and Permissions-Policy headers this repository generates, with no error
+anywhere. The zone rule above costs nothing and keeps `_headers` in force.
+
+  https://developers.cloudflare.com/workers/static-assets/headers/
 
 ## 4. Mail, for a domain that sends none
 
@@ -100,7 +98,7 @@ manages certificates for proxied hostnames and adds its own CAA entries when
 needed, so this is only worth setting explicitly if you want to lock issuance
 down further. Leave it alone unless that is a deliberate decision.
 
-## Verification, once the records exist
+## Verification, once it is live
 
 ```bash
 dig +short kevinallioli.com

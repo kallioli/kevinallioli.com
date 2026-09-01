@@ -1,24 +1,35 @@
-# Cloudflare Pages project. The site is a directory of static files: there is
-# no Worker, no build step on Cloudflare's side, and nothing to run at the
-# edge. GitHub Actions builds `public/` and uploads it.
+# Cloudflare Workers Static Assets. The site is a directory of static files:
+# there is deliberately no Worker script, and `main` is intentionally absent.
+#
+# Why no Worker: `_headers` is applied by the asset server, but NOT to
+# responses produced by Worker code, and `assets.run_worker_first` routes
+# every request through the script. Adding a Worker to handle the www
+# redirect would therefore silently drop the entire security header set,
+# including the generated CSP. The www redirect lives in a zone Single
+# Redirect rule instead, which runs before Workers anyway. See docs/dns.md.
+#
+#   https://developers.cloudflare.com/workers/static-assets/headers/
+
 name = "kevinallioli-com"
-pages_build_output_dir = "public"
 compatibility_date = "2026-09-01"
 
-# Custom domains (apex, plus the www hostname that the zone redirect rule
-# answers on) are attached in the Cloudflare dashboard, not from here.
-#
-# If this project is ever migrated to Workers Static Assets, which is the
-# path Cloudflare now recommends for new static sites, this file becomes:
-#
-#   name = "kevinallioli-com"
-#   compatibility_date = "2026-09-01"
-#   [assets]
-#   directory = "./public"
-#   not_found_handling = "404-page"
-#   [[routes]]
-#   pattern = "kevinallioli.com"
-#   custom_domain = true
-#
-# and the deploy command in .github/workflows/ci.yml becomes `deploy`.
-# `_headers` and `_redirects` are honoured identically by both products.
+# Apex-only public surface: no workers.dev fallback, no per-deploy preview
+# URLs. The custom domains below are the only way in.
+workers_dev = false
+preview_urls = false
+
+[assets]
+directory = "./public"
+# Hugo emits public/404.html and public/en/404.html; the asset server picks
+# the 404 page closest to the requested path.
+not_found_handling = "404-page"
+
+# The kevinallioli.com zone is on the same Cloudflare account, so wrangler
+# creates the DNS records and provisions the certificates on deploy.
+[[routes]]
+pattern = "kevinallioli.com"
+custom_domain = true
+
+[[routes]]
+pattern = "www.kevinallioli.com"
+custom_domain = true

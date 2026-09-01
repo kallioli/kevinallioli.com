@@ -60,9 +60,16 @@ uses none of them.
 ## Hosting and deployment
 
 The repository is on GitHub. Every push to `main` runs an action that
-installs the pinned Hugo version, builds the site, and publishes it to
-Cloudflare with `wrangler`. The API token lives in the repository secrets
-and appears nowhere in the code.
+installs the pinned Hugo version, checks its digest, builds the site,
+verifies that the CSP hash matches the script actually served, then
+publishes with `wrangler` to Cloudflare Workers Static Assets. The API
+token lives in the repository secrets and appears nowhere in the code.
+
+There is no Worker script in front of the site, deliberately: the headers
+in `_headers` are applied by the asset server, but not to a response
+produced by Worker code. A Worker placed in front, even a three-line one,
+would silently strip the security policy from every page. The redirect from
+`www` is therefore a zone rule, which runs before Workers anyway.
 
 The commit hash shown above is injected at build time. It identifies the
 exact state of the repository that produced the page you are reading.

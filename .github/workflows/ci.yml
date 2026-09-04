@@ -78,7 +78,7 @@ jobs:
     # Publishing is off until the repository variable DEPLOY_ENABLED is set to
     # "true". Until then a push to main builds and verifies, and stops there.
     if: >-
-      github.event_name == 'push' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
       github.ref == 'refs/heads/main' &&
       vars.DEPLOY_ENABLED == 'true'
     needs: [build, secrets-scan]

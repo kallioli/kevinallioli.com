@@ -24,9 +24,29 @@ the next deploy will disagree with the zone. A CNAME at the apex works
 through CNAME flattening, which is a Cloudflare feature rather than a DNS
 one, and only while the record is proxied.
 
-The API token used by CI therefore needs, beyond *Workers Scripts: Edit*,
-*Zone: DNS: Edit* and *Zone: Zone: Read* scoped to `kevinallioli.com`.
-Without them the deploy succeeds but the custom domains are never attached.
+### Token permissions
+
+Attaching a custom domain does not go through the DNS API, so the CI token
+does not need DNS Edit. It goes through the Workers Domains API, which
+writes the record and issues an Advanced Certificate on Cloudflare's side.
+The four permissions are:
+
+| Scope   | Permission       | Level | Resource           |
+| ------- | ---------------- | ----- | ------------------ |
+| Account | Workers Scripts  | Edit  | this account       |
+| Account | Account Settings | Read  | this account       |
+| Zone    | Workers Routes   | Edit  | `kevinallioli.com` |
+| Zone    | Zone             | Read  | `kevinallioli.com` |
+
+Without the two zone permissions the deploy still succeeds, but the custom
+domains are silently never attached and the site stays unreachable.
+
+### Do not pre-create the records
+
+A custom domain **cannot be created on a hostname that already has a CNAME
+record**. Adding `kevinallioli.com` or `www` by hand before the first
+deploy is not a shortcut, it is what makes the deploy fail. Leave the zone
+empty and let wrangler do it.
 
 ## 2. Redirect rule: www to apex, manual
 

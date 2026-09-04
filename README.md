@@ -93,10 +93,16 @@ is ready.
 
 Required repository secrets:
 
-| Name                    | Scope                                             |
-| ----------------------- | ------------------------------------------------- |
-| `CLOUDFLARE_API_TOKEN`  | Account -> Workers Scripts -> Edit; Zone -> DNS -> Edit and Zone -> Zone -> Read on `kevinallioli.com`, so wrangler can attach the custom domains |
-| `CLOUDFLARE_ACCOUNT_ID` | The account the Worker lives in                   |
+| Name                    | Scope                                           |
+| ----------------------- | ----------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | See the four permissions in `docs/dns.md`       |
+| `CLOUDFLARE_ACCOUNT_ID` | The account the Worker lives in                 |
+
+The token needs *Account: Workers Scripts: Edit*, *Account: Account
+Settings: Read*, and *Zone: Workers Routes: Edit* plus *Zone: Zone: Read*
+scoped to `kevinallioli.com`. Notably **not** DNS Edit: custom domains are
+created through the Workers Domains API, which writes the DNS record and
+issues the certificate on Cloudflare's side.
 
 No token is ever stored in this repository. `.env.example` documents the
 non-secret variables only.

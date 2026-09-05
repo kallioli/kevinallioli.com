@@ -29,15 +29,16 @@ Image Cloud.
 
 ## Ce que le navigateur télécharge
 
-Une page HTML, une feuille de style, quatre fichiers de police préchargés,
-et deux de plus seulement si la page contient de l'italique ou un titre en
-serif grasse. Rien d'autre, et rien qui vienne d'un autre domaine.
+Une page HTML, une feuille de style, trois fichiers de police préchargés,
+et un quatrième seulement si la page contient de l'italique. Rien d'autre,
+et rien qui vienne d'un autre domaine.
 
-Les polices sont la famille [IBM Plex](https://www.ibm.com/plex/), sous
-licence SIL Open Font License, servies depuis ce domaine en `woff2`
-sous-ensemblés au latin étendu. Six graisses pèsent 132 Ko au total. Pas
-de Google Fonts : demander une police à un tiers, c'est lui annoncer
-chacune de vos visites.
+Deux familles, [Spectral](https://github.com/productiontype/Spectral) et
+[IBM Plex Mono](https://www.ibm.com/plex/), toutes deux sous licence SIL
+Open Font License, servies depuis ce domaine en `woff2` sous-ensemblés au
+latin étendu. Quatre fontes pèsent 105 Ko au total. Pas de Google Fonts :
+demander une police à un tiers, c'est lui annoncer chacune de vos
+visites.
 
 Pas d'analytics, pas de balise de suivi, pas de CDN externe, pas de
 bandeau de consentement, parce qu'il n'y a rien à consentir.
@@ -85,18 +86,26 @@ désigne l'état exact du dépôt qui a produit la page que vous lisez.
 
 ## Typographie
 
-IBM Plex, une seule famille pour tout le site. Plex Sans pour les titres
-et la navigation, Plex Serif pour le corps des articles, Plex Mono pour
-tout ce qui est une donnée plutôt qu'une phrase : dates, numéros de
-changement, versions, empreintes. Corps à 18 pixels, interligne 1,65,
-mesure limitée à 68 caractères.
+Spectral porte toutes les phrases, y compris celles de la navigation :
+ceci est un document et non une application. Il n'y a aucune sans-serif
+sur ce site.
 
-Deux thèmes, clair et sombre, dérivés d'un même jeu de variables CSS. Un
-seul accent.
+IBM Plex Mono ne sert qu'à ce qui se mesure plutôt qu'à ce qui se lit :
+dates, numéros de changement, versions, empreintes. La chasse fixe est ici
+une exigence et non un costume, parce qu'une empreinte se compare colonne
+par colonne.
+
+Corps à 18 pixels, interligne 1,7, mesure limitée à 68 caractères. Sur
+écran large, une colonne étroite à gauche porte le relevé, la colonne
+large porte l'argument.
+
+Deux thèmes, clair et sombre, dérivés d'un même jeu de variables CSS. Pas
+de couleur d'accent : les liens sont en encre soulignée. L'ambre est
+réservé à ce qui a un état, un brouillon ou un changement en revue.
 
 ## Licence
 
 Les textes sont sous
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). Le code
-des gabarits et des styles est sous licence MIT. Les polices IBM Plex sont
-sous SIL OFL 1.1.
+des gabarits et des styles est sous licence MIT. Spectral et IBM Plex Mono
+sont sous SIL OFL 1.1.

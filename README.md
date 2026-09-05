@@ -10,8 +10,9 @@ third-party theme, no runtime dependency on anything outside this origin.
   `.hugo-sha256`. The same version is installed locally and in CI.
 - **No theme, no Node, no bundler.** Every layout lives in `layouts/`. Hugo
   Pipes transpiles the SCSS, minifies it, and fingerprints it.
-- **Self-hosted fonts.** IBM Plex (SIL OFL 1.1), subset to extended Latin,
-  six `woff2` faces totalling 132 KB under `assets/fonts/`.
+- **Self-hosted fonts.** Spectral and IBM Plex Mono (both SIL OFL 1.1),
+  subset to extended Latin, four `woff2` faces totalling 105 KB under
+  `assets/fonts/`. There is no sans-serif on the site.
 - **One inline script**, the theme toggle. Its SHA-256 is generated into the
   `script-src` directive of `_headers`, so the policy cannot drift from the
   script. `scripts/check-csp-hash.sh` proves it on every build.
@@ -21,16 +22,19 @@ third-party theme, no runtime dependency on anything outside this origin.
 ```
 content/fr/           French content, served at /
 content/en/           English content, served at /en/
-data/contributions.yaml   the upstream register, rendered by a layout
+data/contributions.yaml   the upstream register, generated, rendered by a layout
 assets/scss/          design tokens and stylesheets
-assets/fonts/         subset IBM Plex woff2
+assets/fonts/         subset Spectral and IBM Plex Mono woff2
 assets/js/theme.js    the only script on the site
 layouts/              hand-written templates, including _headers and _redirects
-scripts/              build-time verification
+scripts/              build-time verification, and the register generator
 ```
 
-`data/contributions.yaml` is the single source for the contributions page.
-Add a change there and the page updates; the layout never needs touching.
+`data/contributions.yaml` is the single source for the contributions page,
+and it is generated: run `scripts/fetch-contributions.sh` to rebuild it from
+the public OpenDev Gerrit API, read the diff, commit it. The layout never
+needs touching, and it fails the build if a Gerrit status it does not handle
+would drop a row, because a register is only worth reading if it is complete.
 
 ## Run
 
@@ -58,13 +62,19 @@ A production build shows neither.
 ## Test
 
 ```bash
-make build    # hugo --minify --gc, must finish with no warning
+make build    # production build; a warning is a failure
 make check    # build, then verify the CSP hash against the served HTML
 ```
 
-CI runs the same commands with `--panicOnWarning`, so a deprecation warning
-fails the build rather than accumulating. It also runs `gitleaks` over the
-full history.
+Both targets carry `--printPathWarnings --panicOnWarning`, the same flags CI
+uses, so a deprecation warning or a missing layout fails the build rather
+than accumulating. CI runs the identical commands and adds `gitleaks` over
+the full history.
+
+`scripts/smoke-test.sh [BASE_URL]` checks a deployed origin: that it answers,
+that `_headers` is in force, that the CSP it serves carries the hash of the
+script the local build produced, and that www still redirects to the apex.
+The deploy job runs it against production.
 
 Not covered by any automated check, and worth doing by hand before a
 release: Lighthouse (performance and accessibility), keyboard navigation,
@@ -105,15 +115,17 @@ created through the Workers Domains API, which writes the DNS record and
 issues the certificate on Cloudflare's side.
 
 No token is ever stored in this repository. `.env.example` documents the
-non-secret variables only.
+non-secret variables only. The workflow's actions are pinned to commit SHAs
+rather than to movable tags, since the deploy job holds that token;
+Dependabot proposes the bumps monthly.
 
 ### DNS
 
-The `kevinallioli.com` zone exists and is empty. Because the zone is on the
-same account, the first `wrangler deploy` creates the two custom-domain
-records and provisions their certificates. What stays manual is the
-`www` to apex redirect rule and the mail-hardening records.
-All of it is written out in `docs/dns.md`.
+The `kevinallioli.com` zone is applied, mail hardening included. Because the
+zone is on the same account, the first `wrangler deploy` creates the two
+custom-domain records and provisions their certificates. What stays manual is
+the `www` to apex redirect rule, which `scripts/smoke-test.sh` asserts on
+every deploy. All of it is written out in `docs/dns.md`.
 
 Cloudflare matches `_redirects` on the request path and never on the
 hostname, which is why the `www` redirect cannot live in this repository.
@@ -138,5 +150,5 @@ stylesheet knows which theme is active.
 ## Licence
 
 Code (layouts, styles, scripts, workflows) under [MIT](LICENSE). Content
-under [CC BY 4.0](LICENSE-CONTENT). IBM Plex under SIL OFL 1.1, see
-`assets/fonts/LICENSE-OFL.txt`.
+under [CC BY 4.0](LICENSE-CONTENT). Spectral and IBM Plex Mono under SIL
+OFL 1.1, see the two `LICENSE-OFL-*.txt` files in `assets/fonts/`.

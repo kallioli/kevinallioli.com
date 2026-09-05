@@ -105,11 +105,13 @@ from being used to forge mail. All four are DNS-only, never proxied.
 | ---- | ------------------ | ----------------------------------------------------------------------------- | -------- | ---- |
 | MX   | `kevinallioli.com` | `.` with priority `0`                                                         | DNS only | 3600 |
 | TXT  | `kevinallioli.com` | `v=spf1 -all`                                                                 | DNS only | 3600 |
-| TXT  | `_dmarc`           | `v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s; rua=mailto:kevin@stackops.ch` | DNS only | 3600 |
+| TXT  | `_dmarc`           | `v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s; rua=mailto:dmarc@stackops.ch` | DNS only | 3600 |
 | TXT  | `*._domainkey`     | `v=DKIM1; p=`                                                                 | DNS only | 3600 |
 
-The `rua` address is on another domain, so RFC 7489 section 7.1 requires the
-destination zone to say it accepts reports for this one. That record lives in
+Aggregate reports go to the same mailbox that already collects them for
+`stackops.ch`, so there is one place to look rather than two. That address is
+on another domain, so RFC 7489 section 7.1 requires the destination zone to
+say it accepts reports for this one. That record lives in
 the `stackops.ch` zone, not here:
 
 | Type | Name                                | Content     |

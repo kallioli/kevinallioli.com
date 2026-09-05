@@ -9,7 +9,7 @@ export HUGO_PARAMS_BUILDCOMMIT = $(BUILD_COMMIT)
 
 help:
 	@echo "dev      serve on http://localhost:1313, drafts and future dates included"
-	@echo "build    production build into public/"
+	@echo "build    production build into public/, warnings are fatal as in CI"
 	@echo "check    build, then verify the CSP hash matches the served HTML"
 	@echo "version  compare the local Hugo against .hugo-version"
 	@echo "clean    remove build output and generated resources"
@@ -18,7 +18,7 @@ dev: version
 	hugo server --buildDrafts --buildFuture --disableFastRender
 
 build: version
-	hugo --minify --gc --cleanDestinationDir
+	hugo --minify --gc --cleanDestinationDir --printPathWarnings --panicOnWarning
 
 check: build
 	./scripts/check-csp-hash.sh public

@@ -14,8 +14,12 @@
       (dict "key" "NEW"       "label" (i18n "contributionsOpen")      "class" "new")
       (dict "key" "ABANDONED" "label" (i18n "contributionsAbandoned") "class" "abandoned") }}
 
+  {{- /* Counted so an unhandled Gerrit status cannot vanish from the page:
+         the register is only worth something if it is exhaustive. */}}
+  {{- $shown := 0 }}
   {{- range $groups }}
   {{- $rows := where $d.authored "status" .key }}
+  {{- $shown = add $shown (len $rows) }}
   {{- if $rows }}
   <section class="registry" aria-labelledby="reg-{{ .class }}">
     <h2 id="reg-{{ .class }}">{{ .label }} ({{ len $rows }})</h2>
@@ -47,6 +51,10 @@
     </div>
   </section>
   {{- end }}
+  {{- end }}
+
+  {{- if ne $shown (len $d.authored) }}
+  {{- errorf "contributions: data/contributions.yaml holds %d authored changes but only %d render; a status outside MERGED/NEW/ABANDONED is being dropped silently" (len $d.authored) $shown }}
   {{- end }}
 
   {{- with $d.reviewed }}

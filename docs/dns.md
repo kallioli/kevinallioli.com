@@ -1,8 +1,7 @@
 # DNS records for kevinallioli.com
 
-Nothing in this file has been created. The `kevinallioli.com` zone exists on
-Cloudflare and is empty; this is what needs to exist once the site is
-deployed, and which parts happen on their own.
+This is the state of the `kevinallioli.com` zone, and why each part of it
+exists. All of it is applied. Verification commands are at the bottom.
 
 The site is a Cloudflare **Workers Static Assets** deployment named
 `kevinallioli-com`, with no Worker script. Its custom domains are declared in
@@ -14,15 +13,17 @@ The zone is on the same Cloudflare account as the Worker, so the first
 `wrangler deploy` attaches both custom domains, creates their DNS records,
 and provisions the certificates. Nothing to do by hand:
 
-| Type  | Name               | Content                              | Proxy   | TTL  |
-| ----- | ------------------ | ------------------------------------ | ------- | ---- |
-| CNAME | `kevinallioli.com` | managed by the custom domain binding | Proxied | Auto |
-| CNAME | `www`              | managed by the custom domain binding | Proxied | Auto |
+| Type | Name               | Content | Proxy   | TTL  |
+| ---- | ------------------ | ------- | ------- | ---- |
+| AAAA | `kevinallioli.com` | `100::` | Proxied | Auto |
+| AAAA | `www`              | `100::` | Proxied | Auto |
 
-Cloudflare writes these itself and keeps them; do not edit them by hand, or
-the next deploy will disagree with the zone. A CNAME at the apex works
-through CNAME flattening, which is a Cloudflare feature rather than a DNS
-one, and only while the record is proxied.
+`100::` is the IPv6 discard prefix. Nothing is ever routed to it: the record
+exists so the hostname resolves to Cloudflare's edge, and the edge then hands
+the request to the Worker because of the custom domain binding. This is what
+Cloudflare writes for a Worker custom domain, not a CNAME as one might
+expect. Do not edit these by hand, or the next deploy will disagree with the
+zone.
 
 ### Token permissions
 
@@ -48,7 +49,7 @@ record**. Adding `kevinallioli.com` or `www` by hand before the first
 deploy is not a shortcut, it is what makes the deploy fail. Leave the zone
 empty and let wrangler do it.
 
-## 2. Redirect rule: www to apex, manual
+## 2. Redirect rule: www to apex
 
 `www` resolves to the same Worker as the apex, so without this rule the site
 would answer on both hostnames. Every page already carries an absolute
@@ -98,14 +99,25 @@ anywhere. The zone rule above costs nothing and keeps `_headers` in force.
 
 `kevinallioli.com` is not a mail domain: the contact address on the site is
 `kevin@stackops.ch`. Saying so explicitly in DNS is what stops the domain
-from being used to forge mail. All three are DNS-only, never proxied.
+from being used to forge mail. All four are DNS-only, never proxied.
 
-| Type | Name               | Content                                            | Proxy    | TTL  |
-| ---- | ------------------ | -------------------------------------------------- | -------- | ---- |
-| MX   | `kevinallioli.com` | `.` with priority `0`                              | DNS only | Auto |
-| TXT  | `kevinallioli.com` | `v=spf1 -all`                                      | DNS only | Auto |
-| TXT  | `_dmarc`           | `v=DMARC1; p=reject; rua=mailto:kevin@stackops.ch` | DNS only | Auto |
-| TXT  | `*._domainkey`     | `v=DKIM1; p=`                                      | DNS only | Auto |
+| Type | Name               | Content                                                                       | Proxy    | TTL  |
+| ---- | ------------------ | ----------------------------------------------------------------------------- | -------- | ---- |
+| MX   | `kevinallioli.com` | `.` with priority `0`                                                         | DNS only | 3600 |
+| TXT  | `kevinallioli.com` | `v=spf1 -all`                                                                 | DNS only | 3600 |
+| TXT  | `_dmarc`           | `v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s; rua=mailto:kevin@stackops.ch` | DNS only | 3600 |
+| TXT  | `*._domainkey`     | `v=DKIM1; p=`                                                                 | DNS only | 3600 |
+
+The `rua` address is on another domain, so RFC 7489 section 7.1 requires the
+destination zone to say it accepts reports for this one. That record lives in
+the `stackops.ch` zone, not here:
+
+| Type | Name                                | Content     |
+| ---- | ----------------------------------- | ----------- |
+| TXT  | `kevinallioli.com._report._dmarc`   | `v=DMARC1`  |
+
+Without it, receivers refuse to send the aggregate reports and the `rua` is
+decorative.
 
 The null MX is RFC 7505: it tells a sending server there is no mail service
 here, immediately, rather than after a timeout. If the domain ever needs to
@@ -118,7 +130,7 @@ manages certificates for proxied hostnames and adds its own CAA entries when
 needed, so this is only worth setting explicitly if you want to lock issuance
 down further. Leave it alone unless that is a deliberate decision.
 
-## Verification, once it is live
+## Verification
 
 ```bash
 dig +short kevinallioli.com

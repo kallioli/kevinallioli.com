@@ -3,10 +3,13 @@
 {{- $p := .page -}}
 {{- $h := printf "h%d" (.level | default 3) -}}
 <li class="entry">
-  <{{ $h }} class="entry__title">
+  {{- /* Written through printf: `<{{ $h }}` is a tag name html/template
+         cannot reason about, so it escapes the whole thing and the markup
+         is printed on the page as text. */ -}}
+  {{ printf `<%s class="entry__title">` $h | safeHTML -}}
     {{- if $p.Draft }}<span class="draft-badge">{{ i18n "draftBadge" }}</span> {{ end -}}
     <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
-  </{{ $h }}>
+  {{- printf "</%s>" $h | safeHTML }}
   <p class="meta">
     {{- with $p.Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>{{ end -}}
     {{- with $p.Params.pillar }} &middot; {{ . }}{{ end -}}

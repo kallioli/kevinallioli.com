@@ -107,3 +107,9 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: "4.127.1"
           command: deploy
+
+      # The deploy itself only proves wrangler was happy. This proves the
+      # origin serves the headers this build generated, and that the www
+      # redirect rule (a zone rule, not in this repository) still exists.
+      - name: Smoke-test the deployment
+        run: ./scripts/smoke-test.sh

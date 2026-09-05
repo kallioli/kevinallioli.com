@@ -1,19 +1,7 @@
-{{- /* The same three facts every image published by Open Image Cloud
-       carries in its MANIFEST.json, applied to this site. */ -}}
-{{- $js := partialCached "theme-script.html" . -}}
-{{- $css := resources.Get "scss/main.scss"
-      | resources.ExecuteAsTemplate "scss/main.gen.scss" .Page
-      | css.Sass (dict "outputStyle" "compressed" "targetPath" "assets/main.css" "includePaths" (slice "assets/scss"))
-      | fingerprint "sha256" -}}
+{{- /* The same facts the home page states in its rail, as a table. */ -}}
 <dl class="definition-grid">
-  <dt>source</dt>
-  <dd><a href="{{ .Site.Params.repo }}">{{ replace .Site.Params.repo "https://" "" }}</a></dd>
-  <dt>commit</dt>
-  <dd><code>{{ .Site.Params.buildCommit }}</code></dd>
-  <dt>generator</dt>
-  <dd>Hugo {{ hugo.Version }} extended</dd>
-  <dt>stylesheet</dt>
-  <dd><code>{{ path.Base $css.RelPermalink }}</code></dd>
-  <dt>script-src</dt>
-  <dd><code>{{ $js.Data.Integrity }}</code></dd>
+  {{- range partial "build-facts.html" .Page }}
+  <dt>{{ .key }}</dt>
+  <dd>{{ if .url }}<a href="{{ .url }}">{{ .value }}</a>{{ else }}{{ .value }}{{ end }}</dd>
+  {{- end }}
 </dl>

@@ -1,0 +1,21 @@
+{{- /*
+  The facts this page can state about itself, in the vocabulary an image
+  built by Open Image Cloud carries in its MANIFEST.json. One source, two
+  presentations: the record in the home page rail, and the table on the
+  colophon. Expects a Page as context.
+*/ -}}
+{{- $js := partialCached "theme-script.html" . -}}
+{{- $css := resources.Get "scss/main.scss"
+      | resources.ExecuteAsTemplate "scss/main.gen.scss" .
+      | css.Sass (dict "outputStyle" "compressed" "targetPath" "assets/main.css" "includePaths" (slice "assets/scss"))
+      | fingerprint "sha256" -}}
+{{- $commit := .Site.Params.buildCommit -}}
+{{- $short := cond (gt (len $commit) 12) (substr $commit 0 12) $commit -}}
+{{- return (slice
+      (dict "key" "source"     "rail" true  "value" (replace .Site.Params.repo "https://" "")
+            "short" (strings.TrimPrefix "https://github.com/" .Site.Params.repo) "url" .Site.Params.repo)
+      (dict "key" "commit"     "rail" true  "value" $short)
+      (dict "key" "generator"  "rail" true  "value" (printf "Hugo %s extended" hugo.Version))
+      (dict "key" "stylesheet" "rail" false "value" (path.Base $css.RelPermalink))
+      (dict "key" "script-src" "rail" true  "value" $js.Data.Integrity)
+) -}}

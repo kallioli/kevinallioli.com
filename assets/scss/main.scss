@@ -1,14 +1,14 @@
 {{- /*
   Executed as a Go template before Sass transpiling so that @font-face can
   point at fingerprinted, immutable font URLs. Nothing here is fetched from a
-  third party at runtime: the whole family ships from this origin.
+  third party at runtime: both families ship from this origin.
+
+  Four faces. Spectral does the talking, IBM Plex Mono does the counting.
 */ -}}
 {{- $faces := slice
-  (dict "family" "IBM Plex Sans"  "weight" "400" "style" "normal" "file" "fonts/ibm-plex-sans-400.woff2")
-  (dict "family" "IBM Plex Sans"  "weight" "600" "style" "normal" "file" "fonts/ibm-plex-sans-600.woff2")
-  (dict "family" "IBM Plex Serif" "weight" "400" "style" "normal" "file" "fonts/ibm-plex-serif-400.woff2")
-  (dict "family" "IBM Plex Serif" "weight" "400" "style" "italic" "file" "fonts/ibm-plex-serif-400-italic.woff2")
-  (dict "family" "IBM Plex Serif" "weight" "600" "style" "normal" "file" "fonts/ibm-plex-serif-600.woff2")
+  (dict "family" "Spectral"       "weight" "400" "style" "normal" "file" "fonts/spectral-400.woff2")
+  (dict "family" "Spectral"       "weight" "400" "style" "italic" "file" "fonts/spectral-400-italic.woff2")
+  (dict "family" "Spectral"       "weight" "700" "style" "normal" "file" "fonts/spectral-700.woff2")
   (dict "family" "IBM Plex Mono"  "weight" "400" "style" "normal" "file" "fonts/ibm-plex-mono-400.woff2")
 -}}
 {{- range $faces }}

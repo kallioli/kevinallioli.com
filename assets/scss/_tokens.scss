@@ -1,52 +1,71 @@
-// Design tokens. Every colour used anywhere in the site resolves to one of
-// these custom properties, so a theme is a token swap and nothing else.
+// Design tokens. Every colour on this site resolves to one of these custom
+// properties, so a theme is a token swap and nothing else knows which one
+// is active.
+//
+// The palette is two tones and a signal. There is deliberately no brand
+// accent: links are ink with a rule under them, and the signal colour is
+// spent only where something has a state worth looking at. In a machine
+// room nobody looks at the green light.
 
 :root {
-  // Palette - light (default)
-  --c-bg:      #fbfaf7;
-  --c-surface: #f2f0ea;
-  --c-text:    #17181a;
-  --c-muted:   #5a5d63;
-  --c-border:  #dedad1;
-  --c-accent:  #14624a;
+  // Ground and ink. A cool technical paper rather than a warm cream, and
+  // an ink that carries a hue instead of standing in for black.
+  --c-bg:      #e8eceb;
+  --c-surface: #dae0de;
+  --c-ink:     #111e24;
+  --c-muted:   #4e5d63;
+  --c-rule:    #c3ccc9;
 
-  // Derived, still theme-dependent
-  --c-accent-bg: #{rgba(#14624a, 0.08)};
-  --c-selection: #{rgba(#14624a, 0.16)};
+  // Signal. State only: in review, draft, keyboard focus.
+  --c-signal:    #8e5405;
+  --c-signal-bg: #{rgba(#8e5405, 0.10)};
+  --c-selection: #{rgba(#8e5405, 0.18)};
 
-  // Type
-  --f-sans:  "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-  --f-serif: "IBM Plex Serif", ui-serif, Georgia, serif;
-  --f-mono:  "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  // Type. Two families. Spectral carries every sentence, including the
+  // navigation, because this is a document and not an application. The
+  // mono appears only where fixed width is a requirement rather than a
+  // costume: digests, change numbers, versions, code.
+  --f-text: "Spectral", ui-serif, Georgia, "Times New Roman", serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
 
-  --fs-body:  1.125rem;   // 18px
-  --fs-small: 0.9375rem;  // 15px
-  --fs-meta:  0.8125rem;  // 13px
-  --lh-body:  1.65;
-  --lh-tight: 1.25;
+  --fs-meta:    0.75rem;
+  --fs-small:   0.9375rem;
+  --fs-body:    1.125rem;
+  --fs-lead:    1.25rem;
+  --fs-h3:      1.1875rem;
+  --fs-h2:      1.5625rem;
+  --fs-h1:      1.75rem;
+  --fs-display: clamp(2.125rem, 1.35rem + 3.4vw, 3.375rem);
 
-  // Measure and rhythm
-  --measure: 68ch;
-  --wide:    64rem;
-  --gutter:  1.5rem;
-  --step:    1.5rem;
+  // A serif wants more air between lines than a sans does.
+  --lh-body:    1.7;
+  --lh-tight:   1.3;
+  --lh-display: 1.1;
 
-  --border: 1px solid var(--c-border);
-  --radius: 2px;
+  // Measure and the two-track grid: a rail carrying the record, a column
+  // carrying the argument.
+  --measure:  68ch;
+  --rail:     14rem;
+  --rail-gap: 2.75rem;
+  --wide:     64rem;
+  --gutter:   1.5rem;
+  --step:     1.6rem;
+
+  --rule: 1px solid var(--c-rule);
 
   color-scheme: light;
 }
 
 @mixin dark-tokens {
-  --c-bg:      #101113;
-  --c-surface: #17191c;
-  --c-text:    #e8e6e1;
-  --c-muted:   #9a9da3;
-  --c-border:  #2a2d31;
-  --c-accent:  #4fbf92;
+  --c-bg:      #0e1a20;
+  --c-surface: #16242b;
+  --c-ink:     #d9e1df;
+  --c-muted:   #8a9ba3;
+  --c-rule:    #2c3b42;
 
-  --c-accent-bg: #{rgba(#4fbf92, 0.10)};
-  --c-selection: #{rgba(#4fbf92, 0.22)};
+  --c-signal:    #e8a93f;
+  --c-signal-bg: #{rgba(#e8a93f, 0.12)};
+  --c-selection: #{rgba(#e8a93f, 0.24)};
 
   color-scheme: dark;
 }

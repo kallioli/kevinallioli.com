@@ -6,12 +6,12 @@
     <p class="meta">HTTP 404</p>
   </header>
   <nav aria-label="{{ i18n "mainNav" }}">
-    <ul class="entry-list">
+    <ul class="index-list">
       {{- range .Site.Menus.main }}
-      <li class="entry"><h2 class="entry__title"><a href="{{ .URL }}">{{ .Name }}</a></h2></li>
+      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
       {{- end }}
       {{- range .Site.Menus.footer }}
-      <li class="entry"><h2 class="entry__title"><a href="{{ .URL }}">{{ .Name }}</a></h2></li>
+      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
       {{- end }}
     </ul>
   </nav>

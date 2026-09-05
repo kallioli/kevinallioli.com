@@ -18,8 +18,9 @@
       | fingerprint "sha256" }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
-{{- /* Preload the faces that render above the fold on every page. */ -}}
-{{- range slice "fonts/ibm-plex-serif-400.woff2" "fonts/ibm-plex-sans-600.woff2" "fonts/ibm-plex-sans-400.woff2" "fonts/ibm-plex-mono-400.woff2" }}
+{{- /* Preload the three faces that render above the fold. The italic is
+       loaded on demand: most pages never reach it. */ -}}
+{{- range slice "fonts/spectral-400.woff2" "fonts/spectral-700.woff2" "fonts/ibm-plex-mono-400.woff2" }}
 {{- with resources.Get . | fingerprint "sha256" }}
 <link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff2" crossorigin>
 {{- end }}

@@ -49,9 +49,9 @@ theme = []
   [markup.goldmark.extensions]
     linkify = false
     [markup.goldmark.extensions.typographer]
-      # Straight quotes only: em/en dashes are not part of the house style.
-      leftDoubleQuote  = "&laquo;&nbsp;"
-      rightDoubleQuote = "&nbsp;&raquo;"
+      # Quote marks are set per language further down. Declared here they
+      # applied French guillemets to the English pages as well. Em and en
+      # dashes are not part of the house style in either language.
   [markup.highlight]
     noClasses      = false
     lineNos        = false
@@ -124,6 +124,9 @@ theme = []
     title        = "Kevin Allioli"
     [languages.fr.params]
       tagline = "Architecte cloud. Images système, OpenStack à grande échelle."
+    [languages.fr.markup.goldmark.extensions.typographer]
+      leftDoubleQuote  = "&laquo;&nbsp;"
+      rightDoubleQuote = "&nbsp;&raquo;"
     [[languages.fr.menus.main]]
       name = "Articles"
       pageRef = "/articles"
@@ -158,6 +161,9 @@ theme = []
     [languages.en.params]
       description = "Cloud architect. System images, OpenStack at scale, verifiable sovereignty."
       tagline = "Cloud architect. System images, OpenStack at scale."
+    [languages.en.markup.goldmark.extensions.typographer]
+      leftDoubleQuote  = "&ldquo;"
+      rightDoubleQuote = "&rdquo;"
     [[languages.en.menus.main]]
       name = "Articles"
       pageRef = "/articles"

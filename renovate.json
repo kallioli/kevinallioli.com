@@ -1,0 +1,44 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "timezone": "Europe/Zurich",
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 3,
+  "labels": ["dependencies"],
+  "semanticCommits": "enabled",
+  "packageRules": [
+    {
+      "description": "Everything tracked here is part of the release path, so it commits as ci(deps).",
+      "matchManagers": ["github-actions", "custom.regex"],
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "deps"
+    },
+    {
+      "description": "One pull request for the action digests rather than four.",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "gitleaks release, downloaded by the secrets-scan job",
+      "managerFilePatterns": [".github/workflows/ci.yml"],
+      "matchStrings": ["GITLEAKS_VERSION:\\s*\"(?<currentValue>[0-9.]+)\""],
+      "depNameTemplate": "gitleaks/gitleaks",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "description": "wrangler version pinned for the deploy action",
+      "managerFilePatterns": [".github/workflows/ci.yml"],
+      "matchStrings": ["wranglerVersion:\\s*\"(?<currentValue>[0-9.]+)\""],
+      "depNameTemplate": "wrangler",
+      "datasourceTemplate": "npm"
+    }
+  ]
+}

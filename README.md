@@ -27,7 +27,7 @@ assets/scss/          design tokens and stylesheets
 assets/fonts/         subset Spectral and IBM Plex Mono woff2
 assets/js/theme.js    the only script on the site
 layouts/              hand-written templates, including _headers and _redirects
-scripts/              build-time verification, and the register generator
+scripts/              verification, the register generator, the Hugo pin
 ```
 
 `data/contributions.yaml` is the single source for the contributions page,
@@ -116,8 +116,29 @@ issues the certificate on Cloudflare's side.
 
 No token is ever stored in this repository. `.env.example` documents the
 non-secret variables only. The workflow's actions are pinned to commit SHAs
-rather than to movable tags, since the deploy job holds that token;
-Dependabot proposes the bumps monthly.
+rather than to movable tags, since the deploy job holds that token.
+
+## Dependencies
+
+Renovate proposes the bumps, self-hosted in `.github/workflows/renovate.yml`
+rather than through the Mend app: nothing outside this repository gets write
+access to it. It runs weekly, writes with `RENOVATE_TOKEN`, and leaves the
+workflow token read-only. It tracks the four pinned action digests, the
+gitleaks release the secrets scan downloads, and the wrangler version the
+deploy pins. Configuration is in `renovate.json`; the cron in the workflow is
+the schedule, so the config carries none of its own.
+
+Hugo is deliberately outside its reach. `.hugo-version` and `.hugo-sha256`
+are one unit, and a bot can move the version but cannot compute the checksum
+of the tarball it names. That is one command instead:
+
+```bash
+scripts/update-hugo.sh 0.166.0
+```
+
+It verifies the tarball against the checksums file published in the same
+release before writing either file, and refuses to pin anything on a
+mismatch.
 
 ### DNS
 

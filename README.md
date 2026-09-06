@@ -128,6 +128,23 @@ gitleaks release the secrets scan downloads, and the wrangler version the
 deploy pins. Configuration is in `renovate.json`; the cron in the workflow is
 the schedule, so the config carries none of its own.
 
+`RENOVATE_TOKEN` is a fine-grained token restricted to this repository:
+
+| Permission      | Level          | Needed for                             |
+| --------------- | -------------- | -------------------------------------- |
+| Contents        | Read and write | Branches and commits                   |
+| Pull requests   | Read and write | Opening and updating them              |
+| Workflows       | Read and write | Editing `ci.yml`, the main use case     |
+| Issues          | Read and write | The dependency dashboard is an issue   |
+| Commit statuses | Read and write | Reading check results                  |
+| Metadata        | Read-only      | Mandatory, granted automatically       |
+
+The first two of those are easy to miss and both fail quietly: without
+*Workflows* Renovate cannot touch the action digests it exists to bump, and
+without *Issues* the dashboard is never created. Dropping
+`dependencyDashboard` from `renovate.json` is what removes the need for
+*Issues*.
+
 Hugo is deliberately outside its reach. `.hugo-version` and `.hugo-sha256`
 are one unit, and a bot can move the version but cannot compute the checksum
 of the tarball it names. That is one command instead:

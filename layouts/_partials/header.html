@@ -36,7 +36,7 @@
             {{- $note := cond $translated $other.Params.translationAvailable $other.Params.translationMissing }}
           <li>
             <a class="lang-switch{{ if not $translated }} lang-switch--home{{ end }}"
-               href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}" title="{{ $note }}">
+               href="{{ $href }}" hreflang="{{ $other.Language.Locale | default $lang }}" lang="{{ $lang }}" title="{{ $note }}">
               {{- $lang | upper }}<span class="visually-hidden">. {{ $note }}</span>
             </a>
           </li>

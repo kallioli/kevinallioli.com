@@ -12,7 +12,7 @@
 {{- $h := printf "h%d" (.level | default 3) -}}
 <li class="entry">
   <p class="meta">
-    {{- with $p.Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>{{ end -}}
+    {{- with $p.Date }}<time datetime="{{ .Format "2006-01-02" }}"><span class="visually-hidden">{{ i18n "publishedOn" }} </span>{{ .Format "2006-01-02" }}</time>{{ end -}}
     {{- with $p.Params.pillar }}<span>{{ . }}</span>{{ end -}}
   </p>
   <div>

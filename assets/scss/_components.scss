@@ -241,12 +241,6 @@
   padding: 0.1rem 0.4rem;
 }
 
-.translation-note {
-  background: var(--c-surface);
-  padding: 0.75rem 1rem;
-  font-size: var(--fs-small);
-  margin-bottom: var(--step);
-}
 
 // A short list of projects: separated the way entries are, without the
 // two-track grid, because a project has no date to put in a rail.
@@ -266,3 +260,8 @@
   font-size: var(--fs-lead);
 }
 .index-list li + li { margin-top: 0.5rem; }
+
+// A language switch that leads to the other home page rather than to this
+// page in that language is not doing the same thing, and does not look like
+// it is. The accessible name says so in full; this is the sighted cue.
+.lang-switch--home { border-style: dashed; }

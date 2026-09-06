@@ -1,0 +1,12 @@
+# Actions are pinned to commit SHAs, which no tag can move under us. That
+# only holds if something proposes the bumps: Dependabot reads the version
+# comment next to each pin and updates both the SHA and the comment.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci
+    open-pull-requests-limit: 5

@@ -1,5 +1,6 @@
-// Page frame: one column, two widths. Prose is capped at the measure,
-// everything structural gets the wide track.
+// Page frame and the two-track grid: a rail carrying the record, a column
+// carrying the argument. The tracks are separated by space and a change of
+// voice, not by a rule.
 
 .wrap {
   width: 100%;
@@ -8,22 +9,47 @@
   padding-inline: var(--gutter);
 }
 
+// The reading frame. Wide enough for the rail and the measure side by side.
 .prose-wrap {
   width: 100%;
-  max-width: calc(var(--measure) + var(--gutter) * 2);
+  max-width: calc(var(--rail) + var(--rail-gap) + var(--measure) + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
+.track {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+.track__rail > * + * { margin-top: 0.9rem; }
+.track__body  > * + * { margin-top: var(--step); }
+
+@media (min-width: 60rem) {
+  .track {
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    column-gap: var(--rail-gap);
+    row-gap: 0;
+  }
+  // Below the fold the rail keeps the record in view while the argument
+  // scrolls past it.
+  .track__rail--sticky {
+    position: sticky;
+    top: var(--step);
+    align-self: start;
+  }
+}
+
 .site-main {
   flex: 1 0 auto;
-  padding-block: calc(var(--step) * 2) calc(var(--step) * 3);
+  padding-block: calc(var(--step) * 2.25) calc(var(--step) * 3);
 }
 
 // ------------------------------------------------------------------ header
 
 .site-header {
-  border-bottom: var(--border);
+  border-bottom: var(--rule);
   background: var(--c-bg);
 }
 
@@ -31,20 +57,18 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.75rem 1.5rem;
-  padding-block: 1rem;
+  gap: 0.6rem 1.5rem;
+  padding-block: 0.9rem;
 }
 
 .site-brand {
-  font-family: var(--f-sans);
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-  color: var(--c-text);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  color: var(--c-ink);
   text-decoration: none;
   white-space: nowrap;
 }
-.site-brand:hover { color: var(--c-accent); }
+.site-brand:hover { text-decoration: underline; text-decoration-thickness: 2px; }
 
 .site-nav { margin-inline-start: auto; }
 
@@ -52,65 +76,65 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
+  gap: 0.1rem 1.15rem;
   margin: 0;
   padding: 0;
 }
 
 .site-nav__link {
-  font-family: var(--f-sans);
   font-size: var(--fs-small);
   color: var(--c-muted);
   text-decoration: none;
-  padding-block: 0.25rem;
+  padding-block: 0.2rem;
   border-bottom: 2px solid transparent;
 }
-.site-nav__link:hover { color: var(--c-text); }
+.site-nav__link:hover { color: var(--c-ink); }
 .site-nav__link[aria-current="page"] {
-  color: var(--c-text);
-  border-bottom-color: var(--c-accent);
+  color: var(--c-ink);
+  border-bottom-color: var(--c-ink);
 }
 
 .header-tools {
   display: flex;
   align-items: center;
   align-self: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
-.lang-switch {
+.lang-nav ul {
+  list-style: none;
   display: flex;
-  align-items: center;
-  min-height: 1.9rem;
-  font-family: var(--f-mono);
-  font-size: var(--fs-meta);
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--c-muted);
-  text-decoration: none;
-  border: var(--border);
-  padding: 0 0.45rem;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
 }
-.lang-switch:hover { color: var(--c-text); border-color: var(--c-accent); }
 
+.lang-switch,
 .theme-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 1.9rem;
-  min-width: 1.9rem;
-  font: inherit;
+  min-height: 1.8rem;
+  min-width: 1.8rem;
+  font-family: var(--f-mono);
+  font-size: var(--fs-meta);
   line-height: 1;
   color: var(--c-muted);
   background: transparent;
-  border: var(--border);
+  border: var(--rule);
   padding: 0 0.45rem;
+  text-decoration: none;
+}
+.lang-switch:hover,
+.theme-toggle:hover { color: var(--c-ink); border-color: var(--c-ink); }
+
+.theme-toggle {
+  font: inherit;
   cursor: pointer;
 }
-.theme-toggle:hover { color: var(--c-text); border-color: var(--c-accent); }
 .theme-toggle svg {
-  width: 0.95rem;
-  height: 0.95rem;
+  width: 0.9rem;
+  height: 0.9rem;
   display: block;
   fill: currentColor;
 }
@@ -119,10 +143,9 @@
 // ------------------------------------------------------------------ footer
 
 .site-footer {
-  border-top: var(--border);
+  border-top: var(--rule);
   background: var(--c-surface);
   padding-block: calc(var(--step) * 1.5);
-  font-family: var(--f-sans);
   font-size: var(--fs-small);
   color: var(--c-muted);
 }
@@ -134,37 +157,35 @@
 }
 
 .site-footer h2 {
-  font-size: var(--fs-meta);
-  font-family: var(--f-mono);
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--c-muted);
-  margin-bottom: 0.5rem;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--c-ink);
+  margin-bottom: 0.45rem;
 }
 
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
-.site-footer li + li { margin-top: 0.25rem; }
-.site-footer a { color: var(--c-text); text-decoration: none; }
-.site-footer a:hover { color: var(--c-accent); text-decoration: underline; }
+.site-footer li + li { margin-top: 0.2rem; }
+.site-footer a { color: var(--c-ink); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
 
-// The build stamp. One deliberate echo of the MANIFEST.json vocabulary.
+// The build stamp, in the same vocabulary the image pipelines use. The
+// home page states it in full; here it is the running footer of a record.
 .build-stamp {
   margin-top: var(--step);
-  padding-top: 0.875rem;
-  border-top: var(--border);
+  padding-top: 0.8rem;
+  border-top: var(--rule);
   font-family: var(--f-mono);
   font-size: var(--fs-meta);
   color: var(--c-muted);
+  font-variant-numeric: tabular-nums;
 }
 .build-stamp dl {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 1.25rem;
+  gap: 0.3rem 1.5rem;
   margin: 0;
 }
 .build-stamp dl > div { display: flex; gap: 0.4rem; }
-.build-stamp dt { color: var(--c-muted); }
 .build-stamp dt::after { content: ":"; }
-.build-stamp dd { margin: 0; color: var(--c-text); }
-.build-stamp dd a { color: var(--c-text); text-decoration: underline; }
+.build-stamp dd { margin: 0; color: var(--c-ink); }
+.build-stamp dd a { color: var(--c-ink); }

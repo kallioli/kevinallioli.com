@@ -15,16 +15,20 @@
 
     <div class="header-tools">
       {{- $cur := . }}
-      {{- range hugo.Sites }}
-        {{- if ne .Language.Lang $cur.Site.Language.Lang }}
-          {{- $lang := .Language.Lang }}
-          {{- $href := .Home.RelPermalink }}
-          {{- range $cur.Translations }}
-            {{- if eq .Site.Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}
+      <nav class="lang-nav" aria-label="{{ i18n "langNav" }}">
+        <ul>
+        {{- range hugo.Sites }}
+          {{- if ne .Language.Lang $cur.Site.Language.Lang }}
+            {{- $lang := .Language.Lang }}
+            {{- $href := .Home.RelPermalink }}
+            {{- range $cur.Translations }}
+              {{- if eq .Site.Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}
+            {{- end }}
+          <li><a class="lang-switch" href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}">{{ $lang | upper }}</a></li>
           {{- end }}
-      <a class="lang-switch" href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}">{{ $lang | upper }}</a>
         {{- end }}
-      {{- end }}
+        </ul>
+      </nav>
 
       <button id="theme-toggle" class="theme-toggle" type="button" hidden aria-label="{{ i18n "toggleTheme" }}">
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">

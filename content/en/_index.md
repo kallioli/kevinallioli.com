@@ -2,9 +2,10 @@
 title: "Kevin Allioli"
 translationKey: "home"
 description: "Cloud architect in Geneva. System images, OpenStack at scale, verifiable sovereignty."
-role: "Cloud architect - Geneva - thirteen years of infrastructure"
+role: "Cloud architect in Geneva. Thirteen years of infrastructure."
 lead: "I build and operate the lower layers of sovereign clouds: the system images and the OpenStack platforms that thousands of servers boot on."
-thesis: "Sovereignty is not declared, it is verified. Infrastructure you cannot rebuild from source is not sovereign, whatever country the datacentre sits in."
+thesis: "Sovereignty is not declared, it is verified."
+thesisNote: "Infrastructure you cannot rebuild from source is not sovereign, whatever country the datacentre sits in."
 ---
 
 For five years at Infomaniak I operated and evolved OpenStack environments

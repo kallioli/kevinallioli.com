@@ -1,17 +1,27 @@
 {{- /* Expects a dict: page (a Page) and level (the heading level to use, so
-       the outline stays correct wherever the list is embedded). */ -}}
+       the outline stays correct wherever the list is embedded).
+
+       The tag is written through printf rather than as `<{{ $h }}`: a
+       dynamic tag name is not a context html/template can reason about, so
+       it escapes it and the markup is printed as text on the page.
+
+       The date and the pillar are in the record voice, in the rail on the
+       wide layout and above the title below it. Two facts stacked, never a
+       string joined with separators. */ -}}
 {{- $p := .page -}}
 {{- $h := printf "h%d" (.level | default 3) -}}
 <li class="entry">
-  <{{ $h }} class="entry__title">
-    {{- if $p.Draft }}<span class="draft-badge">{{ i18n "draftBadge" }}</span> {{ end -}}
-    <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
-  </{{ $h }}>
   <p class="meta">
     {{- with $p.Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>{{ end -}}
-    {{- with $p.Params.pillar }} &middot; {{ . }}{{ end -}}
+    {{- with $p.Params.pillar }}<span>{{ . }}</span>{{ end -}}
   </p>
-  {{- with ($p.Description | default $p.Summary) }}
-  <p class="entry__summary">{{ . | plainify }}</p>
-  {{- end }}
+  <div>
+    {{ printf `<%s class="entry__title">` $h | safeHTML -}}
+      {{- if $p.Draft }}<span class="draft-badge">{{ i18n "draftBadge" }}</span> {{ end -}}
+      <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+    {{- printf "</%s>" $h | safeHTML }}
+    {{- with ($p.Description | default $p.Summary) }}
+    <p class="entry__summary">{{ . | plainify }}</p>
+    {{- end }}
+  </div>
 </li>

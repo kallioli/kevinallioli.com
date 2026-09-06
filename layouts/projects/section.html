@@ -2,19 +2,19 @@
 <div class="prose-wrap">
   <header class="page-header">
     <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+    {{- with .Description }}<p class="lede">{{ . }}</p>{{ end }}
   </header>
-  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
   {{- with .Pages.ByWeight }}
-  <ul class="entry-list">
+  <div class="project-list">
     {{- range . }}
-    <li class="entry">
-      <h2 class="entry__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-      {{ with .Params.status }}<p class="meta">{{ . }}</p>{{ end }}
-      {{ with .Description }}<p class="entry__summary">{{ . }}</p>{{ end }}
-    </li>
+    <article class="project">
+      <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{- with .Params.status }}<p class="meta">{{ . }}</p>{{ end }}
+      {{- with .Description }}<p>{{ . }}</p>{{ end }}
+    </article>
     {{- end }}
-  </ul>
+  </div>
   {{- end }}
 </div>
 {{ end }}

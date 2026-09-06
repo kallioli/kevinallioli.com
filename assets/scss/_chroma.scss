@@ -1,33 +1,35 @@
 // Syntax highlighting, class-based so both themes are driven by the same
-// tokens. Four roles only: comment, keyword, literal, name. Anything more
-// turns a code block into a colour chart.
+// tokens. Three roles only: comment, emphasis, plain. Anything more turns
+// a code block into a colour chart, and the palette has no colour to spend
+// on decoration.
 
 .chroma {
-  color: var(--c-text);
+  color: var(--c-ink);
   background: transparent;
 
   // comments
   .c, .ch, .cm, .c1, .cs, .cp, .cpf { color: var(--c-muted); font-style: italic; }
 
-  // keywords and operators
-  .k, .kc, .kd, .kn, .kp, .kr, .kt, .ow { color: var(--c-accent); font-weight: 600; }
+  // keywords, operators, punctuation
+  .k, .kc, .kd, .kn, .kp, .kr, .kt, .ow { font-weight: 700; }
   .o, .p { color: var(--c-muted); }
 
-  // literals
+  // literals: the only thing in a snippet that is a value rather than
+  // structure, so it takes the signal.
   .s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss,
-  .m, .mb, .mf, .mh, .mi, .il, .mo { color: var(--c-accent); }
+  .m, .mb, .mf, .mh, .mi, .il, .mo { color: var(--c-signal); }
 
   // names
-  .na, .nt { color: var(--c-text); font-weight: 600; }
+  .na, .nt { font-weight: 700; }
   .nb, .bp, .nc, .nd, .ni, .ne, .nf, .fm, .nl, .nn, .nx, .py, .nv, .vc,
-  .vg, .vi, .vm { color: var(--c-text); }
+  .vg, .vi, .vm { color: var(--c-ink); }
 
-  .err { color: var(--c-text); text-decoration: underline wavy; }
+  .err { text-decoration: underline wavy var(--c-signal); }
   .gd { color: var(--c-muted); }
-  .gi { color: var(--c-accent); }
+  .gi { color: var(--c-ink); font-weight: 700; }
   .ge { font-style: italic; }
-  .gs { font-weight: 600; }
+  .gs { font-weight: 700; }
 
-  .ln, .lnt { color: var(--c-border); margin-inline-end: 0.8rem; user-select: none; }
-  .hl { background: var(--c-accent-bg); display: block; }
+  .ln, .lnt { color: var(--c-rule); margin-inline-end: 0.8rem; user-select: none; }
+  .hl { background: var(--c-signal-bg); display: block; }
 }

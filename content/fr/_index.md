@@ -2,9 +2,10 @@
 translationKey: "home"
 title: "Kevin Allioli"
 description: "Architecte cloud à Genève. Images système, OpenStack à grande échelle, souveraineté vérifiable."
-role: "Architecte cloud - Genève - treize ans d'infrastructure"
+role: "Architecte cloud à Genève. Treize ans d'infrastructure."
 lead: "Je construis et j'exploite les couches basses des clouds souverains : les images système et les plateformes OpenStack sur lesquelles tournent des milliers de serveurs."
-thesis: "La souveraineté ne se décrète pas, elle se vérifie. Une infrastructure qu'on ne sait pas reconstruire depuis la source n'est pas souveraine, quel que soit le pays du datacentre."
+thesis: "La souveraineté ne se décrète pas, elle se vérifie."
+thesisNote: "Une infrastructure qu'on ne sait pas reconstruire depuis la source n'est pas souveraine, quel que soit le pays du datacentre."
 outputs: ["html", "rss", "headers", "redirects"]
 ---
 

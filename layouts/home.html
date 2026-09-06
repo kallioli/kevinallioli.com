@@ -1,21 +1,39 @@
 {{ define "main" }}
-<div class="wrap">
+<div class="prose-wrap">
 
+  {{- /* The claim, set large. It is the only loud thing on this site. */}}
   <div class="hero">
-    <h1>{{ .Title }}</h1>
-    {{ with .Params.role }}<p class="hero__role">{{ . }}</p>{{ end }}
-    {{ with .Params.lead }}<p class="hero__lead">{{ . }}</p>{{ end }}
-    {{ with .Params.thesis }}
-    <blockquote class="hero__thesis"><p>{{ . }}</p></blockquote>
-    {{ end }}
-    {{ with .Content }}<div class="hero__intro">{{ . }}</div>{{ end }}
+    <h1 class="hero__name">{{ .Title }}</h1>
+    {{- with .Params.role }}<p class="hero__role">{{ . }}</p>{{ end }}
+    {{- with .Params.thesis }}<p class="hero__thesis">{{ . }}</p>{{ end }}
+    {{- with .Params.thesisNote }}<p class="hero__note">{{ . }}</p>{{ end }}
+  </div>
+
+  {{- /* And immediately under it, the receipt for the page making it. */}}
+  <div class="track">
+    <div class="track__rail">
+      <dl class="record">
+        {{- range where (partial "build-facts.html" .) "rail" true }}
+        {{- $v := or .short .value }}
+        <div>
+          <dt>{{ .key }}</dt>
+          <dd>{{ if .url }}<a href="{{ .url }}">{{ $v }}</a>{{ else }}{{ $v }}{{ end }}</dd>
+        </div>
+        {{- end }}
+      </dl>
+      <p class="rail-note">{{ i18n "recordNote" }}</p>
+    </div>
+    <div class="track__body">
+      {{- with .Params.lead }}<p class="hero__lead">{{ . }}</p>{{ end }}
+      {{- with .Content }}<div class="hero__intro">{{ . }}</div>{{ end }}
+    </div>
   </div>
 
   {{- $articles := where (where .Site.RegularPages "Section" "articles") "Params.hidden" "!=" true }}
   <section class="home-section" aria-labelledby="h-articles">
     <div class="section-head">
       <h2 id="h-articles">{{ i18n "latestArticles" }}</h2>
-      <a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "allArticles" }}</a>
+      <p><a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "allArticles" }}</a></p>
     </div>
     {{- if $articles }}
     <ul class="entry-list">
@@ -24,18 +42,18 @@
       {{- end }}
     </ul>
     {{- else }}
-    <p class="entry__summary">{{ i18n "noArticles" }}</p>
+    <p class="empty-state">{{ i18n "noArticles" }}</p>
     {{- end }}
   </section>
 
-  {{- with .Site.GetPage "/projets" }}{{ $p := . }}{{ template "home-projects" $p }}{{ end }}
-  {{- with .Site.GetPage "/projects" }}{{ $p := . }}{{ template "home-projects" $p }}{{ end }}
+  {{- with .Site.GetPage "/projets" }}{{ template "home-projects" . }}{{ end }}
+  {{- with .Site.GetPage "/projects" }}{{ template "home-projects" . }}{{ end }}
 
   {{- with .Site.GetPage "/contributions" }}
   <section class="home-section" aria-labelledby="h-contrib">
     <div class="section-head">
       <h2 id="h-contrib">{{ .Title }}</h2>
-      <a href="{{ .RelPermalink }}">{{ i18n "allContributions" }}</a>
+      <p><a href="{{ .RelPermalink }}">{{ i18n "allContributions" }}</a></p>
     </div>
     {{- $d := hugo.Data.contributions }}
     {{- $merged := where $d.authored "status" "MERGED" }}
@@ -51,12 +69,12 @@
 <section class="home-section" aria-labelledby="h-projects">
   <div class="section-head">
     <h2 id="h-projects">{{ .Title }}</h2>
-    <a href="{{ .RelPermalink }}">{{ i18n "allProjects" }}</a>
+    <p><a href="{{ .RelPermalink }}">{{ i18n "allProjects" }}</a></p>
   </div>
   {{- with (.Pages.ByWeight | first 1) }}{{ with index . 0 }}
-  <article class="project-card">
+  <article class="project">
     <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-    {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    {{- with .Description }}<p>{{ . }}</p>{{ end }}
     {{- with .Params.links }}
     <ul class="link-row">
       {{- range . }}<li><a href="{{ .url }}">{{ .label }}</a></li>{{ end }}

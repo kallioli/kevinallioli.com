@@ -24,14 +24,15 @@ Cloud registry serves image paths.
 
 ## What the browser downloads
 
-One HTML page, one stylesheet, four preloaded font files, and two more only
-if the page contains italics or a bold serif heading. Nothing else, and
-nothing from another domain.
+One HTML page, one stylesheet, three preloaded font files, and a fourth
+only if the page contains italics. Nothing else, and nothing from another
+domain.
 
-The fonts are [IBM Plex](https://www.ibm.com/plex/), under the SIL Open
-Font License, served from this domain as `woff2` subset to extended Latin.
-Six faces total 132 KB. No Google Fonts: asking a third party for a font
-tells that third party about every one of your visits.
+Two families, [Spectral](https://github.com/productiontype/Spectral) and
+[IBM Plex Mono](https://www.ibm.com/plex/), both under the SIL Open Font
+License, served from this domain as `woff2` subset to extended Latin. Four
+faces total 105 KB. No Google Fonts: asking a third party for a font tells
+that third party about every one of your visits.
 
 No analytics, no tracking pixel, no external CDN, no consent banner,
 because there is nothing to consent to.
@@ -77,4 +78,5 @@ exact state of the repository that produced the page you are reading.
 ## Licence
 
 Text under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The
-template and stylesheet code is MIT. IBM Plex is under SIL OFL 1.1.
+template and stylesheet code is MIT. Spectral and IBM Plex Mono are under
+SIL OFL 1.1.

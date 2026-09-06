@@ -75,6 +75,23 @@ would silently strip the security policy from every page. The redirect from
 The commit hash shown above is injected at build time. It identifies the
 exact state of the repository that produced the page you are reading.
 
+## Typography
+
+Spectral carries every sentence, the navigation included: this is a document
+and not an application, and there is no sans-serif anywhere on the site.
+
+IBM Plex Mono is used only for what is measured rather than read: dates,
+change numbers, versions, digests. Fixed width is a requirement here and not
+a costume, because a digest is compared column by column.
+
+Body text at 18 pixels, 1.7 line height, the measure capped at 68 characters.
+On a wide screen a narrow column on the left carries the record and the wide
+one carries the argument.
+
+Two themes, light and dark, derived from one set of CSS custom properties.
+There is no accent colour: links are ink with a rule under them, and the
+amber is kept for anything that has a state, a draft or a change in review.
+
 ## Licence
 
 Text under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The

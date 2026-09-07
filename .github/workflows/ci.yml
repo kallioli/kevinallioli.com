@@ -5,6 +5,14 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Daily, to keep the contributions register in step with Gerrit. The
+  # refresh happens inside this workflow rather than in one of its own: a
+  # push made with GITHUB_TOKEN starts no workflow run, so a separate job
+  # committing the register would never reach a deploy. Here the same run
+  # regenerates, commits, builds and publishes, which also means the data in
+  # the repository is by construction the data that was served.
+  schedule:
+    - cron: "0 5 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,8 +28,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      # Only the scheduled refresh writes, and only to data/contributions.yaml.
+      contents: write
+    outputs:
+      register-changed: ${{ steps.refresh.outputs.changed }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Fetched before the build so that the build is what validates it: a
+      # status Gerrit reports and the register layout does not handle fails
+      # here, exactly as it would for a hand-written edit.
+      - name: Refresh the contributions register
+        id: refresh
+        if: github.event_name == 'schedule'
+        run: |
+          set -euo pipefail
+          ./scripts/fetch-contributions.sh
+          if git diff --quiet -- data/contributions.yaml; then
+            echo "changed=false" >> "${GITHUB_OUTPUT}"
+            echo "register unchanged"
+          else
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
+            git --no-pager diff --stat -- data/contributions.yaml
+          fi
 
       - name: Install pinned Hugo extended
         run: |
@@ -46,6 +76,20 @@ jobs:
 
       - name: Verify the CSP hash matches the served HTML
         run: ./scripts/check-csp-hash.sh public
+
+      # Only now, with the site built and verified against the refreshed data,
+      # is it worth recording. Nothing unverified reaches main.
+      - name: Commit the refreshed register
+        if: github.event_name == 'schedule' && steps.refresh.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/contributions.yaml
+          git commit -m "chore(contributions): refresh the register from Gerrit"
+          # Fail rather than force. A rejected push means someone pushed in
+          # the meantime, and tomorrow's run picks the register up again.
+          git push origin HEAD:main
 
       - name: Upload build
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -79,8 +123,13 @@ jobs:
   deploy:
     # Publishing is off until the repository variable DEPLOY_ENABLED is set to
     # "true". Until then a push to main builds and verifies, and stops there.
+    # A scheduled run publishes only when the refresh actually moved the
+    # register. Nothing else changes on a timer, so there is nothing else to
+    # publish.
     if: >-
-      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (github.event_name == 'push' ||
+       github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'schedule' && needs.build.outputs.register-changed == 'true')) &&
       github.ref == 'refs/heads/main' &&
       vars.DEPLOY_ENABLED == 'true'
     needs: [build, secrets-scan]

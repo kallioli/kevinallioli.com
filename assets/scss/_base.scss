@@ -21,6 +21,7 @@ body {
   color: var(--c-ink);
   font-family: var(--f-text);
   font-size: var(--fs-body);
+  font-weight: var(--w-body);
   line-height: var(--lh-body);
   font-feature-settings: "kern" 1, "liga" 1;
   text-rendering: optimizeLegibility;
@@ -31,20 +32,21 @@ body {
 
 ::selection { background: var(--c-selection); }
 
-// Headings sit in the same family as the body. A serif does not want the
-// negative tracking a grotesque asks for, so it is left alone.
+// Hierarchy comes from weight first and size second. One variable file
+// carries the whole range, so a heading can be genuinely heavier rather than
+// marginally larger.
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--f-text);
-  font-weight: 700;
+  font-weight: var(--w-strong);
   line-height: var(--lh-tight);
+  letter-spacing: var(--ls-head);
   text-wrap: balance;
   margin: 0;
 }
 
-h1 { font-size: var(--fs-h1); }
-h2 { font-size: var(--fs-h2); }
-h3 { font-size: var(--fs-h3); }
-h4 { font-size: var(--fs-body); }
+h1 { font-size: var(--fs-h1); font-weight: var(--w-bold); }
+h2 { font-size: var(--fs-h2); font-weight: var(--w-bold); }
+h3 { font-size: var(--fs-h3); font-weight: var(--w-strong); letter-spacing: 0; }
+h4 { font-size: var(--fs-body); font-weight: var(--w-strong); letter-spacing: 0; }
 
 p, ul, ol, dl, blockquote, pre, table, figure { margin: 0; }
 
@@ -55,7 +57,7 @@ a {
   text-decoration: underline;
   text-decoration-color: var(--c-rule);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
+  text-underline-offset: 0.18em;
 }
 a:hover {
   text-decoration-color: currentColor;
@@ -77,8 +79,7 @@ hr {
   margin: calc(var(--step) * 2) 0;
 }
 
-// The record voice. Anything that is a measurement rather than a sentence:
-// dates, versions, change numbers, digests.
+// The record voice: anything that is a measurement rather than a sentence.
 .meta {
   font-family: var(--f-mono);
   font-size: var(--fs-meta);
@@ -106,6 +107,7 @@ hr {
   border: 2px solid var(--c-ink);
   padding: 0.5rem 0.875rem;
   font-size: var(--fs-small);
+  font-weight: var(--w-medium);
   text-decoration: none;
   transition: top 120ms ease;
 }

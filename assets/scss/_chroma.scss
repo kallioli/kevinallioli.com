@@ -1,25 +1,20 @@
 // Syntax highlighting, class-based so both themes are driven by the same
-// tokens. Three roles only: comment, emphasis, plain. Anything more turns
-// a code block into a colour chart, and the palette has no colour to spend
-// on decoration.
+// tokens. Three roles only. The palette has no colour to spend on decoration.
 
 .chroma {
   color: var(--c-ink);
   background: transparent;
 
-  // comments
   .c, .ch, .cm, .c1, .cs, .cp, .cpf { color: var(--c-muted); font-style: italic; }
 
-  // keywords, operators, punctuation
   .k, .kc, .kd, .kn, .kp, .kr, .kt, .ow { font-weight: 700; }
   .o, .p { color: var(--c-muted); }
 
-  // literals: the only thing in a snippet that is a value rather than
-  // structure, so it takes the signal.
+  // Literals are the only thing in a snippet that is a value rather than
+  // structure, so they take the signal.
   .s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss,
   .m, .mb, .mf, .mh, .mi, .il, .mo { color: var(--c-signal); }
 
-  // names
   .na, .nt { font-weight: 700; }
   .nb, .bp, .nc, .nd, .ni, .ne, .nf, .fm, .nl, .nn, .nx, .py, .nv, .vc,
   .vg, .vi, .vm { color: var(--c-ink); }

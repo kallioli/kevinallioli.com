@@ -14,17 +14,32 @@
     </nav>
 
     <div class="header-tools">
+      {{- /* Most pages here have no counterpart: the French and English
+             article sets are different pieces, not translations of each
+             other. The switch used to fall back to the other language's home
+             page without saying so, which is a link that lies about where it
+             goes. It now says, in the language being switched to, whether it
+             leads to this page or to that home page. */}}
       {{- $cur := . }}
       <nav class="lang-nav" aria-label="{{ i18n "langNav" }}">
         <ul>
         {{- range hugo.Sites }}
           {{- if ne .Language.Lang $cur.Site.Language.Lang }}
+            {{- $other := . }}
             {{- $lang := .Language.Lang }}
-            {{- $href := .Home.RelPermalink }}
+            {{- $href := "" }}
             {{- range $cur.Translations }}
               {{- if eq .Site.Language.Lang $lang }}{{ $href = .RelPermalink }}{{ end }}
             {{- end }}
-          <li><a class="lang-switch" href="{{ $href }}" hreflang="{{ $lang }}" lang="{{ $lang }}">{{ $lang | upper }}</a></li>
+            {{- $translated := ne $href "" }}
+            {{- if not $translated }}{{ $href = $other.Home.RelPermalink }}{{ end }}
+            {{- $note := cond $translated $other.Params.translationAvailable $other.Params.translationMissing }}
+          <li>
+            <a class="lang-switch{{ if not $translated }} lang-switch--home{{ end }}"
+               href="{{ $href }}" hreflang="{{ $other.Language.Locale | default $lang }}" lang="{{ $lang }}" title="{{ $note }}">
+              {{- $lang | upper }}<span class="visually-hidden">. {{ $note }}</span>
+            </a>
+          </li>
           {{- end }}
         {{- end }}
         </ul>

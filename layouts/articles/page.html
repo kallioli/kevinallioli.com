@@ -1,7 +1,6 @@
 {{ define "main" }}
 <div class="prose-wrap">
 <article itemscope itemtype="https://schema.org/BlogPosting">
-  {{ partial "translation-note.html" . }}
 
   <header class="article-header">
     {{- if .Draft }}<p><span class="draft-badge">{{ i18n "draftBadge" }}</span></p>{{ end }}
@@ -15,7 +14,7 @@
     <div class="track__rail track__rail--sticky">
       <p class="meta article-record">
         {{- with .Date }}
-        <time datetime="{{ .Format "2006-01-02" }}" itemprop="datePublished">{{ .Format "2006-01-02" }}</time>
+        <time datetime="{{ .Format "2006-01-02" }}" itemprop="datePublished"><span class="visually-hidden">{{ i18n "publishedOn" }} </span>{{ .Format "2006-01-02" }}</time>
         {{- end }}
         {{- with .Params.pillar }}<span>{{ . }}</span>{{ end }}
         <span>{{ .ReadingTime }} {{ i18n "readingTime" }}</span>

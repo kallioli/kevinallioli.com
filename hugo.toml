@@ -124,6 +124,10 @@ theme = []
     title        = "Kevin Allioli"
     [languages.fr.params]
       tagline = "Architecte cloud. Images système, OpenStack à grande échelle."
+      # Read by the language switch from the *other* site, so each language
+      # states its own availability to the reader who wants that language.
+      translationAvailable = "Cette page existe aussi en français."
+      translationMissing = "Cette page n'existe pas encore en français. Ce lien mène à l'accueil."
     [languages.fr.markup.goldmark.extensions.typographer]
       leftDoubleQuote  = "&laquo;&nbsp;"
       rightDoubleQuote = "&nbsp;&raquo;"
@@ -161,6 +165,8 @@ theme = []
     [languages.en.params]
       description = "Cloud architect. System images, OpenStack at scale, verifiable sovereignty."
       tagline = "Cloud architect. System images, OpenStack at scale."
+      translationAvailable = "This page is also available in English."
+      translationMissing = "This page is not available in English yet. This link goes to the home page."
     [languages.en.markup.goldmark.extensions.typographer]
       leftDoubleQuote  = "&ldquo;"
       rightDoubleQuote = "&rdquo;"

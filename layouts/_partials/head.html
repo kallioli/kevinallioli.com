@@ -36,8 +36,10 @@
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
 {{- end }}
 {{- if .IsTranslated }}
+{{- /* The same locale the document declares in `<html lang>` and in the
+       sitemap. Two hreflang signals that disagree are worth less than one. */}}
 {{- range .AllTranslations }}
-<link rel="alternate" hreflang="{{ .Site.Language.Lang }}" href="{{ .Permalink }}">
+<link rel="alternate" hreflang="{{ .Site.Language.Locale | default .Site.Language.Lang }}" href="{{ .Permalink }}">
 {{- end }}
 {{- range .AllTranslations }}{{ if eq .Site.Language.Lang "fr" }}
 <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">

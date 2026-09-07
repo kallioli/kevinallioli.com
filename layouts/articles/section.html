@@ -11,7 +11,7 @@
     {{- range $pages }}{{ partial "entry.html" (dict "page" . "level" 2) }}{{ end }}
   </ul>
   {{- else }}
-  <p class="entry__summary">{{ i18n "noArticles" }}</p>
+  <p class="empty-state">{{ i18n "noArticles" }}</p>
   {{- end }}
 </div>
 {{ end }}

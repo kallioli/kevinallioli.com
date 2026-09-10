@@ -1,39 +1,31 @@
 {{ define "main" }}
 <div class="prose-wrap">
 
-  {{- /* The claim, set large. It is the only loud thing on this site. */}}
   <div class="hero">
     <h1 class="hero__name">{{ .Title }}</h1>
     {{- with .Params.role }}<p class="hero__role">{{ . }}</p>{{ end }}
     {{- with .Params.thesis }}<p class="hero__thesis">{{ . }}</p>{{ end }}
     {{- with .Params.thesisNote }}<p class="hero__note">{{ . }}</p>{{ end }}
-  </div>
+    {{- with .Params.lead }}<p class="hero__lead">{{ . }}</p>{{ end }}
+    {{- with .Content }}<div class="hero__intro">{{ . }}</div>{{ end }}
 
-  {{- /* And immediately under it, the receipt for the page making it. */}}
-  <div class="track">
-    <div class="track__rail">
-      <dl class="record">
-        {{- range where (partial "build-facts.html" .) "rail" true }}
-        {{- $v := or .short .value }}
-        <div>
-          <dt>{{ .key }}</dt>
-          <dd>{{ if .url }}<a href="{{ .url }}">{{ $v }}</a>{{ else }}{{ $v }}{{ end }}</dd>
-        </div>
-        {{- end }}
-      </dl>
-      <p class="rail-note">{{ i18n "recordNote" }}</p>
-    </div>
-    <div class="track__body">
-      {{- with .Params.lead }}<p class="hero__lead">{{ . }}</p>{{ end }}
-      {{- with .Content }}<div class="hero__intro">{{ . }}</div>{{ end }}
-    </div>
+    {{- /* One line, not a table. The full manifest lives on the colophon,
+           which is where there is room to read it. */}}
+    {{- $commit := .Site.Params.buildCommit }}
+    {{- $short := cond (gt (len $commit) 12) (substr $commit 0 12) $commit }}
+    {{- with .Site.GetPage "/colophon" }}
+    <p class="hero__provenance">
+      {{ i18n "builtFrom" }} <code>{{ $short }}</code>.
+      <a href="{{ .RelPermalink }}">{{ i18n "colophonSays" }}</a>
+    </p>
+    {{- end }}
   </div>
 
   {{- $articles := where (where .Site.RegularPages "Section" "articles") "Params.hidden" "!=" true }}
   <section class="home-section" aria-labelledby="h-articles">
     <div class="section-head">
       <h2 id="h-articles">{{ i18n "latestArticles" }}</h2>
-      <p><a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "allArticles" }}</a></p>
+      <a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "allArticles" }}</a>
     </div>
     {{- if $articles }}
     <ul class="entry-list">
@@ -53,7 +45,7 @@
   <section class="home-section" aria-labelledby="h-contrib">
     <div class="section-head">
       <h2 id="h-contrib">{{ .Title }}</h2>
-      <p><a href="{{ .RelPermalink }}">{{ i18n "allContributions" }}</a></p>
+      <a href="{{ .RelPermalink }}">{{ i18n "allContributions" }}</a>
     </div>
     {{- $d := hugo.Data.contributions }}
     {{- $merged := where $d.authored "status" "MERGED" }}
@@ -69,7 +61,7 @@
 <section class="home-section" aria-labelledby="h-projects">
   <div class="section-head">
     <h2 id="h-projects">{{ .Title }}</h2>
-    <p><a href="{{ .RelPermalink }}">{{ i18n "allProjects" }}</a></p>
+    <a href="{{ .RelPermalink }}">{{ i18n "allProjects" }}</a>
   </div>
   {{- with (.Pages.ByWeight | first 1) }}{{ with index . 0 }}
   <article class="project">

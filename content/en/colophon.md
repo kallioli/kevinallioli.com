@@ -24,14 +24,13 @@ Cloud registry serves image paths.
 
 ## What the browser downloads
 
-One HTML page, one stylesheet, three preloaded font files, and a fourth
-only if the page contains italics. Nothing else, and nothing from another
-domain.
+One HTML page, one stylesheet, two preloaded font files, and a third only if
+the page contains italics. Nothing else, and nothing from another domain.
 
-Two families, [Spectral](https://github.com/productiontype/Spectral) and
+Two families, [Archivo](https://github.com/Omnibus-Type/Archivo) and
 [IBM Plex Mono](https://www.ibm.com/plex/), both under the SIL Open Font
-License, served from this domain as `woff2` subset to extended Latin. Four
-faces total 105 KB. No Google Fonts: asking a third party for a font tells
+License, served from this domain as `woff2` subset to extended Latin. Three
+files total 83 KB. No Google Fonts: asking a third party for a font tells
 that third party about every one of your visits.
 
 No analytics, no tracking pixel, no external CDN, no consent banner,
@@ -77,16 +76,22 @@ exact state of the repository that produced the page you are reading.
 
 ## Typography
 
-Spectral carries every sentence, the navigation included: this is a document
-and not an application, and there is no sans-serif anywhere on the site.
+Archivo carries every sentence, the navigation included. A grotesque rather
+than a serif: this site documents an engineering practice, it does not tell a
+story.
+
+It is one variable file covering weights 100 to 900, and that is where the
+hierarchy comes from: body at 400, section headings at 600, the thesis at
+800. Its width axis was dropped, it cost 38 KB and added nothing the weight
+axis does not already do.
 
 IBM Plex Mono is used only for what is measured rather than read: dates,
 change numbers, versions, digests. Fixed width is a requirement here and not
 a costume, because a digest is compared column by column.
 
-Body text at 18 pixels, 1.7 line height, the measure capped at 68 characters.
-On a wide screen a narrow column on the left carries the record and the wide
-one carries the argument.
+Body text at 17 pixels, 1.6 line height, the measure capped at 62 characters.
+One column and one left edge: the full record lives here, on this page,
+rather than being pushed in front of the reader on the home page.
 
 Two themes, light and dark, derived from one set of CSS custom properties.
 There is no accent colour: links are ink with a rule under them, and the
@@ -95,5 +100,5 @@ amber is kept for anything that has a state, a draft or a change in review.
 ## Licence
 
 Text under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The
-template and stylesheet code is MIT. Spectral and IBM Plex Mono are under
+template and stylesheet code is MIT. Archivo and IBM Plex Mono are under
 SIL OFL 1.1.

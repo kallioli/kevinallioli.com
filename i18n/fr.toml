@@ -26,7 +26,8 @@ colSubject = "Sujet"
 colStatus  = "État"
 colDate    = "Déposé le"
 gerritProfile = "Profil Gerrit"
-recordNote = "Le relevé de la page que vous lisez. L'empreinte est celle de son unique script : elle est calculée au build, et vérifiée à chaque publication."
+builtFrom = "Cette page est construite depuis le commit"
+colophonSays = "Le colophon dit exactement ce qu'elle charge."
 
 [contribSummary]
 other = "{{ .Merged }} changements mergés en amont, {{ .Open }} en revue, {{ .Reviewed }} revues données sur Horizon, openstacksdk et Keystone. Le registre liste chaque changement avec son numéro Gerrit et son état, abandons compris."

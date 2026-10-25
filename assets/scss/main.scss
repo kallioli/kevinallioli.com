@@ -1,15 +1,18 @@
 {{- /*
   Executed as a Go template before Sass transpiling so that @font-face can
   point at fingerprinted, immutable font URLs. Nothing here is fetched from a
-  third party at runtime: both families ship from this origin.
+  third party at runtime.
 
-  Four faces. Spectral does the talking, IBM Plex Mono does the counting.
+  Three files. Archivo ships as one variable font carrying the whole weight
+  range, which is what gives the page a hierarchy instead of one flat grey.
+  Its width axis was dropped on purpose: it cost 38 KB and earned nothing the
+  weight axis does not already do.
 */ -}}
+{{- $range := "U+0000-00FF, U+0100-024F, U+0259, U+1E00-1EFF, U+2000-206F, U+2074, U+20A0-20BF, U+2113, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD" -}}
 {{- $faces := slice
-  (dict "family" "Spectral"       "weight" "400" "style" "normal" "file" "fonts/spectral-400.woff2")
-  (dict "family" "Spectral"       "weight" "400" "style" "italic" "file" "fonts/spectral-400-italic.woff2")
-  (dict "family" "Spectral"       "weight" "700" "style" "normal" "file" "fonts/spectral-700.woff2")
-  (dict "family" "IBM Plex Mono"  "weight" "400" "style" "normal" "file" "fonts/ibm-plex-mono-400.woff2")
+  (dict "family" "Archivo"       "weight" "100 900" "style" "normal" "file" "fonts/archivo-var.woff2")
+  (dict "family" "Archivo"       "weight" "400"     "style" "italic" "file" "fonts/archivo-italic-400.woff2")
+  (dict "family" "IBM Plex Mono" "weight" "400"     "style" "normal" "file" "fonts/ibm-plex-mono-400.woff2")
 -}}
 {{- range $faces }}
 {{- $r := resources.Get .file | fingerprint "sha256" }}
@@ -19,8 +22,7 @@
   font-weight: {{ .weight }};
   font-display: swap;
   src: url("{{ $r.RelPermalink }}") format("woff2");
-  unicode-range: U+0000-00FF, U+0100-024F, U+0259, U+1E00-1EFF, U+2000-206F,
-    U+2074, U+20A0-20BF, U+2113, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: {{ $range | safeCSS }};
 }
 {{- end }}
 

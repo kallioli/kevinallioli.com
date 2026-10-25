@@ -1,6 +1,6 @@
-// Page frame and the two-track grid: a rail carrying the record, a column
-// carrying the argument. The tracks are separated by space and a change of
-// voice, not by a rule.
+// Page frame: one column, two widths. Structural content gets the wide track,
+// prose is capped at the measure. There is no side rail: the previous grid
+// had content on two pages and an empty gutter on every other one.
 
 .wrap {
   width: 100%;
@@ -9,44 +9,23 @@
   padding-inline: var(--gutter);
 }
 
-// The reading frame. Wide enough for the rail and the measure side by side.
 .prose-wrap {
   width: 100%;
-  max-width: calc(var(--rail) + var(--rail-gap) + var(--measure) + var(--gutter) * 2);
+  max-width: calc(var(--measure) + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-.track {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.9rem;
-}
-
-.track__rail > * + * { margin-top: 0.9rem; }
-.track__body  > * + * { margin-top: var(--step); }
-
-@media (min-width: 60rem) {
-  .track {
-    grid-template-columns: var(--rail) minmax(0, 1fr);
-    column-gap: var(--rail-gap);
-    row-gap: 0;
-  }
-  // Below the fold the rail keeps the record in view while the argument
-  // scrolls past it.
-  .track__rail--sticky {
-    position: sticky;
-    top: var(--step);
-    align-self: start;
-  }
-}
-
 .site-main {
   flex: 1 0 auto;
-  padding-block: calc(var(--step) * 2.25) calc(var(--step) * 3);
+  padding-block: calc(var(--step) * 2) calc(var(--step) * 3);
 }
 
 // ------------------------------------------------------------------ header
+//
+// Two rows below 44rem: the brand and the controls together, the navigation
+// under them. One row above it. The previous header wrapped into three rows
+// on a phone and ate the top of the screen.
 
 .site-header {
   border-bottom: var(--rule);
@@ -56,33 +35,55 @@
 .site-header__inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.6rem 1.5rem;
-  padding-block: 0.9rem;
+  align-items: center;
+  gap: 0.4rem 1.25rem;
+  padding-block: 0.8rem;
 }
 
 .site-brand {
-  font-weight: 700;
+  order: 1;
+  font-weight: var(--w-bold);
   font-size: var(--fs-body);
+  letter-spacing: var(--ls-head);
   color: var(--c-ink);
   text-decoration: none;
   white-space: nowrap;
 }
 .site-brand:hover { text-decoration: underline; text-decoration-thickness: 2px; }
 
-.site-nav { margin-inline-start: auto; }
+.header-tools {
+  order: 2;
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.site-nav {
+  order: 3;
+  flex-basis: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.site-nav::-webkit-scrollbar { display: none; }
+
+@media (min-width: 44rem) {
+  .site-nav { order: 2; flex-basis: auto; margin-inline-start: auto; overflow: visible; }
+  .header-tools { order: 3; margin-inline-start: 0; }
+}
 
 .site-nav__list {
   list-style: none;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.1rem 1.15rem;
+  gap: 1.15rem;
   margin: 0;
   padding: 0;
+  white-space: nowrap;
 }
 
 .site-nav__link {
   font-size: var(--fs-small);
+  font-weight: var(--w-medium);
   color: var(--c-muted);
   text-decoration: none;
   padding-block: 0.2rem;
@@ -92,13 +93,6 @@
 .site-nav__link[aria-current="page"] {
   color: var(--c-ink);
   border-bottom-color: var(--c-ink);
-}
-
-.header-tools {
-  display: flex;
-  align-items: center;
-  align-self: center;
-  gap: 0.5rem;
 }
 
 .lang-nav ul {
@@ -114,30 +108,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 1.8rem;
-  min-width: 1.8rem;
+  min-height: 1.75rem;
+  min-width: 1.75rem;
   font-family: var(--f-mono);
   font-size: var(--fs-meta);
   line-height: 1;
   color: var(--c-muted);
   background: transparent;
   border: var(--rule);
-  padding: 0 0.45rem;
+  padding: 0 0.4rem;
   text-decoration: none;
 }
 .lang-switch:hover,
 .theme-toggle:hover { color: var(--c-ink); border-color: var(--c-ink); }
 
-.theme-toggle {
-  font: inherit;
-  cursor: pointer;
-}
-.theme-toggle svg {
-  width: 0.9rem;
-  height: 0.9rem;
-  display: block;
-  fill: currentColor;
-}
+// A switch leading to the other home page rather than to this page in that
+// language is not doing the same thing, and does not look like it is.
+.lang-switch--home { border-style: dashed; }
+
+.theme-toggle { font: inherit; cursor: pointer; }
+.theme-toggle svg { width: 0.9rem; height: 0.9rem; display: block; fill: currentColor; }
 .theme-toggle[hidden] { display: none; }
 
 // ------------------------------------------------------------------ footer
@@ -153,38 +143,32 @@
 .site-footer__grid {
   display: grid;
   gap: var(--step);
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
 }
 
 .site-footer h2 {
   font-size: var(--fs-small);
-  font-weight: 700;
+  font-weight: var(--w-bold);
+  letter-spacing: 0;
   color: var(--c-ink);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.4rem;
 }
 
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
 .site-footer li + li { margin-top: 0.2rem; }
 .site-footer a { color: var(--c-ink); text-decoration: none; }
-.site-footer a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+.site-footer a:hover { text-decoration: underline; }
 
-// The build stamp, in the same vocabulary the image pipelines use. The
-// home page states it in full; here it is the running footer of a record.
 .build-stamp {
   margin-top: var(--step);
-  padding-top: 0.8rem;
+  padding-top: 0.75rem;
   border-top: var(--rule);
   font-family: var(--f-mono);
   font-size: var(--fs-meta);
   color: var(--c-muted);
   font-variant-numeric: tabular-nums;
 }
-.build-stamp dl {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 1.5rem;
-  margin: 0;
-}
+.build-stamp dl { display: flex; flex-wrap: wrap; gap: 0.3rem 1.5rem; margin: 0; }
 .build-stamp dl > div { display: flex; gap: 0.4rem; }
 .build-stamp dt::after { content: ":"; }
 .build-stamp dd { margin: 0; color: var(--c-ink); }

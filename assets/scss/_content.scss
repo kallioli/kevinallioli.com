@@ -1,35 +1,31 @@
-// Long-form reading. Spectral for every sentence, the mono for anything
-// that is a measurement rather than a sentence.
+// Long-form reading. One column, one left edge, the measure capped.
 
 .prose {
   max-width: var(--measure);
 
   > * + * { margin-top: var(--step); }
 
-  > h2 { margin-top: calc(var(--step) * 2.25); }
-  > h3 { margin-top: calc(var(--step) * 1.6); }
-  > h2 + *, > h3 + * { margin-top: 0.7rem; }
-  // A heading following a heading keeps its own air. The adjacent-sibling
-  // rule above has the same specificity as `> h2` and is declared later, so
-  // without these two lines it silently collapses every run of headings.
-  > h2 + h3, > h3 + h3 { margin-top: calc(var(--step) * 1.25); }
-  > h3 + h2 { margin-top: calc(var(--step) * 2.25); }
+  > h2 { margin-top: calc(var(--step) * 2); }
+  > h3 { margin-top: calc(var(--step) * 1.5); }
+  > h2 + *, > h3 + * { margin-top: 0.6rem; }
+  // A heading following a heading keeps its own air. The sibling rule above
+  // has the same specificity as `> h2` and is declared later, so without
+  // these two lines it collapses every run of headings.
+  > h2 + h3, > h3 + h3 { margin-top: calc(var(--step) * 1.1); }
+  > h3 + h2 { margin-top: calc(var(--step) * 2); }
 
-  ul, ol { padding-inline-start: 1.3rem; }
-  li + li { margin-top: 0.35rem; }
-  li > ul, li > ol { margin-top: 0.35rem; }
+  ul, ol { padding-inline-start: 1.25rem; }
+  li + li { margin-top: 0.3rem; }
+  li > ul, li > ol { margin-top: 0.3rem; }
 
-  strong { font-weight: 700; }
+  strong { font-weight: var(--w-strong); }
 
-  // Indent and italic, no coloured bar. Spectral's italic is the quietest
-  // way to change voice.
   blockquote {
-    padding-inline-start: 1.4rem;
-    border-inline-start: var(--rule);
-    font-style: italic;
+    padding-inline-start: 1.25rem;
+    border-inline-start: 2px solid var(--c-rule);
     color: var(--c-muted);
   }
-  blockquote > * + * { margin-top: 0.7rem; }
+  blockquote > * + * { margin-top: 0.6rem; }
 
   :not(pre) > code {
     font-size: 0.85em;
@@ -38,15 +34,10 @@
     word-break: break-word;
   }
 
-  // Code, tables and figures may break the measure once there is room on
-  // either side. Below that width they scroll in place.
   pre, .table-scroll, figure { max-width: none; }
 
   @media (min-width: 72rem) {
-    > .highlight,
-    > .table-scroll,
-    > pre,
-    > figure { margin-inline: -2.5rem; }
+    > .highlight, > .table-scroll, > pre, > figure { margin-inline: -2.5rem; }
   }
 
   a { overflow-wrap: break-word; }
@@ -54,14 +45,13 @@
 
 pre.chroma, pre {
   background: var(--c-surface);
-  padding: 0.9rem 1.05rem;
+  padding: 0.85rem 1rem;
   overflow-x: auto;
   font-size: 0.8125rem;
   line-height: 1.6;
   tab-size: 2;
 }
 pre code { background: none; padding: 0; font-size: inherit; }
-
 .highlight { margin: 0; }
 
 // ------------------------------------------------------------------- tables
@@ -85,11 +75,7 @@ thead th {
   white-space: nowrap;
 }
 
-th, td {
-  padding: 0.5rem 0.9rem;
-  border-bottom: var(--rule);
-  vertical-align: top;
-}
+th, td { padding: 0.45rem 0.85rem; border-bottom: var(--rule); vertical-align: top; }
 th:first-child, td:first-child { padding-inline-start: 0; }
 thead th { border-bottom: 1px solid var(--c-ink); }
 tbody tr:last-child td { border-bottom: 0; }
@@ -98,48 +84,52 @@ tbody tr:last-child td { border-bottom: 0; }
 
 // ---------------------------------------------------------------- page head
 
-.page-header { margin-bottom: calc(var(--step) * 1.75); }
+.page-header { margin-bottom: calc(var(--step) * 1.5); }
 .page-header h1 { max-width: 24ch; }
 .page-header p.lede {
-  margin-top: 0.7rem;
+  margin-top: 0.6rem;
   color: var(--c-muted);
   font-size: var(--fs-lead);
   max-width: var(--measure);
 }
-.page-header .meta { margin-top: 0.7rem; }
+.page-header .meta { margin-top: 0.6rem; }
 
-.article-header { margin-bottom: calc(var(--step) * 1.75); }
+// The article's own record sits above its body, in reading order, rather
+// than beside it in a column that had nothing else to carry.
+.article-header { margin-bottom: calc(var(--step) * 1.5); }
 .article-header h1 { max-width: 26ch; }
-.article-header .draft-badge { margin-bottom: 0.8rem; }
+.article-header .draft-badge { margin-bottom: 0.7rem; }
+.article-header .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.1rem;
+  margin-top: 0.6rem;
+}
 .article-header p.lede {
-  margin-top: 0.8rem;
+  margin-top: 0.7rem;
   font-size: var(--fs-lead);
   color: var(--c-muted);
   max-width: var(--measure);
 }
 
-// The article rail: what the record knows about this page, then the way
-// through it.
-.article-record > * { display: block; }
-.article-record > * + * { margin-top: 0.15rem; }
-
+// Folded by default: a contents list is a way back, not an introduction.
 .toc {
-  padding-top: 0.75rem;
-  border-top: var(--rule);
-  font-size: var(--fs-meta);
-  font-family: var(--f-mono);
-  line-height: 1.5;
+  margin-bottom: calc(var(--step) * 1.5);
+  border-block: var(--rule);
+  padding-block: 0.6rem;
+  font-size: var(--fs-small);
+  max-width: var(--measure);
 }
-.toc h2 {
-  font-family: var(--f-mono);
-  font-size: var(--fs-meta);
-  font-weight: 400;
+.toc > summary {
+  cursor: pointer;
   color: var(--c-muted);
-  margin-bottom: 0.45rem;
+  font-size: var(--fs-meta);
+  font-family: var(--f-mono);
 }
-.toc ul { list-style: none; margin: 0; padding: 0; }
-.toc ul ul { padding-inline-start: 0.8rem; }
-.toc li { margin-top: 0.3rem; }
+.toc > summary::marker { color: var(--c-rule); }
+.toc ul { list-style: none; margin: 0.6rem 0 0; padding: 0; }
+.toc ul ul { padding-inline-start: 0.9rem; }
+.toc li { margin-top: 0.25rem; }
 .toc a { text-decoration: none; color: var(--c-muted); }
 .toc a:hover { color: var(--c-ink); text-decoration: underline; }
 
@@ -151,7 +141,6 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 
 .prose--capped { max-width: var(--measure); }
-
 
 figure { margin: 0; }
 figcaption {

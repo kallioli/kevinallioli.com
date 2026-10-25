@@ -29,14 +29,14 @@ Image Cloud.
 
 ## Ce que le navigateur télécharge
 
-Une page HTML, une feuille de style, trois fichiers de police préchargés,
-et un quatrième seulement si la page contient de l'italique. Rien d'autre,
-et rien qui vienne d'un autre domaine.
+Une page HTML, une feuille de style, deux fichiers de police préchargés, et
+un troisième seulement si la page contient de l'italique. Rien d'autre, et
+rien qui vienne d'un autre domaine.
 
-Deux familles, [Spectral](https://github.com/productiontype/Spectral) et
+Deux familles, [Archivo](https://github.com/Omnibus-Type/Archivo) et
 [IBM Plex Mono](https://www.ibm.com/plex/), toutes deux sous licence SIL
 Open Font License, servies depuis ce domaine en `woff2` sous-ensemblés au
-latin étendu. Quatre fontes pèsent 105 Ko au total. Pas de Google Fonts :
+latin étendu. Trois fichiers pèsent 83 Ko au total. Pas de Google Fonts :
 demander une police à un tiers, c'est lui annoncer chacune de vos
 visites.
 
@@ -86,18 +86,23 @@ désigne l'état exact du dépôt qui a produit la page que vous lisez.
 
 ## Typographie
 
-Spectral porte toutes les phrases, y compris celles de la navigation :
-ceci est un document et non une application. Il n'y a aucune sans-serif
-sur ce site.
+Archivo porte toutes les phrases, y compris celles de la navigation. Une
+grotesque plutôt qu'un serif : ce site documente une pratique d'ingénierie,
+il ne raconte pas une histoire.
+
+C'est une seule fonte variable, qui couvre les graisses de 100 à 900. C'est
+de là que vient la hiérarchie : corps en 400, titres de section en 600,
+thèse en 800. L'axe de chasse a été écarté, il coûtait 38 Ko et n'apportait
+rien que la graisse ne fasse déjà.
 
 IBM Plex Mono ne sert qu'à ce qui se mesure plutôt qu'à ce qui se lit :
 dates, numéros de changement, versions, empreintes. La chasse fixe est ici
 une exigence et non un costume, parce qu'une empreinte se compare colonne
 par colonne.
 
-Corps à 18 pixels, interligne 1,7, mesure limitée à 68 caractères. Sur
-écran large, une colonne étroite à gauche porte le relevé, la colonne
-large porte l'argument.
+Corps à 17 pixels, interligne 1,6, mesure limitée à 62 caractères. Une
+seule colonne et un seul bord gauche : le relevé complet est ici, sur cette
+page, plutôt que poussé devant le lecteur sur l'accueil.
 
 Deux thèmes, clair et sombre, dérivés d'un même jeu de variables CSS. Pas
 de couleur d'accent : les liens sont en encre soulignée. L'ambre est
@@ -107,5 +112,5 @@ réservé à ce qui a un état, un brouillon ou un changement en revue.
 
 Les textes sont sous
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). Le code
-des gabarits et des styles est sous licence MIT. Spectral et IBM Plex Mono
+des gabarits et des styles est sous licence MIT. Archivo et IBM Plex Mono
 sont sous SIL OFL 1.1.

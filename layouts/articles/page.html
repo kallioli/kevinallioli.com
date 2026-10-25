@@ -2,41 +2,35 @@
 <div class="prose-wrap">
 <article itemscope itemtype="https://schema.org/BlogPosting">
 
+  {{- /* The record sits above the body, in reading order. It used to be in a
+         side column that had nothing else to carry. */}}
   <header class="article-header">
     {{- if .Draft }}<p><span class="draft-badge">{{ i18n "draftBadge" }}</span></p>{{ end }}
     <h1 itemprop="headline">{{ .Title }}</h1>
+    <p class="meta">
+      {{- with .Date }}
+      <time datetime="{{ .Format "2006-01-02" }}" itemprop="datePublished"><span class="visually-hidden">{{ i18n "publishedOn" }} </span>{{ .Format "2006-01-02" }}</time>
+      {{- end }}
+      {{- with .Params.pillar }}<span>{{ . }}</span>{{ end }}
+      <span>{{ .ReadingTime }} {{ i18n "readingTime" }}</span>
+    </p>
     {{- with .Description }}<p class="lede">{{ . }}</p>{{ end }}
   </header>
 
-  {{- /* The rail carries what the record knows about this page, then the
-         way through it. It stays in view while the argument scrolls. */}}
-  <div class="track">
-    <div class="track__rail track__rail--sticky">
-      <p class="meta article-record">
-        {{- with .Date }}
-        <time datetime="{{ .Format "2006-01-02" }}" itemprop="datePublished"><span class="visually-hidden">{{ i18n "publishedOn" }} </span>{{ .Format "2006-01-02" }}</time>
-        {{- end }}
-        {{- with .Params.pillar }}<span>{{ . }}</span>{{ end }}
-        <span>{{ .ReadingTime }} {{ i18n "readingTime" }}</span>
-      </p>
+  {{- if and (ge (len .Fragments.Identifiers) 4) (not .Params.hideToc) }}
+  <details class="toc">
+    <summary>{{ i18n "tableOfContents" }}</summary>
+    {{ .Fragments.ToHTML 2 3 false }}
+  </details>
+  {{- end }}
 
-      {{- if and (ge (len .Fragments.Identifiers) 4) (not .Params.hideToc) }}
-      <nav class="toc" aria-labelledby="toc-title">
-        <h2 id="toc-title">{{ i18n "tableOfContents" }}</h2>
-        {{ .Fragments.ToHTML 2 3 false }}
-      </nav>
-      {{- end }}
-    </div>
-
-    <div class="track__body">
-      <div class="prose" itemprop="articleBody">
-        {{ .Content }}
-      </div>
-      <footer class="article-footer">
-        <p><a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "backTo" }}</a></p>
-      </footer>
-    </div>
+  <div class="prose" itemprop="articleBody">
+    {{ .Content }}
   </div>
+
+  <footer class="article-footer">
+    <p><a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "backTo" }}</a></p>
+  </footer>
 </article>
 </div>
 {{ end }}

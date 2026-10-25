@@ -18,9 +18,10 @@
       | fingerprint "sha256" }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
-{{- /* Preload the three faces that render above the fold. The italic is
-       loaded on demand: most pages never reach it. */ -}}
-{{- range slice "fonts/spectral-400.woff2" "fonts/spectral-700.woff2" "fonts/ibm-plex-mono-400.woff2" }}
+{{- /* Preload the two faces that render above the fold. One variable file
+       covers every weight the page uses, so there is nothing else to wait
+       for; the italic is fetched only by pages that contain one. */ -}}
+{{- range slice "fonts/archivo-var.woff2" "fonts/ibm-plex-mono-400.woff2" }}
 {{- with resources.Get . | fingerprint "sha256" }}
 <link rel="preload" href="{{ .RelPermalink }}" as="font" type="font/woff2" crossorigin>
 {{- end }}

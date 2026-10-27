@@ -88,6 +88,13 @@
   color: var(--c-muted);
 }
 
+// The ask. Set in the lead size, once, with its addresses under it.
+.seeking {
+  font-size: var(--fs-lead);
+  max-width: var(--measure);
+  margin-bottom: 0.9rem;
+}
+
 // ------------------------------------------------------------- entry lists
 
 .entry-list { list-style: none; margin: 0; padding: 0; }

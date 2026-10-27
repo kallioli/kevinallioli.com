@@ -4,7 +4,7 @@
       "@id" (printf "%s#person" .Site.Home.Permalink)
       "name" "Kevin Allioli"
       "url" .Site.Home.Permalink
-      "jobTitle" (cond (eq .Site.Language.Lang "fr") "Architecte cloud" "Cloud architect")
+      "jobTitle" (cond (eq .Site.Language.Lang "fr") "Ingénieur OpenStack" "OpenStack engineer")
       "address" (dict "@type" "PostalAddress" "addressLocality" "Genève" "addressCountry" "CH")
       "knowsAbout" (slice "OpenStack" "Cloud infrastructure" "Reproducible builds" "System images" "Supply chain security")
       "sameAs" (slice $p.githubOrg $p.github $p.gerrit $p.linkedin $p.oicSite)

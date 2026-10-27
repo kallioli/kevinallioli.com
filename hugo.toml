@@ -26,14 +26,14 @@ theme = []
   pagerSize = 20
 
 [params]
-  description  = "Architecte cloud à Genève. Images système, OpenStack à grande échelle, souveraineté vérifiable."
+  description  = "Ingénieur OpenStack à Genève. Exploitation à grande échelle, images système, contributions en amont."
   author       = "Kevin Allioli"
   # Overridden at build time via HUGO_PARAMS_BUILDCOMMIT.
   buildCommit  = "dev"
   gerrit       = "https://review.opendev.org/q/owner:kallioli"
   github       = "https://github.com/kallioli"
   githubOrg    = "https://github.com/open-img-cloud"
-  linkedin     = "https://www.linkedin.com/in/kevinallioli"
+  linkedin     = "https://www.linkedin.com/in/kevin-allioli"
   oicSite      = "https://openimages.cloud"
   email        = "kevin@stackops.ch"
   repo         = "https://github.com/kallioli/kevinallioli.com"
@@ -123,7 +123,7 @@ theme = []
     weight       = 1
     title        = "Kevin Allioli"
     [languages.fr.params]
-      tagline = "Architecte cloud. Images système, OpenStack à grande échelle."
+      tagline = "Ingénieur OpenStack. Exploitation à grande échelle, images système, contributions en amont."
       # Read by the language switch from the *other* site, so each language
       # states its own availability to the reader who wants that language.
       translationAvailable = "Cette page existe aussi en français."
@@ -163,8 +163,8 @@ theme = []
     weight       = 2
     title        = "Kevin Allioli"
     [languages.en.params]
-      description = "Cloud architect. System images, OpenStack at scale, verifiable sovereignty."
-      tagline = "Cloud architect. System images, OpenStack at scale."
+      description = "OpenStack engineer in Geneva. Operations at scale, system images, upstream contributions."
+      tagline = "OpenStack engineer. Operations at scale, system images, upstream contributions."
       translationAvailable = "This page is also available in English."
       translationMissing = "This page is not available in English yet. This link goes to the home page."
     [languages.en.markup.goldmark.extensions.typographer]

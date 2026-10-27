@@ -1,7 +1,7 @@
 ---
 title: "Why JSON embedded in a Horizon page deserved proper escaping"
 date: 2026-10-20
-draft: true
+draft: false
 description: "A security fix on the OpenStack dashboard, and the class of problem it belongs to."
 pillar: "Upstream"
 tags: ["openstack", "horizon", "security", "django"]

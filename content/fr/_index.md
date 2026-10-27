@@ -1,11 +1,26 @@
 ---
 translationKey: "home"
 title: "Kevin Allioli"
-description: "Architecte cloud à Genève. Images système, OpenStack à grande échelle, souveraineté vérifiable."
-role: "Architecte cloud à Genève. Treize ans d'infrastructure."
-lead: "Je construis et j'exploite les couches basses des clouds souverains : les images système et les plateformes OpenStack sur lesquelles tournent des milliers de serveurs."
-thesis: "La souveraineté ne se décrète pas, elle se vérifie."
-thesisNote: "Une infrastructure qu'on ne sait pas reconstruire depuis la source n'est pas souveraine, quel que soit le pays du datacentre."
+description: "Ingénieur OpenStack à Genève. Exploitation à grande échelle, images système, contributions en amont."
+role: "Ingénieur OpenStack à Genève. Treize ans d'infrastructure."
+thesis: "Cinq ans d'OpenStack en production, à plus de 5 000 serveurs."
+thesisNote: "J'exploite les plateformes OpenStack et je construis les images système qui les font démarrer. Depuis 2026, je corrige aussi en amont ce que je rencontrais en exploitation."
+lead: "Je travaille sur les couches basses du cloud : le plan de contrôle OpenStack, ses montées de version, ses incidents de niveau 3, et les images sur lesquelles démarrent des milliers de serveurs."
+seeking: "Un poste où OpenStack est le cœur du métier : exploitation à grande échelle, montées de version, chaîne d'images, ou travail en amont. Si votre équipe fait tourner OpenStack, écrivez-moi."
+profile:
+  - key: "poste"
+    value: "Ingénieur N3 Cloud, Cheops Technology, Genève"
+  - key: "openstack"
+    value: "5 ans en production, 5 000+ serveurs"
+  - key: "projet"
+    value: "Open Image Cloud"
+    url: "/projets/open-image-cloud/"
+  - key: "gerrit"
+    value: "kallioli"
+    url: "https://review.opendev.org/q/owner:kallioli"
+  - key: "github"
+    value: "kallioli"
+    url: "https://github.com/kallioli"
 outputs: ["html", "rss", "headers", "redirects"]
 ---
 
@@ -17,5 +32,7 @@ démarrent, un travail qui reste invisible tant qu'il fonctionne. Je suis
 aujourd'hui ingénieur N3 Cloud et Services Managés chez Cheops Technology
 Switzerland, à Genève.
 
-Ce site rassemble ce que j'écris sur ce métier, les projets que je publie
-en open source, et le registre de mes contributions en amont d'OpenStack.
+Depuis 2026, je contribue à OpenStack en amont : modernisation et
+correctifs de sécurité sur Horizon, le tableau de bord, et sur
+openstacksdk. Le registre plus bas liste chaque changement avec son état,
+abandons compris. Tout ce que ce site affirme se vérifie en un clic.

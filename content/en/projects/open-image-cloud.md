@@ -19,6 +19,16 @@ facts:
     value: "Apache-2.0 / MIT depending on the repository"
   - key: "role"
     value: "Author and maintainer"
+summary: "Ready-to-use cloud images for OpenStack and Proxmox. Eight Linux distributions and the Octavia amphorae pinned to each OpenStack release. Built on GitHub Actions, signed with keyless cosign, shipped with their provenance in a MANIFEST.json."
+tags: ["Alpine", "Alpaquita", "Amazon Linux", "Gentoo", "NixOS", "Oracle Linux", "Octavia"]
+verify:
+  command: |-
+    cosign verify-blob alpine-3.23.4-uefi-x86_64.qcow2 \
+      --bundle alpine-3.23.4-uefi-x86_64.qcow2.bundle \
+      --new-bundle-format \
+      --certificate-identity-regexp 'https://github.com/open-img-cloud/' \
+      --certificate-oidc-issuer https://token.actions.githubusercontent.com
+  note: "You can verify what you boot without having to trust me."
 links:
   - label: "openimages.cloud"
     url: "https://openimages.cloud"

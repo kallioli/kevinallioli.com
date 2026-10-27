@@ -1,6 +1,7 @@
 // The only script on the site. It reads a stored preference, applies it
-// before first paint, and reveals the toggle. With JavaScript off the
-// toggle stays hidden and the system preference decides, in CSS.
+// before first paint, and reveals the toggle. The site is dark by default,
+// in CSS; light is an explicit choice, never the system preference, so the
+// toggle has a well-defined state even when nothing is stored.
 (function () {
   var root = document.documentElement;
   var KEY = "theme";
@@ -16,11 +17,8 @@
     if (!btn) return;
     btn.hidden = false;
     btn.addEventListener("click", function () {
-      var current = root.getAttribute("data-theme");
-      var isDark = current
-        ? current === "dark"
-        : window.matchMedia("(prefers-color-scheme: dark)").matches;
-      var next = isDark ? "light" : "dark";
+      var isLight = root.getAttribute("data-theme") === "light";
+      var next = isLight ? "dark" : "light";
       root.setAttribute("data-theme", next);
       try {
         localStorage.setItem(KEY, next);

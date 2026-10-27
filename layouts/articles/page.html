@@ -3,8 +3,8 @@
 <article itemscope itemtype="https://schema.org/BlogPosting">
 
   <header class="article-header">
-    {{- if .Draft }}<p><span class="draft-badge">{{ i18n "draftBadge" }}</span></p>{{ end }}
-    <h1 itemprop="headline">{{ .Title }}</h1>
+    {{- with .Params.pillar }}<span class="key">{{ . }}</span>{{ end }}
+    <h1 itemprop="headline">{{ if .Draft }}<span class="draft-badge">{{ i18n "draftBadge" }}</span> {{ end }}{{ .Title }}</h1>
     {{- with .Description }}<p class="lede">{{ . }}</p>{{ end }}
   </header>
 
@@ -16,8 +16,8 @@
         {{- with .Date }}
         <time datetime="{{ .Format "2006-01-02" }}" itemprop="datePublished"><span class="visually-hidden">{{ i18n "publishedOn" }} </span>{{ .Format "2006-01-02" }}</time>
         {{- end }}
-        {{- with .Params.pillar }}<span>{{ . }}</span>{{ end }}
         <span>{{ .ReadingTime }} {{ i18n "readingTime" }}</span>
+        {{- with .Params.tags }}<span>{{ delimit . ", " }}</span>{{ end }}
       </p>
 
       {{- if and (ge (len .Fragments.Identifiers) 4) (not .Params.hideToc) }}

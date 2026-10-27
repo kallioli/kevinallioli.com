@@ -23,18 +23,29 @@ colSubject = "Subject"
 colStatus  = "Status"
 colDate    = "Submitted"
 gerritProfile = "Gerrit profile"
-recordNote = "Every line of this record points at a proof: a register, a repository, a review. The technical record of the page itself is on the colophon."
-recordUpstreamKey = "upstream"
-recordContactKey = "contact"
 articlesOtherLanguage = "Nothing published in English yet. The articles below are in French."
-seekingTitle = "What I am looking for"
 
 elsewhere       = "Elsewhere"
 allProjects     = "All projects"
 allContributions = "The full register"
 
-[recordUpstream]
-other = "{{ .Merged }} changes merged, {{ .Open }} in review"
+ctaContact = "Contact me"
+ctaContributions = "See my contributions"
+registerLive = "current"
+skillsTitle = "What I do"
+timelineTitle = "Career"
+projectTitle = "Project"
+upstreamTitle = "Upstream contributions"
+verifyTitle = "verify an image"
+gerritAccount = "gerrit account"
+articlesKey = "articles"
+projectsKey = "projects"
+stateMerged = "MERGED"
+stateOpen = "REVIEW"
+stateAbandoned = "ABANDONED"
 
 [contribSummary]
 other = "{{ .Merged }} changes merged upstream, {{ .Open }} in review, {{ .Reviewed }} reviews given on Horizon, openstacksdk and Keystone. The register lists every change with its Gerrit number and state, abandoned ones included."
+
+[statUpstream]
+other = "changes merged upstream, {{ .Open }} in review"

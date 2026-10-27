@@ -30,22 +30,10 @@
     {{- /* Provenance, in the same vocabulary the build pipelines use. */}}
     <div class="build-stamp">
       <dl>
-        <div>
-          <dt>commit</dt>
-          <dd><code>{{ $short }}</code></dd>
-        </div>
-        <div>
-          <dt>content</dt>
-          <dd><time datetime="{{ .Site.Lastmod.Format "2006-01-02" }}">{{ .Site.Lastmod.Format "2006-01-02" }}</time></dd>
-        </div>
-        <div>
-          <dt>hugo</dt>
-          <dd>{{ hugo.Version }}</dd>
-        </div>
-        <div>
-          <dt>license</dt>
-          <dd><a href="{{ (.Site.GetPage "/colophon").RelPermalink }}">CC BY 4.0 / MIT</a></dd>
-        </div>
+        <div><dt>commit</dt><dd><code>{{ $short }}</code></dd></div>
+        <div><dt>content</dt><dd><time datetime="{{ .Site.Lastmod.Format "2006-01-02" }}">{{ .Site.Lastmod.Format "2006-01-02" }}</time></dd></div>
+        <div><dt>hugo</dt><dd>{{ hugo.Version }}</dd></div>
+        <div><dt>license</dt><dd><a href="{{ (.Site.GetPage "/colophon").RelPermalink }}">CC BY 4.0 / MIT</a></dd></div>
       </dl>
     </div>
   </div>

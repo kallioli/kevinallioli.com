@@ -10,9 +10,9 @@ third-party theme, no runtime dependency on anything outside this origin.
   `.hugo-sha256`. The same version is installed locally and in CI.
 - **No theme, no Node, no bundler.** Every layout lives in `layouts/`. Hugo
   Pipes transpiles the SCSS, minifies it, and fingerprints it.
-- **Self-hosted fonts.** Spectral and IBM Plex Mono (both SIL OFL 1.1),
-  subset to extended Latin, four `woff2` faces totalling 105 KB under
-  `assets/fonts/`. There is no sans-serif on the site.
+- **Self-hosted fonts.** IBM Plex Sans (variable, one file per script
+  subset) and IBM Plex Mono, both SIL OFL 1.1, three `woff2` files
+  totalling 92 KB under `assets/fonts/`.
 - **One inline script**, the theme toggle. Its SHA-256 is generated into the
   `script-src` directive of `_headers`, so the policy cannot drift from the
   script. `scripts/check-csp-hash.sh` proves it on every build.
@@ -24,7 +24,7 @@ content/fr/           French content, served at /
 content/en/           English content, served at /en/
 data/contributions.yaml   the upstream register, generated, rendered by a layout
 assets/scss/          design tokens and stylesheets
-assets/fonts/         subset Spectral and IBM Plex Mono woff2
+assets/fonts/         IBM Plex Sans and IBM Plex Mono woff2
 assets/js/theme.js    the only script on the site
 layouts/              hand-written templates, including _headers and _redirects
 scripts/              verification, the register generator, the Hugo pin
@@ -188,5 +188,5 @@ stylesheet knows which theme is active.
 ## Licence
 
 Code (layouts, styles, scripts, workflows) under [MIT](LICENSE). Content
-under [CC BY 4.0](LICENSE-CONTENT). Spectral and IBM Plex Mono under SIL
-OFL 1.1, see the two `LICENSE-OFL-*.txt` files in `assets/fonts/`.
+under [CC BY 4.0](LICENSE-CONTENT). IBM Plex Sans and Mono under SIL
+OFL 1.1, see `LICENSE-OFL-ibm-plex.txt` in `assets/fonts/`.

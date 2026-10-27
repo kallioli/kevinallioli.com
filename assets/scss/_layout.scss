@@ -1,6 +1,4 @@
-// Page frame and the two-track grid: a rail carrying the record, a column
-// carrying the argument. The tracks are separated by space and a change of
-// voice, not by a rule.
+// Page frame: a sticky top bar, one content column, a quiet footer.
 
 .wrap {
   width: 100%;
@@ -9,66 +7,81 @@
   padding-inline: var(--gutter);
 }
 
-// The reading frame. Wide enough for the rail and the measure side by side.
+// The reading frame for long-form pages: article rail plus measure.
 .prose-wrap {
   width: 100%;
-  max-width: calc(var(--rail) + var(--rail-gap) + var(--measure) + var(--gutter) * 2);
+  max-width: calc(14rem + 2.75rem + var(--measure) + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
+.site-main {
+  flex: 1 0 auto;
+  padding-block: calc(var(--step) * 2.5) calc(var(--step) * 3);
+}
+
+// Two tracks: a rail that stays in view, a column that scrolls past it.
 .track {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 0.9rem;
+  gap: var(--step);
 }
-
 .track__rail > * + * { margin-top: 0.9rem; }
 .track__body  > * + * { margin-top: var(--step); }
 
 @media (min-width: 60rem) {
   .track {
-    grid-template-columns: var(--rail) minmax(0, 1fr);
-    column-gap: var(--rail-gap);
+    grid-template-columns: 14rem minmax(0, 1fr);
+    column-gap: 2.75rem;
     row-gap: 0;
   }
-  // Below the fold the rail keeps the record in view while the argument
-  // scrolls past it.
   .track__rail--sticky {
     position: sticky;
-    top: var(--step);
+    top: calc(3.5rem + var(--step));
     align-self: start;
   }
-}
-
-.site-main {
-  flex: 1 0 auto;
-  padding-block: calc(var(--step) * 2.25) calc(var(--step) * 3);
 }
 
 // ------------------------------------------------------------------ header
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: color-mix(in srgb, var(--c-bg) 90%, transparent);
+  backdrop-filter: blur(8px);
   border-bottom: var(--rule);
-  background: var(--c-bg);
 }
 
 .site-header__inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.6rem 1.5rem;
-  padding-block: 0.9rem;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  min-height: 3.5rem;
+  padding-block: 0.5rem;
 }
 
 .site-brand {
-  font-weight: 700;
-  font-size: var(--fs-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: 0.01em;
   color: var(--c-ink);
   text-decoration: none;
   white-space: nowrap;
 }
-.site-brand:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.site-brand:hover { text-decoration: none; color: var(--c-accent); }
+
+// The dot: the site is up. It is the one ornament in the header.
+.site-brand__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--c-ok);
+  box-shadow: 0 0 0 3px var(--c-ok-bg);
+}
 
 .site-nav { margin-inline-start: auto; }
 
@@ -76,28 +89,27 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.1rem 1.15rem;
+  gap: 0.1rem 1.25rem;
   margin: 0;
   padding: 0;
 }
 
 .site-nav__link {
-  font-size: var(--fs-small);
+  font-size: 0.875rem;
   color: var(--c-muted);
   text-decoration: none;
   padding-block: 0.2rem;
   border-bottom: 2px solid transparent;
 }
-.site-nav__link:hover { color: var(--c-ink); }
+.site-nav__link:hover { color: var(--c-ink); text-decoration: none; }
 .site-nav__link[aria-current="page"] {
   color: var(--c-ink);
-  border-bottom-color: var(--c-ink);
+  border-bottom-color: var(--c-accent);
 }
 
 .header-tools {
   display: flex;
   align-items: center;
-  align-self: center;
   gap: 0.5rem;
 }
 
@@ -114,38 +126,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 1.8rem;
-  min-width: 1.8rem;
+  min-height: 1.9rem;
+  min-width: 1.9rem;
   font-family: var(--f-mono);
   font-size: var(--fs-meta);
   line-height: 1;
   color: var(--c-muted);
   background: transparent;
   border: var(--rule);
+  border-radius: var(--radius-s);
   padding: 0 0.45rem;
   text-decoration: none;
 }
 .lang-switch:hover,
-.theme-toggle:hover { color: var(--c-ink); border-color: var(--c-ink); }
+.theme-toggle:hover { color: var(--c-ink); border-color: var(--c-accent); text-decoration: none; }
 
-.theme-toggle {
-  font: inherit;
-  cursor: pointer;
-}
-.theme-toggle svg {
-  width: 0.9rem;
-  height: 0.9rem;
-  display: block;
-  fill: currentColor;
-}
+// A switch that leads to the other home page rather than to this page in
+// the other language does not look like the same thing.
+.lang-switch--home { border-style: dashed; }
+
+.theme-toggle { font: inherit; cursor: pointer; }
+.theme-toggle svg { width: 0.9rem; height: 0.9rem; display: block; fill: currentColor; }
 .theme-toggle[hidden] { display: none; }
 
 // ------------------------------------------------------------------ footer
 
 .site-footer {
   border-top: var(--rule);
-  background: var(--c-surface);
-  padding-block: calc(var(--step) * 1.5);
+  padding-block: calc(var(--step) * 1.5) calc(var(--step) * 2);
   font-size: var(--fs-small);
   color: var(--c-muted);
 }
@@ -157,19 +165,21 @@
 }
 
 .site-footer h2 {
-  font-size: var(--fs-small);
-  font-weight: 700;
-  color: var(--c-ink);
-  margin-bottom: 0.45rem;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 0.6rem;
 }
 
 .site-footer ul { list-style: none; margin: 0; padding: 0; }
-.site-footer li + li { margin-top: 0.2rem; }
-.site-footer a { color: var(--c-ink); text-decoration: none; }
-.site-footer a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+.site-footer li + li { margin-top: 0.25rem; }
+.site-footer a { color: var(--c-ink); }
+.site-footer a:hover { color: var(--c-accent); }
 
-// The build stamp, in the same vocabulary the image pipelines use. The
-// home page states it in full; here it is the running footer of a record.
+// The build stamp, in the vocabulary the image pipelines use.
 .build-stamp {
   margin-top: var(--step);
   padding-top: 0.8rem;

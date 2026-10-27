@@ -1,8 +1,10 @@
 {{ define "main" }}
 <div class="prose-wrap">
   <header class="page-header">
+    <span class="key">{{ i18n "projectsKey" }}</span>
     <h1>{{ .Title }}</h1>
     {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+    {{ with .Params.status }}<p class="meta">{{ . }}</p>{{ end }}
   </header>
 
   {{- with .Params.facts }}

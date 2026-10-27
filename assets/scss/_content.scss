@@ -1,4 +1,4 @@
-// Long-form reading. Spectral for every sentence, the mono for anything
+// Long-form reading. Plex Sans for every sentence, the mono for anything
 // that is a measurement rather than a sentence.
 
 .prose {
@@ -21,20 +21,19 @@
 
   strong { font-weight: 700; }
 
-  // Indent and italic, no coloured bar. Spectral's italic is the quietest
-  // way to change voice.
   blockquote {
     padding-inline-start: 1.4rem;
-    border-inline-start: var(--rule);
-    font-style: italic;
+    border-inline-start: 2px solid var(--c-accent);
     color: var(--c-muted);
   }
   blockquote > * + * { margin-top: 0.7rem; }
 
   :not(pre) > code {
     font-size: 0.85em;
-    background: var(--c-surface);
-    padding: 0.1em 0.3em;
+    background: var(--c-surface-2);
+    border: var(--rule);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
     word-break: break-word;
   }
 
@@ -53,8 +52,10 @@
 }
 
 pre.chroma, pre {
-  background: var(--c-surface);
-  padding: 0.9rem 1.05rem;
+  background: var(--c-code);
+  border: var(--rule);
+  border-radius: var(--radius-s);
+  padding: 1rem 1.125rem;
   overflow-x: auto;
   font-size: 0.8125rem;
   line-height: 1.6;
@@ -91,7 +92,7 @@ th, td {
   vertical-align: top;
 }
 th:first-child, td:first-child { padding-inline-start: 0; }
-thead th { border-bottom: 1px solid var(--c-ink); }
+thead th { border-bottom: var(--rule); }
 tbody tr:last-child td { border-bottom: 0; }
 
 .prose > table { display: block; overflow-x: auto; }
@@ -100,6 +101,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 .page-header { margin-bottom: calc(var(--step) * 1.75); }
 .page-header h1 { max-width: 24ch; }
+.page-header .key { margin-bottom: 0.75rem; }
 .page-header p.lede {
   margin-top: 0.7rem;
   color: var(--c-muted);
@@ -110,6 +112,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 .article-header { margin-bottom: calc(var(--step) * 1.75); }
 .article-header h1 { max-width: 26ch; }
+.article-header .key { margin-bottom: 0.75rem; }
 .article-header .draft-badge { margin-bottom: 0.8rem; }
 .article-header p.lede {
   margin-top: 0.8rem;
@@ -141,7 +144,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .toc ul ul { padding-inline-start: 0.8rem; }
 .toc li { margin-top: 0.3rem; }
 .toc a { text-decoration: none; color: var(--c-muted); }
-.toc a:hover { color: var(--c-ink); text-decoration: underline; }
+.toc a:hover { color: var(--c-accent); text-decoration: none; }
 
 .article-footer {
   margin-top: calc(var(--step) * 2.5);

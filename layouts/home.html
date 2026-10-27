@@ -1,78 +1,112 @@
 {{ define "main" }}
-<div class="prose-wrap">
+{{- $d := hugo.Data.contributions }}
+{{- $merged := where $d.authored "status" "MERGED" }}
+{{- $open := where $d.authored "status" "NEW" }}
+{{- $recent := first 8 (sort $d.authored "created" "desc") }}
+<div class="wrap">
 
-  {{- /* Who, where, and the one claim set large: what the record proves. */}}
+  {{- /* The person on the left, the register on the right. The panel is
+         read from data at build time, so it is never older than the
+         nightly refresh. */}}
   <div class="hero">
-    <h1 class="hero__name">{{ .Title }}</h1>
-    {{- with .Params.role }}<p class="hero__role">{{ . }}</p>{{ end }}
-    {{- with .Params.thesis }}<p class="hero__thesis">{{ . }}</p>{{ end }}
-    {{- with .Params.thesisNote }}<p class="hero__note">{{ . }}</p>{{ end }}
-  </div>
-
-  {{- /* The rail carries the profile as a record: one key, one value, and
-         a link to the proof wherever one exists. The upstream line is
-         counted from the register at build time so it cannot go stale. */}}
-  {{- $d := hugo.Data.contributions }}
-  {{- $merged := where $d.authored "status" "MERGED" }}
-  {{- $open := where $d.authored "status" "NEW" }}
-  <div class="track">
-    <div class="track__rail">
-      <dl class="record">
-        {{- range .Params.profile }}
-        <div>
-          <dt>{{ .key }}</dt>
-          <dd>{{ if .url }}<a href="{{ .url }}">{{ .value }}</a>{{ else }}{{ .value }}{{ end }}</dd>
-        </div>
+    <div>
+      <span class="key">{{ .Params.role }}</span>
+      <h1 class="hero__name">{{ .Title }}</h1>
+      {{- with .Params.lead }}<p class="hero__role">{{ . }}</p>{{ end }}
+      <div class="cta">
+        <a class="btn btn--primary" href="#contact">{{ i18n "ctaContact" }}</a>
+        <a class="btn" href="{{ (.Site.GetPage "/contributions").RelPermalink }}">{{ i18n "ctaContributions" }}</a>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel__head">review.opendev.org · owner:kallioli <span class="live">● {{ i18n "registerLive" }}</span></div>
+      <ul class="log">
+        {{- range $recent }}
+        <li>
+          <span class="log__n"><a href="{{ .url }}">{{ .number }}</a></span>
+          <span class="log__s">{{ .subject }}</span>
+          {{ partial "state-pill.html" .status }}
+        </li>
         {{- end }}
-        <div>
-          <dt>{{ i18n "recordUpstreamKey" }}</dt>
-          <dd><a href="{{ (.Site.GetPage "/contributions").RelPermalink }}">{{ i18n "recordUpstream" (dict "Merged" (len $merged) "Open" (len $open)) }}</a></dd>
-        </div>
-        <div>
-          <dt>{{ i18n "recordContactKey" }}</dt>
-          <dd><a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a></dd>
-        </div>
-      </dl>
-      <p class="rail-note">{{ i18n "recordNote" }}</p>
-    </div>
-    <div class="track__body">
-      {{- with .Params.lead }}<p class="hero__lead">{{ . }}</p>{{ end }}
-      {{- with .Content }}<div class="hero__intro">{{ . }}</div>{{ end }}
+      </ul>
     </div>
   </div>
 
-  {{- /* The ask, stated once and plainly, before the proofs. */}}
-  {{- with .Params.seeking }}
-  <section class="home-section" aria-labelledby="h-seeking">
-    <div class="section-head">
-      <h2 id="h-seeking">{{ i18n "seekingTitle" }}</h2>
+  <div class="stats">
+    {{- range .Params.stats }}
+    <div class="stat">
+      {{- if eq .computed "upstream" }}
+      <b>{{ len $merged }}</b><span>{{ i18n "statUpstream" (dict "Open" (len $open)) }}</span>
+      {{- else }}
+      <b>{{ .value }}</b><span>{{ .label }}</span>
+      {{- end }}
     </div>
-    <p class="seeking">{{ . }}</p>
-    <ul class="link-row">
-      <li><a href="mailto:{{ $.Site.Params.email }}">{{ $.Site.Params.email }}</a></li>
-      <li><a href="{{ $.Site.Params.linkedin }}">linkedin.com/in/kevin-allioli</a></li>
-      <li><a href="{{ $.Site.Params.gerrit }}">review.opendev.org/q/owner:kallioli</a></li>
+    {{- end }}
+  </div>
+
+  {{- with .Params.skills }}
+  <section class="home-section" id="skills" aria-labelledby="h-skills">
+    <div class="section-head"><h2 id="h-skills">{{ i18n "skillsTitle" }}</h2></div>
+    <div class="grid">
+      {{- range . }}
+      <div class="card">
+        <span class="key">{{ .key }}</span>
+        <h3>{{ .title }}</h3>
+        <p>{{ .text }}</p>
+      </div>
+      {{- end }}
+    </div>
+  </section>
+  {{- end }}
+
+  {{- with .Params.timeline }}
+  <section class="home-section" id="timeline" aria-labelledby="h-timeline">
+    <div class="section-head"><h2 id="h-timeline">{{ i18n "timelineTitle" }}</h2></div>
+    <ul class="tl">
+      {{- range . }}
+      <li>
+        <span class="key">{{ .when }}</span>
+        <h3>{{ .title }}</h3>
+        <p>{{ .text }}</p>
+      </li>
+      {{- end }}
     </ul>
   </section>
   {{- end }}
 
+  {{- with .Site.GetPage "/projets" }}{{ template "home-project" . }}{{ end }}
+  {{- with .Site.GetPage "/projects" }}{{ template "home-project" . }}{{ end }}
+
   {{- with .Site.GetPage "/contributions" }}
-  <section class="home-section" aria-labelledby="h-contrib">
+  <section class="home-section" id="upstream" aria-labelledby="h-upstream">
     <div class="section-head">
-      <h2 id="h-contrib">{{ .Title }}</h2>
+      <h2 id="h-upstream">{{ i18n "upstreamTitle" }}</h2>
       <p><a href="{{ .RelPermalink }}">{{ i18n "allContributions" }}</a></p>
     </div>
-    <p class="entry__summary">{{ i18n "contribSummary" (dict "Merged" (len $merged) "Open" (len $open) "Reviewed" (len $d.reviewed)) }}</p>
+    <div class="grid grid--2-1">
+      <div class="card card--flush">
+        <ul class="log log--wrap">
+          {{- range first 6 $merged }}
+          <li>
+            <span class="log__n"><a href="{{ .url }}">{{ .number }}</a></span>
+            <span class="log__s">{{ .subject }}</span>
+            {{ partial "state-pill.html" .status }}
+          </li>
+          {{- end }}
+        </ul>
+      </div>
+      <div class="card">
+        <span class="key">{{ i18n "gerritAccount" }}</span>
+        <h3 style="font-family:var(--f-mono);font-weight:500">kallioli</h3>
+        <p>{{ i18n "contribSummary" (dict "Merged" (len $merged) "Open" (len $open) "Reviewed" (len $d.reviewed)) }}</p>
+      </div>
+    </div>
   </section>
   {{- end }}
 
-  {{- with .Site.GetPage "/projets" }}{{ template "home-projects" . }}{{ end }}
-  {{- with .Site.GetPage "/projects" }}{{ template "home-projects" . }}{{ end }}
-
-  {{- /* Articles in this language first. When there are none, the other
-         language's articles are listed rather than an empty state: a piece
-         written for the upstream community is in English whichever home
-         page the reader landed on. */}}
+  {{- /* Articles in this language first; otherwise the other language's,
+         because a piece for the upstream community is in English
+         whichever home page the reader landed on. */}}
   {{- $articles := where (where .Site.RegularPages "Section" "articles") "Params.hidden" "!=" true }}
   {{- $fallback := false }}
   {{- if not $articles }}
@@ -83,7 +117,7 @@
       {{- end }}
     {{- end }}
   {{- end }}
-  <section class="home-section" aria-labelledby="h-articles">
+  <section class="home-section" id="articles" aria-labelledby="h-articles">
     <div class="section-head">
       <h2 id="h-articles">{{ i18n "latestArticles" }}</h2>
       <p><a href="{{ (.Site.GetPage "/articles").RelPermalink }}">{{ i18n "allArticles" }}</a></p>
@@ -100,25 +134,52 @@
     {{- end }}
   </section>
 
+  <section class="home-section" id="contact" aria-labelledby="h-contact">
+    <div class="contact">
+      <div>
+        <h2 id="h-contact">{{ .Params.seekingTitle }}</h2>
+        <p>{{ .Params.seeking }}</p>
+      </div>
+      <ul class="contact__links">
+        <li>{{ .Site.Params.email }}</li>
+        <li><a href="{{ .Site.Params.linkedin }}">linkedin.com/in/kevin-allioli</a></li>
+        <li><a href="{{ .Site.Params.github }}">github.com/kallioli</a></li>
+        <li><a href="{{ .Site.Params.gerrit }}">review.opendev.org/q/owner:kallioli</a></li>
+      </ul>
+    </div>
+  </section>
+
 </div>
 {{ end }}
 
-{{ define "home-projects" }}
-<section class="home-section" aria-labelledby="h-projects">
+{{ define "home-project" }}
+{{- with (.Pages.ByWeight | first 1) }}{{ with index . 0 }}
+<section class="home-section" id="project" aria-labelledby="h-project">
   <div class="section-head">
-    <h2 id="h-projects">{{ .Title }}</h2>
-    <p><a href="{{ .RelPermalink }}">{{ i18n "allProjects" }}</a></p>
+    <h2 id="h-project">{{ i18n "projectTitle" }}</h2>
+    <p><a href="{{ .Parent.RelPermalink }}">{{ i18n "allProjects" }}</a></p>
   </div>
-  {{- with (.Pages.ByWeight | first 1) }}{{ with index . 0 }}
-  <article class="project">
-    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-    {{- with .Description }}<p>{{ . }}</p>{{ end }}
-    {{- with .Params.links }}
-    <ul class="link-row">
-      {{- range . }}<li><a href="{{ .url }}">{{ .label }}</a></li>{{ end }}
-    </ul>
+  <div class="feature">
+    <div>
+      <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p>{{ .Params.summary | default .Description }}</p>
+      {{- with .Params.tags }}
+      <ul class="tags">{{ range . }}<li class="tag">{{ . }}</li>{{ end }}</ul>
+      {{- end }}
+      {{- with .Params.links }}
+      <ul class="link-row feature__links">
+        {{- range . }}<li><a href="{{ .url }}">{{ .label }}</a></li>{{ end }}
+      </ul>
+      {{- end }}
+    </div>
+    {{- with .Params.verify }}
+    <div>
+      <div class="panel__head">{{ i18n "verifyTitle" }}</div>
+      <pre><code>{{ .command }}</code></pre>
+      {{- with .note }}<p style="margin-top:0.9rem;font-size:var(--fs-small)">{{ . }}</p>{{ end }}
+    </div>
     {{- end }}
-  </article>
-  {{- end }}{{ end }}
+  </div>
 </section>
+{{- end }}{{ end }}
 {{ end }}

@@ -1,0 +1,8 @@
+{{- /* A Gerrit status as a pill. Expects the status string. Statuses the
+       register page does not know fall through to the abandoned style so
+       they stay visible; the register page itself fails the build. */ -}}
+{{- $s := . -}}
+{{- $cls := "abandoned" -}}{{- $label := i18n "stateAbandoned" -}}
+{{- if eq $s "MERGED" }}{{ $cls = "merged" }}{{ $label = i18n "stateMerged" }}{{ end -}}
+{{- if eq $s "NEW" }}{{ $cls = "new" }}{{ $label = i18n "stateOpen" }}{{ end -}}
+<span class="pill pill--{{ $cls }}">{{ $label }}</span>

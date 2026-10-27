@@ -2,6 +2,7 @@
 {{- $d := hugo.Data.contributions }}
 <div class="wrap">
   <header class="page-header">
+    <span class="key">{{ i18n "upstreamTitle" }}</span>
     <h1>{{ .Title }}</h1>
     {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
     <p class="meta"><a href="{{ $d.profile }}">{{ i18n "gerritProfile" }}: review.opendev.org/q/owner:kallioli</a></p>
@@ -22,7 +23,7 @@
   {{- $shown = add $shown (len $rows) }}
   {{- if $rows }}
   <section class="registry" aria-labelledby="reg-{{ .class }}">
-    <h2 id="reg-{{ .class }}">{{ .label }} ({{ len $rows }})</h2>
+    <h2 id="reg-{{ .class }}">{{ partial "state-pill.html" .key }} {{ .label }} ({{ len $rows }})</h2>
     <div class="table-scroll">
       <table>
         <caption class="visually-hidden">{{ .label }}</caption>
@@ -31,18 +32,15 @@
             <th scope="col">{{ i18n "colProject" }}</th>
             <th scope="col">{{ i18n "colChange" }}</th>
             <th scope="col">{{ i18n "colSubject" }}</th>
-            <th scope="col">{{ i18n "colStatus" }}</th>
             <th scope="col">{{ i18n "colDate" }}</th>
           </tr>
         </thead>
         <tbody>
-          {{- $cls := .class }}{{ $label := .label }}
           {{- range $rows }}
           <tr>
             <td class="col-project">{{ .project }}</td>
             <td class="col-change"><a href="{{ .url }}">{{ .number }}</a></td>
             <td class="col-subject">{{ .subject }}</td>
-            <td><span class="state state--{{ $cls }}">{{ $label }}</span></td>
             <td class="col-date"><time datetime="{{ .created }}">{{ .created }}</time></td>
           </tr>
           {{- end }}

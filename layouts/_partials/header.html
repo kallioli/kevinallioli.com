@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="site-brand" href="{{ .Site.Home.RelPermalink }}">Kevin Allioli</a>
+    <a class="site-brand" href="{{ .Site.Home.RelPermalink }}"><span class="site-brand__dot" aria-hidden="true"></span>kevinallioli.com</a>
 
     <nav class="site-nav" aria-label="{{ i18n "mainNav" }}">
       <ul class="site-nav__list">
@@ -16,10 +16,8 @@
     <div class="header-tools">
       {{- /* Most pages here have no counterpart: the French and English
              article sets are different pieces, not translations of each
-             other. The switch used to fall back to the other language's home
-             page without saying so, which is a link that lies about where it
-             goes. It now says, in the language being switched to, whether it
-             leads to this page or to that home page. */}}
+             other. The switch says, in the language being switched to,
+             whether it leads to this page or to that home page. */}}
       {{- $cur := . }}
       <nav class="lang-nav" aria-label="{{ i18n "langNav" }}">
         <ul>

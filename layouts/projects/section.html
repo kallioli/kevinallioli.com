@@ -1,6 +1,7 @@
 {{ define "main" }}
 <div class="prose-wrap">
   <header class="page-header">
+    <span class="key">{{ i18n "projectsKey" }}</span>
     <h1>{{ .Title }}</h1>
     {{- with .Description }}<p class="lede">{{ . }}</p>{{ end }}
   </header>
@@ -12,6 +13,9 @@
       <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       {{- with .Params.status }}<p class="meta">{{ . }}</p>{{ end }}
       {{- with .Description }}<p>{{ . }}</p>{{ end }}
+      {{- with .Params.links }}
+      <ul class="link-row">{{ range . }}<li><a href="{{ .url }}">{{ .label }}</a></li>{{ end }}</ul>
+      {{- end }}
     </article>
     {{- end }}
   </div>

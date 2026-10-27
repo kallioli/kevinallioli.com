@@ -5,6 +5,8 @@
 
 .chroma {
   color: var(--c-ink);
+  // Inside the code ground the ink is lifted a touch toward the accent.
+  color: color-mix(in srgb, var(--c-ink) 88%, var(--c-accent));
   background: transparent;
 
   // comments

@@ -31,36 +31,28 @@ body {
 
 ::selection { background: var(--c-selection); }
 
-// Headings sit in the same family as the body. A serif does not want the
-// negative tracking a grotesque asks for, so it is left alone.
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--f-text);
-  font-weight: 700;
+  font-weight: 600;
   line-height: var(--lh-tight);
+  letter-spacing: -0.01em;
   text-wrap: balance;
   margin: 0;
 }
 
-h1 { font-size: var(--fs-h1); }
+h1 { font-size: var(--fs-h1); font-weight: 700; letter-spacing: -0.02em; }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); }
 h4 { font-size: var(--fs-body); }
 
 p, ul, ol, dl, blockquote, pre, table, figure { margin: 0; }
 
-// Links are ink. Colour is reserved for state, so what marks a link is the
-// rule under it, which thickens on hover rather than changing hue.
+// Links take the accent. On hover the rule appears under them.
 a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--c-rule);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
+  color: var(--c-accent);
+  text-decoration: none;
 }
-a:hover {
-  text-decoration-color: currentColor;
-  text-decoration-thickness: 2px;
-}
+a:hover { text-decoration: underline; text-underline-offset: 0.16em; }
 
 :focus-visible {
   outline: 2px solid var(--c-signal);
@@ -87,6 +79,17 @@ hr {
   font-variant-numeric: tabular-nums;
 }
 
+// A key: small mono capitals, letter-spaced, in the accent.
+.key {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
@@ -101,9 +104,10 @@ hr {
   left: var(--gutter);
   top: -4rem;
   z-index: 10;
-  background: var(--c-bg);
+  background: var(--c-surface);
   color: var(--c-ink);
-  border: 2px solid var(--c-ink);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-s);
   padding: 0.5rem 0.875rem;
   font-size: var(--fs-small);
   text-decoration: none;

@@ -29,16 +29,15 @@ Image Cloud.
 
 ## Ce que le navigateur télécharge
 
-Une page HTML, une feuille de style, trois fichiers de police préchargés,
-et un quatrième seulement si la page contient de l'italique. Rien d'autre,
-et rien qui vienne d'un autre domaine.
+Une page HTML, une feuille de style, deux fichiers de police préchargés,
+et un troisième seulement si la page contient un caractère hors du latin
+de base. Rien d'autre, et rien qui vienne d'un autre domaine.
 
-Deux familles, [Spectral](https://github.com/productiontype/Spectral) et
-[IBM Plex Mono](https://www.ibm.com/plex/), toutes deux sous licence SIL
-Open Font License, servies depuis ce domaine en `woff2` sous-ensemblés au
-latin étendu. Quatre fontes pèsent 105 Ko au total. Pas de Google Fonts :
-demander une police à un tiers, c'est lui annoncer chacune de vos
-visites.
+Une seule famille, [IBM Plex](https://www.ibm.com/plex/), sous licence SIL
+Open Font License, servie depuis ce domaine en `woff2`. Plex Sans est une
+police variable : un fichier porte toutes les graisses. Trois fichiers
+pèsent 92 Ko au total. Pas de Google Fonts : demander une police à un
+tiers, c'est lui annoncer chacune de vos visites.
 
 Pas d'analytics, pas de balise de suivi, pas de CDN externe, pas de
 bandeau de consentement, parce qu'il n'y a rien à consentir.
@@ -86,9 +85,9 @@ désigne l'état exact du dépôt qui a produit la page que vous lisez.
 
 ## Typographie
 
-Spectral porte toutes les phrases, y compris celles de la navigation :
-ceci est un document et non une application. Il n'y a aucune sans-serif
-sur ce site.
+IBM Plex Sans porte toutes les phrases, y compris celles de la navigation.
+Une seule graisse par rôle, et la hiérarchie vient de la taille et de la
+couleur plutôt que du changement de famille.
 
 IBM Plex Mono ne sert qu'à ce qui se mesure plutôt qu'à ce qui se lit :
 dates, numéros de changement, versions, empreintes. La chasse fixe est ici
@@ -107,5 +106,5 @@ réservé à ce qui a un état, un brouillon ou un changement en revue.
 
 Les textes sont sous
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). Le code
-des gabarits et des styles est sous licence MIT. Spectral et IBM Plex Mono
-sont sous SIL OFL 1.1.
+des gabarits et des styles est sous licence MIT. IBM Plex Sans et IBM Plex
+Mono sont sous SIL OFL 1.1.

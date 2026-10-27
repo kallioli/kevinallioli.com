@@ -24,15 +24,15 @@ Cloud registry serves image paths.
 
 ## What the browser downloads
 
-One HTML page, one stylesheet, three preloaded font files, and a fourth
-only if the page contains italics. Nothing else, and nothing from another
-domain.
+One HTML page, one stylesheet, two preloaded font files, and a third only
+if the page contains a character outside basic Latin. Nothing else, and
+nothing from another domain.
 
-Two families, [Spectral](https://github.com/productiontype/Spectral) and
-[IBM Plex Mono](https://www.ibm.com/plex/), both under the SIL Open Font
-License, served from this domain as `woff2` subset to extended Latin. Four
-faces total 105 KB. No Google Fonts: asking a third party for a font tells
-that third party about every one of your visits.
+One family, [IBM Plex](https://www.ibm.com/plex/), under the SIL Open Font
+License, served from this domain as `woff2`. Plex Sans is a variable font:
+one file carries every weight. Three files total 92 KB. No Google Fonts:
+asking a third party for a font tells that third party about every one of
+your visits.
 
 No analytics, no tracking pixel, no external CDN, no consent banner,
 because there is nothing to consent to.
@@ -77,8 +77,9 @@ exact state of the repository that produced the page you are reading.
 
 ## Typography
 
-Spectral carries every sentence, the navigation included: this is a document
-and not an application, and there is no sans-serif anywhere on the site.
+IBM Plex Sans carries every sentence, the navigation included. One weight
+per role, and the hierarchy comes from size and colour rather than from a
+change of family.
 
 IBM Plex Mono is used only for what is measured rather than read: dates,
 change numbers, versions, digests. Fixed width is a requirement here and not
@@ -95,5 +96,5 @@ amber is kept for anything that has a state, a draft or a change in review.
 ## Licence
 
 Text under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The
-template and stylesheet code is MIT. Spectral and IBM Plex Mono are under
-SIL OFL 1.1.
+template and stylesheet code is MIT. IBM Plex Sans and IBM Plex Mono are
+under SIL OFL 1.1.

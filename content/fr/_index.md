@@ -2,37 +2,46 @@
 translationKey: "home"
 title: "Kevin Allioli"
 description: "Ingénieur OpenStack à Genève. Exploitation à grande échelle, images système, contributions en amont."
-role: "Ingénieur OpenStack à Genève. Treize ans d'infrastructure."
-thesis: "Cinq ans d'OpenStack en production, à plus de 5 000 serveurs."
-thesisNote: "J'exploite les plateformes OpenStack et je construis les images système qui les font démarrer. Depuis 2026, je corrige aussi en amont ce que je rencontrais en exploitation."
-lead: "Je travaille sur les couches basses du cloud : le plan de contrôle OpenStack, ses montées de version, ses incidents de niveau 3, et les images sur lesquelles démarrent des milliers de serveurs."
-seeking: "Un poste où OpenStack est le cœur du métier : exploitation à grande échelle, montées de version, chaîne d'images, ou travail en amont. Si votre équipe fait tourner OpenStack, écrivez-moi."
-profile:
-  - key: "poste"
-    value: "Ingénieur N3 Cloud, Cheops Technology, Genève"
-  - key: "openstack"
-    value: "5 ans en production, 5 000+ serveurs"
-  - key: "projet"
-    value: "Open Image Cloud"
-    url: "/projets/open-image-cloud/"
-  - key: "gerrit"
-    value: "kallioli"
-    url: "https://review.opendev.org/q/owner:kallioli"
-  - key: "github"
-    value: "kallioli"
-    url: "https://github.com/kallioli"
+role: "Ingénieur OpenStack · Genève"
+lead: "Treize ans d'infrastructure. Cinq ans à faire tourner OpenStack au-delà de 5 000 serveurs. Depuis 2026, je corrige en amont ce que je rencontrais en exploitation."
+stats:
+  - value: "13"
+    label: "ans d'infrastructure"
+  - value: "5 000+"
+    label: "serveurs OpenStack exploités"
+  - computed: "upstream"
+  - value: "8"
+    label: "distributions d'images publiées"
+skills:
+  - key: "exploitation"
+    title: "OpenStack à grande échelle"
+    text: "Nova, Neutron, Cinder, Keystone, Placement, et ce qui les porte : base de données, file de messages, stockage. Les incidents de niveau 3 et les signaux faibles qui les précèdent."
+  - key: "montées de version"
+    title: "Upgrades en production"
+    text: "Préparer, tester ce qui peut l'être, décider ce qui ne le sera pas, exécuter dans la fenêtre, et savoir sur quel critère on revient en arrière."
+  - key: "images système"
+    title: "Chaîne de build d'images"
+    text: "Builds reproductibles, signature cosign keyless, provenance embarquée. La couche dont tout le reste hérite."
+  - key: "amont"
+    title: "Contribution OpenStack"
+    text: "Modernisation et correctifs de sécurité sur Horizon et openstacksdk. Revues sur Horizon, barbican-ui, kolla, Keystone."
+  - key: "automatisation"
+    title: "Terraform, Ansible, CI"
+    text: "Clusters multi-cloud sous Terraform et Ansible, GitHub Actions pour les chaînes de build. La réversibilité se pose avant la migration."
+  - key: "transmission"
+    title: "Formation Public Cloud"
+    text: "Formation et accompagnement technique d'équipes qui adoptent le cloud."
+timeline:
+  - when: "Aujourd'hui"
+    title: "Cheops Technology Switzerland · Genève"
+    text: "Ingénieur N3 Cloud et Services Managés."
+  - when: "5 ans"
+    title: "Infomaniak"
+    text: "Exploitation et évolution d'environnements OpenStack de plus de 5 000 serveurs : montées de version, scale-up, incidents de niveau 3, clusters multi-cloud sous Terraform et Ansible. Conception des images système de la flotte."
+  - when: "Avant"
+    title: "Infrastructure"
+    text: "Huit années de systèmes et de réseau."
+seekingTitle: "Un poste où OpenStack est le cœur du métier."
+seeking: "Exploitation à grande échelle, montées de version, chaîne d'images ou travail en amont. Si votre équipe fait tourner OpenStack, écrivez-moi."
 outputs: ["html", "rss", "headers", "redirects"]
 ---
-
-Pendant cinq ans chez Infomaniak, j'ai exploité et fait évoluer des
-environnements OpenStack de plus de 5 000 serveurs : montées de version,
-scale-up, incidents de niveau 3, clusters multi-cloud sous Terraform et
-Ansible. J'y ai aussi conçu les images système sur lesquelles ces machines
-démarrent, un travail qui reste invisible tant qu'il fonctionne. Je suis
-aujourd'hui ingénieur N3 Cloud et Services Managés chez Cheops Technology
-Switzerland, à Genève.
-
-Depuis 2026, je contribue à OpenStack en amont : modernisation et
-correctifs de sécurité sur Horizon, le tableau de bord, et sur
-openstacksdk. Le registre plus bas liste chaque changement avec son état,
-abandons compris. Tout ce que ce site affirme se vérifie en un clic.

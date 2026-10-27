@@ -2,78 +2,86 @@
 // properties, so a theme is a token swap and nothing else knows which one
 // is active.
 //
-// The palette is two tones and a signal. There is deliberately no brand
-// accent: links are ink with a rule under them, and the signal colour is
-// spent only where something has a state worth looking at. In a machine
-// room nobody looks at the green light.
+// The site is dark by default: a console, not a document. Light is an
+// explicit choice through the toggle, never the system preference, so the
+// first impression is the same for everyone.
 
 :root {
-  // Ground and ink. A cool technical paper rather than a warm cream, and
-  // an ink that carries a hue instead of standing in for black.
-  --c-bg:      #e8eceb;
-  --c-surface: #dae0de;
-  --c-ink:     #111e24;
-  --c-muted:   #4e5d63;
-  --c-rule:    #c3ccc9;
+  // Ground and panels. A deep blue slate, three steps of it.
+  --c-bg:        #0b1118;
+  --c-surface:   #111a24;
+  --c-surface-2: #16222e;
+  --c-rule:      #223241;
+  --c-ink:       #e6edf3;
+  --c-muted:     #8aa0b4;
 
-  // Signal. State only: in review, draft, keyboard focus.
-  --c-signal:    #8e5405;
-  --c-signal-bg: #{rgba(#8e5405, 0.10)};
-  --c-selection: #{rgba(#8e5405, 0.18)};
+  // One accent, cool. Links, keys, the primary action.
+  --c-accent:     #7cc4ff;
+  --c-accent-ink: #06131f;
 
-  // Type. Two families. Spectral carries every sentence, including the
-  // navigation, because this is a document and not an application. The
-  // mono appears only where fixed width is a requirement rather than a
-  // costume: digests, change numbers, versions, code.
-  --f-text: "Spectral", ui-serif, Georgia, "Times New Roman", serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  // State. Merged is green, in review is amber, abandoned is grey. The
+  // amber doubles as the focus ring and the draft mark.
+  --c-ok:        #4cd98a;
+  --c-ok-bg:     #{rgba(#4cd98a, 0.14)};
+  --c-signal:    #f0b35a;
+  --c-signal-bg: #{rgba(#f0b35a, 0.14)};
+  --c-off:       #6a7b8c;
+  --c-off-bg:    #{rgba(#6a7b8c, 0.18)};
+  --c-selection: #{rgba(#7cc4ff, 0.28)};
+  --c-code:      #0a0f15;
+
+  // Type. Plex Sans carries every sentence, Plex Mono every measurement:
+  // change numbers, dates, digests, keys, code.
+  --f-text: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --fs-meta:    0.75rem;
   --fs-small:   0.9375rem;
-  --fs-body:    1.125rem;
+  --fs-body:    1rem;
   --fs-lead:    1.25rem;
-  --fs-h3:      1.1875rem;
-  --fs-h2:      1.5625rem;
-  --fs-h1:      1.75rem;
-  --fs-display: clamp(2.125rem, 1.35rem + 3.4vw, 3.375rem);
+  --fs-h3:      1.0625rem;
+  --fs-h2:      1.5rem;
+  --fs-h1:      2rem;
+  --fs-display: clamp(2.5rem, 1.6rem + 4.2vw, 4.25rem);
+  --fs-stat:    2.125rem;
 
-  // A serif wants more air between lines than a sans does.
-  --lh-body:    1.7;
-  --lh-tight:   1.3;
-  --lh-display: 1.1;
+  --lh-body:    1.6;
+  --lh-tight:   1.25;
+  --lh-display: 1.02;
 
-  // Measure and the two-track grid: a rail carrying the record, a column
-  // carrying the argument.
-  --measure:  68ch;
-  --rail:     14rem;
-  --rail-gap: 2.75rem;
-  --wide:     64rem;
+  --measure:  66ch;
+  --wide:     73.75rem;
   --gutter:   1.5rem;
-  --step:     1.6rem;
+  --step:     1.5rem;
+  --radius:   10px;
+  --radius-s: 6px;
 
   --rule: 1px solid var(--c-rule);
-
-  color-scheme: light;
-}
-
-@mixin dark-tokens {
-  --c-bg:      #0e1a20;
-  --c-surface: #16242b;
-  --c-ink:     #d9e1df;
-  --c-muted:   #8a9ba3;
-  --c-rule:    #2c3b42;
-
-  --c-signal:    #e8a93f;
-  --c-signal-bg: #{rgba(#e8a93f, 0.12)};
-  --c-selection: #{rgba(#e8a93f, 0.24)};
 
   color-scheme: dark;
 }
 
-// System preference, unless the reader has explicitly asked for light.
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { @include dark-tokens; }
-}
+// Light, on request. The same console in daylight: cool paper, the same
+// accent pushed darker so it still carries a link.
+:root[data-theme="light"] {
+  --c-bg:        #f2f5f8;
+  --c-surface:   #ffffff;
+  --c-surface-2: #e9eef3;
+  --c-rule:      #d3dbe3;
+  --c-ink:       #0f1a24;
+  --c-muted:     #52637a;
 
-// Explicit choice always wins, in both directions.
-:root[data-theme="dark"] { @include dark-tokens; }
+  --c-accent:     #1a66c2;
+  --c-accent-ink: #ffffff;
+
+  --c-ok:        #15803d;
+  --c-ok-bg:     #{rgba(#15803d, 0.12)};
+  --c-signal:    #b45309;
+  --c-signal-bg: #{rgba(#b45309, 0.12)};
+  --c-off:       #6b7a8a;
+  --c-off-bg:    #{rgba(#6b7a8a, 0.16)};
+  --c-selection: #{rgba(#1a66c2, 0.2)};
+  --c-code:      #0f1a24;
+
+  color-scheme: light;
+}

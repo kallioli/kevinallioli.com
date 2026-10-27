@@ -1,6 +1,7 @@
 {{ define "main" }}
 <div class="prose-wrap">
   <header class="page-header">
+    {{- with .Params.key }}<span class="key">{{ . }}</span>{{ end }}
     <h1>{{ .Title }}</h1>
     {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
   </header>

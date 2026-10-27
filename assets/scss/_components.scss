@@ -1,175 +1,366 @@
-// --------------------------------------------------------------------- home
+// --------------------------------------------------------------------- hero
 //
-// The one loud thing on this site is the thesis. Everything around it is
-// kept quiet on purpose: a claim costs nothing to make and is set large,
-// a proof costs something and is set exact.
+// Two columns: the person on the left, the register on the right. The one
+// loud thing is the name; the panel beside it is the proof.
 
-.hero { margin-bottom: calc(var(--step) * 2.5); }
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(var(--step) * 1.5);
+  align-items: center;
+  padding-block: var(--step) calc(var(--step) * 2);
+}
+@media (min-width: 56rem) {
+  .hero { grid-template-columns: 1.1fr 0.9fr; gap: calc(var(--step) * 1.75); padding-block: calc(var(--step) * 2) calc(var(--step) * 2); }
+}
 
 .hero__name {
-  font-size: var(--fs-h2);
-  letter-spacing: 0.01em;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0.9rem 0 0.75rem;
 }
 
 .hero__role {
-  margin-top: 0.2rem;
-  color: var(--c-muted);
-  font-size: var(--fs-small);
-}
-
-.hero__thesis {
-  margin-top: 1.6rem;
-  font-size: var(--fs-display);
-  font-weight: 700;
-  line-height: var(--lh-display);
-  text-wrap: balance;
-  max-width: 20ch;
-}
-
-.hero__note {
-  margin-top: 1.1rem;
   font-size: var(--fs-lead);
-  max-width: var(--measure);
-}
-
-.hero__lead {
-  margin-top: 1.6rem;
-  max-width: var(--measure);
-}
-
-.hero__intro {
-  margin-top: 1rem;
+  line-height: 1.4;
   color: var(--c-muted);
-  font-size: var(--fs-small);
-  max-width: var(--measure);
+  max-width: 36ch;
+  text-wrap: pretty;
 }
-.hero__intro > * + * { margin-top: 0.7rem; }
 
-// ------------------------------------------------------------- the record
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.125rem;
+  border-radius: var(--radius-s);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--c-ink);
+  border: var(--rule);
+  text-decoration: none;
+}
+.btn:hover { text-decoration: none; border-color: var(--c-accent); color: var(--c-ink); }
+.btn--primary { background: var(--c-accent); color: var(--c-accent-ink); border-color: transparent; }
+.btn--primary:hover { color: var(--c-accent-ink); filter: brightness(1.08); }
+
+// -------------------------------------------------------------------- panel
 //
-// A key over its value, in a narrow column. A digest is allowed to wrap
-// and break anywhere: at this width it reads as the block of hash it is,
-// which is the point.
+// A bordered surface with a mono header line. Used for the register, the
+// cards, the project feature. Not every block is a panel: a panel is the
+// element that holds a record.
 
-.record {
+.panel {
+  background: var(--c-surface);
+  border: var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-bottom: var(--rule);
   font-family: var(--f-mono);
-  font-size: var(--fs-meta);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.panel__head .live { margin-inline-start: auto; color: var(--c-ok); letter-spacing: 0.04em; }
+
+// A log line: number, subject, state. The subject is clipped on one line
+// here; the full register page wraps it.
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0.375rem 0;
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
   line-height: 1.5;
   font-variant-numeric: tabular-nums;
-  margin: 0;
 }
-.record > div + div { margin-top: 0.6rem; }
-.record dt { color: var(--c-muted); }
-.record dd {
-  margin: 0;
-  color: var(--c-ink);
-  overflow-wrap: anywhere;
+.log li {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.5rem 1rem;
 }
+.log li + li { border-top: 1px solid color-mix(in srgb, var(--c-rule) 60%, transparent); }
+.log__n { color: var(--c-muted); }
+.log__n a { color: inherit; }
+.log__s { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--c-ink); }
+.log--wrap .log__s { white-space: normal; }
 
-.rail-note {
-  font-size: var(--fs-meta);
-  line-height: 1.55;
-  color: var(--c-muted);
-  padding-top: 0.7rem;
-  border-top: var(--rule);
+// State pills. The only place the semantic colours are spent.
+.pill {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pill--merged    { background: var(--c-ok-bg);     color: var(--c-ok); }
+.pill--new       { background: var(--c-signal-bg); color: var(--c-signal); }
+.pill--abandoned { background: var(--c-off-bg);    color: var(--c-off); }
+
+// -------------------------------------------------------------------- stats
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--c-surface);
+  margin-block: 0 calc(var(--step) * 3);
+}
+@media (min-width: 56rem) { .stats { grid-template-columns: repeat(4, 1fr); } }
+
+.stat { padding: 1.25rem 1.375rem; min-width: 0; }
+.stat b {
+  display: block;
+  font-size: var(--fs-stat);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.stat span { display: block; margin-top: 0.5rem; color: var(--c-muted); font-size: 0.875rem; }
+.stat + .stat { border-top: var(--rule); }
+@media (min-width: 56rem) {
+  .stat + .stat { border-top: 0; border-inline-start: var(--rule); }
+}
+@media (max-width: 55.99rem) {
+  .stat:nth-child(2) { border-top: 0; border-inline-start: var(--rule); }
+  .stat:nth-child(4) { border-inline-start: var(--rule); }
 }
 
 // ------------------------------------------------------------ section heads
 //
-// No eyebrow, no tracking, no rule. A heading and, under it, the way out.
+// A mono label with a rule running out of it. The way out, when there is
+// one, sits on the same line.
 
-.home-section { margin-top: calc(var(--step) * 2.75); }
+.home-section { padding-block: 0 calc(var(--step) * 3); }
 
-.section-head { margin-bottom: var(--step); }
-.section-head h2 { font-size: var(--fs-h3); }
-.section-head p {
-  margin-top: 0.15rem;
-  font-size: var(--fs-small);
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: var(--step);
+}
+.section-head h2 {
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--c-muted);
+  white-space: nowrap;
 }
+.section-head::after { content: ""; flex: 1; height: 1px; background: var(--c-rule); order: 1; }
+.section-head p { order: 2; font-size: 0.875rem; white-space: nowrap; }
 
-// The ask. Set in the lead size, once, with its addresses under it.
-.seeking {
-  font-size: var(--fs-lead);
-  max-width: var(--measure);
-  margin-bottom: 0.9rem;
+// --------------------------------------------------------------------- grid
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
 }
-
-// ------------------------------------------------------------- entry lists
-
-.entry-list { list-style: none; margin: 0; padding: 0; }
-
-.entry { padding-block: 1.15rem; }
-.entry:first-child { padding-top: 0; }
-.entry + .entry { border-top: var(--rule); }
-
-.entry__title { font-size: var(--fs-h3); }
-// A whole list of underlined headings reads as noise. In a record list the
-// title is obviously the target, so the underline is held back for hover
-// and focus rather than spent on every row.
-.entry__title a,
-.project h2 a { text-decoration: none; }
-.entry__title a:hover,
-.project h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
-
-.entry__summary {
-  margin-top: 0.4rem;
-  color: var(--c-muted);
-  font-size: var(--fs-small);
-  max-width: var(--measure);
-}
-
-// On the wide layout the date and the pillar move out into the rail; below
-// it they sit above the title, still in the record voice.
-.entry .meta { margin-bottom: 0.3rem; }
-.entry .meta > * { display: block; }
-
+@media (min-width: 40rem) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 60rem) {
-  .entry {
-    display: grid;
-    grid-template-columns: var(--rail) minmax(0, 1fr);
-    column-gap: var(--rail-gap);
-  }
-  .entry .meta { margin-bottom: 0; padding-top: 0.25rem; }
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid--2-1 { grid-template-columns: 2fr 1fr; }
 }
 
-.empty-state {
-  color: var(--c-muted);
-  font-size: var(--fs-small);
-  max-width: var(--measure);
+.card {
+  background: var(--c-surface);
+  border: var(--rule);
+  border-radius: var(--radius);
+  padding: 1.375rem;
+  min-width: 0;
 }
+.card .key { margin-bottom: 0.75rem; }
+.card h3 { margin-bottom: 0.5rem; font-size: 1.0625rem; }
+.card p { color: var(--c-muted); font-size: var(--fs-small); }
+.card--flush { padding: 0; }
 
-// ---------------------------------------------------------------- projects
+// ----------------------------------------------------------------- timeline
+
+.tl {
+  list-style: none;
+  margin: 0 0 0 0.375rem;
+  padding: 0;
+  border-inline-start: 2px solid var(--c-rule);
+}
+.tl li { position: relative; padding: 0 0 1.75rem 1.75rem; }
+.tl li:last-child { padding-bottom: 0; }
+.tl li::before {
+  content: "";
+  position: absolute;
+  left: -7px; top: 0.4rem;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--c-bg);
+  border: 2px solid var(--c-accent);
+}
+.tl .key { margin-bottom: 0.25rem; }
+.tl h3 { font-size: 1.125rem; margin-bottom: 0.35rem; }
+.tl p { color: var(--c-muted); max-width: 62ch; }
+
+// ------------------------------------------------------------------ feature
 //
-// Not a card. A project is a heading, a sentence and its addresses.
+// The project, in two panels side by side: the argument and the proof.
 
-.project { max-width: var(--measure); }
-.project > * + * { margin-top: 0.5rem; }
-.project h3 { font-size: var(--fs-h3); }
-.project p { color: var(--c-muted); font-size: var(--fs-small); }
+.feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--c-surface);
+  border: var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+@media (min-width: 56rem) { .feature { grid-template-columns: 1fr 1fr; } }
+.feature > div { padding: 1.75rem; min-width: 0; }
+.feature > div + div { border-top: var(--rule); background: var(--c-surface-2); }
+@media (min-width: 56rem) { .feature > div + div { border-top: 0; border-inline-start: var(--rule); } }
+.feature h3 { font-size: 1.5rem; margin-bottom: 0.6rem; }
+.feature h3 a { color: inherit; }
+.feature p { color: var(--c-muted); }
+.feature p + p { margin-top: 0.75rem; }
+.feature__links { margin-top: 1.25rem; }
+.feature .panel__head { padding: 0 0 0.75rem; border: 0; }
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  list-style: none;
+  padding: 0;
+}
+.tag {
+  font-family: var(--f-mono);
+  font-size: var(--fs-meta);
+  padding: 0.3rem 0.625rem;
+  border: var(--rule);
+  border-radius: 999px;
+  color: var(--c-muted);
+}
 
 .link-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem 1.25rem;
   font-family: var(--f-mono);
-  font-size: var(--fs-meta);
+  font-size: 0.8125rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-// ----------------------------------------------------------- contributions
+// ------------------------------------------------------------------ contact
 
-.registry { margin-top: calc(var(--step) * 2.25); }
-.registry > h2 {
-  font-size: var(--fs-h3);
-  margin-bottom: 0.75rem;
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--step);
+  align-items: center;
+  padding: 2rem;
+  border: var(--rule);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--c-surface), var(--c-surface-2));
+}
+@media (min-width: 56rem) { .contact { grid-template-columns: minmax(0, 1fr) auto; padding: 2.5rem; } }
+.contact h2 { font-size: 1.625rem; margin-bottom: 0.5rem; }
+.contact p { color: var(--c-muted); max-width: 54ch; }
+.contact__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.875rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.registry td.col-change,
-.registry td.col-project,
-.registry td.col-date {
+// -------------------------------------------------------------- entry lists
+//
+// Articles. Date and pillar in the rail on wide screens, above the title
+// below it.
+
+.entry-list { list-style: none; margin: 0; padding: 0; }
+.entry { padding-block: 1.125rem; }
+.entry:first-child { padding-top: 0; }
+.entry + .entry { border-top: var(--rule); }
+.entry__title { font-size: 1.125rem; }
+.entry__title a { color: var(--c-ink); }
+.entry__title a:hover { color: var(--c-accent); text-decoration: none; }
+.entry__summary { margin-top: 0.4rem; color: var(--c-muted); font-size: var(--fs-small); max-width: var(--measure); }
+.entry .meta { margin-bottom: 0.3rem; }
+.entry .meta > * { display: block; }
+@media (min-width: 60rem) {
+  .entry { display: grid; grid-template-columns: 14rem minmax(0, 1fr); column-gap: 2.75rem; }
+  .entry .meta { margin-bottom: 0; padding-top: 0.25rem; }
+}
+
+.empty-state { color: var(--c-muted); font-size: var(--fs-small); max-width: var(--measure); }
+.entry-list + .empty-state, .empty-state + .entry-list { margin-top: var(--step); }
+
+.draft-badge {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--c-signal);
+  background: var(--c-signal-bg);
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+// ----------------------------------------------------------------- projects
+
+.project-list > * + * { margin-top: var(--step); }
+.project { max-width: var(--measure); }
+.project > * + * { margin-top: 0.5rem; }
+.project h2 { font-size: 1.25rem; }
+.project h2 a { color: var(--c-ink); }
+.project h2 a:hover { color: var(--c-accent); text-decoration: none; }
+.project p { color: var(--c-muted); font-size: var(--fs-small); }
+
+// ------------------------------------------------------------ contributions
+
+.registry { margin-top: calc(var(--step) * 2); }
+.registry > h2 { font-size: 1.125rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.6rem; }
+.registry .table-scroll { background: var(--c-surface); border: var(--rule); border-radius: var(--radius); }
+.registry table { font-size: var(--fs-small); }
+.registry th, .registry td { padding: 0.6rem 1rem; }
+.registry th:first-child, .registry td:first-child { padding-inline-start: 1rem; }
+.registry thead th { border-bottom: var(--rule); }
+.registry td.col-change, .registry td.col-project, .registry td.col-date {
   font-family: var(--f-mono);
   font-size: var(--fs-meta);
   font-variant-numeric: tabular-nums;
@@ -177,35 +368,7 @@
 .registry td.col-project { color: var(--c-muted); white-space: nowrap; }
 .registry td.col-date { color: var(--c-muted); white-space: nowrap; }
 .registry td.col-subject { min-width: 18rem; }
-
-// The one inversion on the site. A change that is merged has been attested
-// by someone other than its author, and that is the only binary here worth
-// a mark. In review is a signal. Abandoned is stated plainly: a withdrawn
-// patch usually means the problem was posed wrong, which is information.
-.state {
-  display: inline-block;
-  font-family: var(--f-mono);
-  font-size: var(--fs-meta);
-  line-height: 1.4;
-  white-space: nowrap;
-  padding: 0.1rem 0.4rem;
-  color: var(--c-muted);
-}
-.state--merged {
-  background: var(--c-ink);
-  color: var(--c-bg);
-}
-.state--new {
-  color: var(--c-signal);
-  background: var(--c-signal-bg);
-}
-
-.registry__note {
-  margin-top: 1.1rem;
-  font-size: var(--fs-small);
-  color: var(--c-muted);
-  max-width: var(--measure);
-}
+.registry__note { margin-top: 1.1rem; font-size: var(--fs-small); color: var(--c-muted); max-width: var(--measure); }
 
 // -------------------------------------------------------------------- misc
 
@@ -218,57 +381,13 @@
   line-height: 1.6;
   margin: 0 0 calc(var(--step) * 1.5);
 }
-// Inside prose the grid is a block among others and takes the same rhythm.
-// Stated here rather than in _content: this partial is imported last, and
-// the two would otherwise decide the margin by import order.
 .prose > .definition-grid { margin-top: var(--step); }
-.definition-grid dt {
-  color: var(--c-muted);
-  padding-block: 0.35rem;
-  border-bottom: var(--rule);
-}
-.definition-grid dd {
-  margin: 0;
-  padding-block: 0.35rem;
-  border-bottom: var(--rule);
-  overflow-wrap: anywhere;
-}
+.definition-grid dt { color: var(--c-muted); padding-block: 0.35rem; border-bottom: var(--rule); }
+.definition-grid dd { margin: 0; padding-block: 0.35rem; border-bottom: var(--rule); overflow-wrap: anywhere; }
 @media (max-width: 34rem) {
   .definition-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .definition-grid dt { border-bottom: 0; padding-bottom: 0; }
 }
 
-.draft-badge {
-  display: inline-block;
-  font-family: var(--f-mono);
-  font-size: var(--fs-meta);
-  line-height: 1.4;
-  color: var(--c-signal);
-  background: var(--c-signal-bg);
-  padding: 0.1rem 0.4rem;
-}
-
-
-// A short list of projects: separated the way entries are, without the
-// two-track grid, because a project has no date to put in a rail.
-.project-list > * + * {
-  margin-top: var(--step);
-  padding-top: var(--step);
-  border-top: var(--rule);
-}
-.project h2 { font-size: var(--fs-h3); }
-.project .meta { margin-bottom: 0.35rem; }
-
-// The site index on the 404 page. A plain way out, not a list of entries.
-.index-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: var(--fs-lead);
-}
+.index-list { list-style: none; margin: 0; padding: 0; font-size: var(--fs-lead); }
 .index-list li + li { margin-top: 0.5rem; }
-
-// A language switch that leads to the other home page rather than to this
-// page in that language is not doing the same thing, and does not look like
-// it is. The accessible name says so in full; this is the sighted cue.
-.lang-switch--home { border-style: dashed; }

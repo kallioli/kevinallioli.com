@@ -26,14 +26,25 @@ colSubject = "Sujet"
 colStatus  = "État"
 colDate    = "Déposé le"
 gerritProfile = "Profil Gerrit"
-recordNote = "Chaque ligne de ce relevé renvoie à une preuve : un registre, un dépôt, une revue. Le relevé technique de la page elle-même est au colophon."
-recordUpstreamKey = "amont"
-recordContactKey = "contact"
 articlesOtherLanguage = "Rien de publié en français pour l'instant. Les articles ci-dessous sont en anglais, écrits pour la communauté amont."
-seekingTitle = "Ce que je cherche"
 
-[recordUpstream]
-other = "{{ .Merged }} changements mergés, {{ .Open }} en revue"
+ctaContact = "Me contacter"
+ctaContributions = "Voir mes contributions"
+registerLive = "à jour"
+skillsTitle = "Ce que je fais"
+timelineTitle = "Parcours"
+projectTitle = "Projet"
+upstreamTitle = "Contributions upstream"
+verifyTitle = "vérifier une image"
+gerritAccount = "compte gerrit"
+articlesKey = "articles"
+projectsKey = "projets"
+stateMerged = "MERGED"
+stateOpen = "REVIEW"
+stateAbandoned = "ABANDONED"
 
 [contribSummary]
 other = "{{ .Merged }} changements mergés en amont, {{ .Open }} en revue, {{ .Reviewed }} revues données sur Horizon, openstacksdk et Keystone. Le registre liste chaque changement avec son numéro Gerrit et son état, abandons compris."
+
+[statUpstream]
+other = "changements mergés en amont, {{ .Open }} en revue"

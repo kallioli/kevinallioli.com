@@ -2,38 +2,45 @@
 title: "Kevin Allioli"
 translationKey: "home"
 description: "OpenStack engineer in Geneva. Operations at scale, system images, upstream contributions."
-role: "OpenStack engineer in Geneva. Thirteen years of infrastructure."
-thesis: "Five years of OpenStack in production, past 5,000 servers."
-thesisNote: "I operate OpenStack platforms and build the system images they boot from. Since 2026 I also fix upstream what I used to meet in operations."
-lead: "I work on the lower layers of the cloud: the OpenStack control plane, its upgrades, its level 3 incidents, and the images that thousands of servers boot on."
-seeking: "A position where OpenStack is the core of the job: operations at scale, upgrades, image pipelines, or upstream work. If your team runs OpenStack, write to me."
-profile:
-  - key: "position"
-    value: "N3 Cloud engineer, Cheops Technology, Geneva"
-  - key: "openstack"
-    value: "5 years in production, 5,000+ servers"
-  - key: "project"
-    value: "Open Image Cloud"
-    url: "/en/projects/open-image-cloud/"
-  - key: "gerrit"
-    value: "kallioli"
-    url: "https://review.opendev.org/q/owner:kallioli"
-  - key: "github"
-    value: "kallioli"
-    url: "https://github.com/kallioli"
+role: "OpenStack engineer · Geneva"
+lead: "Thirteen years of infrastructure. Five years running OpenStack past 5,000 servers. Since 2026 I fix upstream what I used to meet in operations."
+stats:
+  - value: "13"
+    label: "years of infrastructure"
+  - value: "5,000+"
+    label: "OpenStack servers operated"
+  - computed: "upstream"
+  - value: "8"
+    label: "image distributions published"
+skills:
+  - key: "operations"
+    title: "OpenStack at scale"
+    text: "Nova, Neutron, Cinder, Keystone, Placement, and what carries them: database, message queue, storage. Level 3 incidents and the weak signals that come before them."
+  - key: "upgrades"
+    title: "Upgrades in production"
+    text: "Prepare, test what can be tested, decide what will not be, execute inside the window, and know on which criterion to roll back."
+  - key: "system images"
+    title: "Image build pipeline"
+    text: "Reproducible builds, keyless cosign signatures, embedded provenance. The layer everything else inherits from."
+  - key: "upstream"
+    title: "OpenStack contribution"
+    text: "Modernisation and security fixes on Horizon and openstacksdk. Reviews on Horizon, barbican-ui, kolla, Keystone."
+  - key: "automation"
+    title: "Terraform, Ansible, CI"
+    text: "Multi-cloud clusters with Terraform and Ansible, GitHub Actions for build pipelines. Reversibility is settled before the migration."
+  - key: "teaching"
+    title: "Public Cloud training"
+    text: "Training and technical support for teams adopting the cloud."
+timeline:
+  - when: "Today"
+    title: "Cheops Technology Switzerland · Geneva"
+    text: "N3 Cloud and Managed Services engineer."
+  - when: "5 years"
+    title: "Infomaniak"
+    text: "Operated and evolved OpenStack environments of more than 5,000 servers: upgrades, scale-up, level 3 incidents, multi-cloud clusters driven by Terraform and Ansible. Designed the fleet's system images."
+  - when: "Before"
+    title: "Infrastructure"
+    text: "Eight years of systems and networking."
+seekingTitle: "A position where OpenStack is the core of the job."
+seeking: "Operations at scale, upgrades, image pipelines, or upstream work. If your team runs OpenStack, write to me."
 ---
-
-For five years at Infomaniak I operated and evolved OpenStack environments
-of more than 5,000 servers: version upgrades, scale-up, level 3 incidents,
-multi-cloud clusters driven by Terraform and Ansible. I also designed the
-system images those machines boot on, work that stays invisible for as long
-as it works. I am now an N3 Cloud and Managed Services engineer at Cheops
-Technology Switzerland, in Geneva.
-
-Since 2026 I contribute to OpenStack upstream: modernisation and security
-fixes on Horizon, the dashboard, and on openstacksdk. The register below
-lists every change with its state, abandoned ones included. Everything this
-site claims can be checked in one click.
-
-Most of the writing here is in French. Pieces whose audience is the
-upstream community are written in English.

@@ -53,7 +53,10 @@ location=$(curl -sSI "$www/articles/" | tr -d '\r' | sed -n 's/^[Ll]ocation: //p
 [[ "$location" == "$base/articles/" ]] ||
   fail "www redirect: expected $base/articles/, got '${location:-nothing}' (see docs/dns.md)"
 
-feed=$(curl -sS "$base/index.xml" | head -c 5)
-[[ "$feed" == "<?xml" ]] || fail "the feed at $base/index.xml is not XML"
+# Read the whole feed, then look at its start. Piping curl into `head -c 5`
+# closes the pipe while curl is still writing, and under pipefail that
+# fails the script as soon as the feed outgrows a single write.
+feed=$(curl -sS "$base/index.xml")
+[[ "${feed:0:5}" == "<?xml" ]] || fail "the feed at $base/index.xml is not XML"
 
 echo "smoke-test: ok, $base serves the built headers and www redirects to it"
